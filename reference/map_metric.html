@@ -90,6 +90,7 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Create init bassin map</span></span></span>
 <span class="r-in"><span><span class="va">map_bassin</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_init_bassins.html">map_init_bassins</a></span><span class="op">(</span>bassins_data <span class="op">=</span> <span class="va">bassin_hydrographique</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> l'argument "id_logo_ign_remonterletemps" est manquant, avec aucune valeur par défaut</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># simulate bassin selected</span></span></span>
 <span class="r-in"><span><span class="va">selected_bassin</span> <span class="op">&lt;-</span> <span class="va">bassin_hydrographique</span></span></span>
@@ -105,6 +106,7 @@
 <span class="r-in"><span><span class="va">map_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_add_regions_in_bassin.html">map_add_regions_in_bassin</a></span><span class="op">(</span>map <span class="op">=</span> <span class="va">map_bassin</span>,</span></span>
 <span class="r-in"><span>                                        bassin_click <span class="op">=</span> <span class="va">centre_coord</span>,</span></span>
 <span class="r-in"><span>                                        regions_data <span class="op">=</span> <span class="va">region_hydrographique</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'map_bassin' introuvable</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># simulate selected region</span></span></span>
 <span class="r-in"><span><span class="va">selected_region</span> <span class="op">&lt;-</span> <span class="va">region_hydrographique</span></span></span>
@@ -161,7 +163,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         map_wms_metric(wms_params = wms_params, cql_filter = cql_filter, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             sld_body = sld_body) %&gt;% map_axis(data_axis = data_axis)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5590db828148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55d18fa0ffc8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:mapdoapp&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
