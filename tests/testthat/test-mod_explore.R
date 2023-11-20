@@ -4,15 +4,6 @@ testServer(
   args = list()
   , {
     ns <- session$ns
-    rv <- reactiveValues(regions_in_bassin = NULL,
-                         selected_region_feature = NULL,
-                         network_region_axis = NULL,
-                         network_region_axis = NULL,
-                         strahler = NULL,
-                         ui_strahler_filter = NULL,
-                         ui_metric_type = NULL,
-                         ui_download = NULL,
-                         ui_metric = NULL)
     expect_true(
       inherits(ns, "function")
     )
@@ -23,6 +14,9 @@ testServer(
       grepl("test", ns("test"))
     )
 
+    # plot init when app open
+    expect_true(inherits(r_val$plot, "plotly"))
+
     # bassin clicked
     session$setInputs(exploremap_shape_click = list(id = "06", .nonce = 0.848898801317209, group = "BASSIN",
                                                     lat = 45.0704171568597, lng = 5.18574748500369))
@@ -30,7 +24,7 @@ testServer(
     expect_true(input$exploremap_shape_click$id == "06")
 
     # check region data import
-    expect_true(is.null(rv$regions_in_bassin))
+    expect_true(!is.null(r_val$regions_in_bassin))
     expect_equal(unique(r_val$regions_in_bassin$cdbh), "06")
 
     # region clicked
@@ -53,6 +47,7 @@ testServer(
     # check download type ui
     expect_true(inherits(r_val$ui_download, "shiny.tag"))
 
+    # input metric type selected
     session$setInputs(metric_type = "largeur")
     # metric type default select
     expect_true(input$metric_type == "largeur")
@@ -61,19 +56,37 @@ testServer(
     # unit area is null
     expect_true(is.null(r_val$ui_unit_area))
 
+    # test filter strahler only rank = 1
+    session$setInputs(strahler = c(1,1))
+    expect_true(!is.null(r_val$cql_filter))
+    # SLD style NULL if no metric select
+    expect_true(is.null(r_val$sld_body))
+
+    # input metric selected
+    session$setInputs(metric = "active_channel_width")
+    expect_true(input$metric == "active_channel_width")
+    expect_true(r_val$selected_metric == "active_channel_width")
+    expect_true(inherits(r_val$min_max_metric, "data.frame"))
+    expect_true(inherits(r_val$ui_metric_filter, "shiny.tag"))
+
+    # filter by metric value with 1-100 width active channel
+    session$setInputs(metricfilter = c(0,100))
+    expect_true(!is.null(r_val$sld_body))
+
+    # change metric selected to landuse
+    session$setInputs(metric_type = "landuse")
+    # select water channel from landuse metric type
+    session$setInputs(metric = "water_channel")
+    expect_true(input$metric == "water_channel")
+    # expect_true(r_val$selected_metric == "water_channel")
+    # # change unit area to percent
+    # session$setInputs(unit_area = "percent")
+    # expect_true(input$metric == "water_channel")
+    # # selected_metric change to percent!
+    # expect_true(r_val$selected_metric == "water_channel_pc")
 
 
-    # Here are some examples of tests you can
-    # run on your module
-    # - Testing the setting of inputs
-    # session$setInputs(x = 1)
-    # expect_true(input$x == 1)
-    # - If ever your input updates a reactiveValues
-    # - Note that this reactiveValues must be passed
-    # - to the testServer function via args = list()
-    # expect_true(r$x == 1)
-    # - Testing output
-    # expect_true(inherits(output$tbl$html, "html"))
+
 })
 
 test_that("module ui works", {

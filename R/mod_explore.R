@@ -410,7 +410,6 @@ mod_explore_server <- function(id){
     #### metric type select ####
 
     observeEvent(input$metric_type, {
-      browser()
 
       if (!is.null(input$metric_type)){
         update_popover("popover_metric_type",
@@ -440,6 +439,7 @@ mod_explore_server <- function(id){
     #### metric select ####
 
     observeEvent(c(input$metric, input$unit_area), ignoreInit = TRUE, {
+
       # change field if unit_area in percentage
       if (!is.null(input$metric) && input$unit_area == "percent"
           && (input$metric_type %in% c("landuse", "continuity"))){
@@ -581,6 +581,7 @@ mod_explore_server <- function(id){
     ### EVENT FILTER ####
 
     observeEvent(c(input$strahler, input$metricfilter), {
+
       if (is.null(input$metricfilter)){
         # build WMS cql_filter
         r_val$cql_filter = paste0("gid_region=", r_val$selected_region_feature[["gid"]],
