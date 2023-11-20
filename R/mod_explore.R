@@ -312,6 +312,7 @@ mod_explore_server <- function(id){
 
       ### region clicked ####
       if (input$exploremap_shape_click$group == params_map_group()$region){
+
         # store the region click values
         r_val$region_click = input$exploremap_shape_click
         # save the selected region feature for mapping
@@ -352,6 +353,7 @@ mod_explore_server <- function(id){
       ### axis clicked ####
 
       if (input$exploremap_shape_click$group == params_map_group()$axis) {
+
         # save the clicked axis values
         r_val$axis_click = input$exploremap_shape_click
         # reget the axis in the region without the selected axis
@@ -408,6 +410,7 @@ mod_explore_server <- function(id){
     #### metric type select ####
 
     observeEvent(input$metric_type, {
+      browser()
 
       if (!is.null(input$metric_type)){
         update_popover("popover_metric_type",
