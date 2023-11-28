@@ -89,8 +89,8 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Create init bassin map</span></span></span>
-<span class="r-in"><span><span class="va">map_bassin</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_init_bassins.html">map_init_bassins</a></span><span class="op">(</span>bassins_data <span class="op">=</span> <span class="va">bassin_hydrographique</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> l'argument "id_logo_ign_remonterletemps" est manquant, avec aucune valeur par défaut</span>
+<span class="r-in"><span><span class="va">map_bassin</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_init_bassins.html">map_init_bassins</a></span><span class="op">(</span>bassins_data <span class="op">=</span> <span class="va">bassin_hydrographique</span>,</span></span>
+<span class="r-in"><span>                               id_logo_ign_remonterletemps <span class="op">=</span> <span class="st">"logo_ign_remonterletemps"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># simulate bassin selected</span></span></span>
 <span class="r-in"><span><span class="va">selected_bassin</span> <span class="op">&lt;-</span> <span class="va">bassin_hydrographique</span></span></span>
@@ -106,7 +106,6 @@
 <span class="r-in"><span><span class="va">map_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_add_regions_in_bassin.html">map_add_regions_in_bassin</a></span><span class="op">(</span>map <span class="op">=</span> <span class="va">map_bassin</span>,</span></span>
 <span class="r-in"><span>                                        bassin_click <span class="op">=</span> <span class="va">centre_coord</span>,</span></span>
 <span class="r-in"><span>                                        regions_data <span class="op">=</span> <span class="va">region_hydrographique</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(f[[2]], metaData(data), environment(f)):</span> objet 'click' introuvable</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># simulate selected region</span></span></span>
 <span class="r-in"><span><span class="va">selected_region</span> <span class="op">&lt;-</span> <span class="va">region_hydrographique</span></span></span>
@@ -122,7 +121,8 @@
 <span class="r-in"><span><span class="co"># map the element in the region clicked</span></span></span>
 <span class="r-in"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_region_clicked.html">map_region_clicked</a></span><span class="op">(</span>map <span class="op">=</span> <span class="va">map_region</span>,</span></span>
 <span class="r-in"><span>                          region_click <span class="op">=</span> <span class="va">centre_region_coord</span>,</span></span>
-<span class="r-in"><span>                          selected_region_feature <span class="op">=</span> <span class="va">selected_region</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                          selected_region_feature <span class="op">=</span> <span class="va">selected_region</span>,</span></span>
+<span class="r-in"><span>                          regions <span class="op">=</span> <span class="va">region_hydrographique</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> la connexion au serveur sur le socket « /var/run/postgresql/.s.PGSQL.5432 » a échoué : No such file or directory</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> 	Le serveur est-il actif localement et accepte-t-il les connexions sur ce socket ?</span>
 <span class="r-in"><span><span class="va">map</span></span></span>
@@ -163,7 +163,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         map_wms_metric(wms_params = wms_params, cql_filter = cql_filter, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             sld_body = sld_body) %&gt;% map_axis(data_axis = data_axis)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55854cf57ad0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55bb3701eff0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:mapdoapp&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
