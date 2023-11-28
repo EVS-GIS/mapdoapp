@@ -34,7 +34,8 @@ library(leaflet)
 library(dplyr)
 library(sf)
 # Create init bassin map
-map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique)
+map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique,
+                               id_logo_ign_remonterletemps = "id_logo_ign_remonterletemps")
 
 # simulate bassin selected
 selected_bassin <- bassin_hydrographique
@@ -63,7 +64,8 @@ centre_region_coord$id <- 11
 # map the element in the region clicked
 map <- map_region_clicked(map = map_region,
                           region_click = centre_region_coord,
-                          selected_region_feature = selected_region)
+                          selected_region_feature = selected_region,
+                          regions = region_hydrographique)
 map
 
 # build geoserver WMS filter

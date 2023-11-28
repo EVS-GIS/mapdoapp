@@ -28,7 +28,8 @@ library(leaflet)
 library(dplyr)
 library(sf)
 # Create init bassin map
-my_map <- map_init_bassins(bassins_data = bassin_hydrographique)
+my_map <- map_init_bassins(bassins_data = bassin_hydrographique,
+                           id_logo_ign_remonterletemps = "logo_ign_remonterletemps")
 
 # simulate bassin selected
 selected_bassin <- bassin_hydrographique
@@ -40,7 +41,8 @@ centre_coord <- as.data.frame(st_coordinates(centre)) \%>\%
          "lat" = Y)
 # map region
 map <- map_add_regions_in_bassin(map = my_map,
-                                 bassin_click = centre_coord, regions_data = region_hydrographique)
+                                 bassin_click = centre_coord,
+                                 regions_data = region_hydrographique)
 map
 
 }

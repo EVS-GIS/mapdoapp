@@ -80,7 +80,8 @@ map_init_bassins <- function(bassins_data, id_logo_ign_remonterletemps) {
 #' library(dplyr)
 #' library(sf)
 #' # Create init bassin map
-#' my_map <- map_init_bassins(bassins_data = bassin_hydrographique)
+#' my_map <- map_init_bassins(bassins_data = bassin_hydrographique,
+#'                            id_logo_ign_remonterletemps = "logo_ign_remonterletemps")
 #'
 #' # simulate bassin selected
 #' selected_bassin <- bassin_hydrographique
@@ -92,7 +93,8 @@ map_init_bassins <- function(bassins_data, id_logo_ign_remonterletemps) {
 #'          "lat" = Y)
 #' # map region
 #' map <- map_add_regions_in_bassin(map = my_map,
-#'                                  bassin_click = centre_coord, regions_data = region_hydrographique)
+#'                                  bassin_click = centre_coord,
+#'                                  regions_data = region_hydrographique)
 #' map
 #'
 #' @export
@@ -125,6 +127,7 @@ map_add_regions_in_bassin <- function(map, bassin_click = bassin_click,
 #' @param map An existing Leaflet map to be updated.
 #' @param region_click A vector containing information about the clicked region.
 #' @param selected_region_feature A sf data frame containing information about the selected region feature.
+#' @param regions A sf data.frame with all the regions features.
 #'
 #' @return An updated Leaflet map with relevant layers and information displayed.
 #'
@@ -135,7 +138,8 @@ map_add_regions_in_bassin <- function(map, bassin_click = bassin_click,
 #' library(dplyr)
 #' library(sf)
 #' # Create init bassin map
-#' map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique)
+#' map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique,
+#'                                id_logo_ign_remonterletemps = "id_logo_ign_remonterletemps")
 #'
 #' # simulate bassin selected
 #' selected_bassin <- bassin_hydrographique
@@ -163,7 +167,8 @@ map_add_regions_in_bassin <- function(map, bassin_click = bassin_click,
 #' # map the element in the region clicked
 #' map <- map_region_clicked(map = map_region,
 #'                           region_click = centre_region_coord,
-#'                           selected_region_feature = selected_region)
+#'                           selected_region_feature = selected_region,
+#'                           regions = region_hydrographique)
 #' map
 #'
 #' @export
@@ -195,17 +200,21 @@ map_region_clicked <- function(map,
                 group = params_map_group()[["select_region"]],
                 options = pathOptions(interactive = FALSE)
     ) %>%
-    # add ROE overlayers from PostgreSQL
-    addCircleMarkers(data = data_get_roe_in_region(region_click$id),
-                     radius = 3,
-                     weight = 0.5,
-                     opacity = 0.9,
-                     color = "orange",
-                     fillColor = "orange",
-                     fillOpacity = 0.9,
-                     popup = ~nomprincip,
-                     group = params_map_group()[["roe"]]
+    # add ROE overlayers from geoserver
+    addWMSTiles(
+      baseUrl = params_wms()$roe$url,
+      layers = params_wms()$roe$layer,
+      attribution = params_wms()$roe$attribution,
+      options = WMSTileOptions(
+        format = params_wms()$roe$format,
+        request = "GetMap",
+        transparent = TRUE,
+        style = params_wms()$roe$style,
+        cql_filter = paste0("gid_region=", region_click$id),
+      ),
+      group = params_map_group()[["roe"]]
     ) %>%
+    # add hydro stations overlayers from Hubeau
     addCircleMarkers(data = data_get_station_hubeau(selected_region_feature),
                      radius = 3,
                      weight = 0.5,
@@ -225,8 +234,7 @@ map_region_clicked <- function(map,
     addLayersControl(
       baseGroups = c("CartoDB Positron", unlist(sapply(params_wms(), function(x) if (x$basemap) x$name else NULL), use.names = FALSE)),
       options = layersControlOptions(collapsed = TRUE),
-      overlayGroups = c(params_map_group()[["roe"]],
-                        params_map_group()[["hydro_station"]],
+      overlayGroups = c(params_map_group()[["hydro_station"]], params_map_group()[["roe"]],
                         unlist(sapply(params_wms(), function(x) if (x$overlayer) x$name else NULL), use.names = FALSE))
     )
 }
@@ -320,7 +328,8 @@ map_axis <- function(map, data_axis) {
 #' library(dplyr)
 #' library(sf)
 #' # Create init bassin map
-#' map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique)
+#' map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique,
+#'                                id_logo_ign_remonterletemps = "id_logo_ign_remonterletemps")
 #'
 #' # simulate bassin selected
 #' selected_bassin <- bassin_hydrographique
@@ -349,7 +358,8 @@ map_axis <- function(map, data_axis) {
 #' # map the element in the region clicked
 #' map <- map_region_clicked(map = map_region,
 #'                           region_click = centre_region_coord,
-#'                           selected_region_feature = selected_region)
+#'                           selected_region_feature = selected_region,
+#'                           regions = region_hydrographique)
 #' map
 #'
 #' # build geoserver WMS filter
@@ -580,7 +590,8 @@ map_add_wms_overlayers <- function(map) {
           attribution = i$attribution,
           options = WMSTileOptions(
             format = i$format,
-            transparent = TRUE
+            transparent = TRUE,
+            cql_filter = i$cql_filter,
           ),
           group = i$name
         )%>%

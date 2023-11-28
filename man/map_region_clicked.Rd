@@ -12,6 +12,8 @@ map_region_clicked(map, region_click, selected_region_feature, regions)
 \item{region_click}{A vector containing information about the clicked region.}
 
 \item{selected_region_feature}{A sf data frame containing information about the selected region feature.}
+
+\item{regions}{A sf data.frame with all the regions features.}
 }
 \value{
 An updated Leaflet map with relevant layers and information displayed.
@@ -24,7 +26,8 @@ library(leaflet)
 library(dplyr)
 library(sf)
 # Create init bassin map
-map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique)
+map_bassin <- map_init_bassins(bassins_data = bassin_hydrographique,
+                               id_logo_ign_remonterletemps = "id_logo_ign_remonterletemps")
 
 # simulate bassin selected
 selected_bassin <- bassin_hydrographique
@@ -52,7 +55,8 @@ centre_region_coord$id <- 11
 # map the element in the region clicked
 map <- map_region_clicked(map = map_region,
                           region_click = centre_region_coord,
-                          selected_region_feature = selected_region)
+                          selected_region_feature = selected_region,
+                          regions = region_hydrographique)
 map
 
 }

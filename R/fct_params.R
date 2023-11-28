@@ -16,7 +16,7 @@
 #' @export
 params_wms <- function(){
   wms <- list(metric = list(name = "Métrique",
-                            url = "https://geoserver-dev.evs.ens-lyon.fr/geoserver/mapdo/wms",
+                            url = Sys.getenv("GEOSERVER"),
                             language = "",
                             service = "WMS",
                             version = "1.0.0",
@@ -26,6 +26,19 @@ params_wms <- function(){
                             sld = "",
                             style = "", # no style, sld_body define style and legend
                             attribution = "CNRS - EVS",
+                            basemap = FALSE,
+                            overlayer = FALSE),
+              roe = list(name = "ROE",
+                            url = Sys.getenv("GEOSERVER"),
+                            language = "",
+                            service = "WMS",
+                            version = "1.0.0",
+                            sld_version = "",
+                            layer = "mapdo:roe",
+                            format = "image/png",
+                            sld = "",
+                            style = "", # no style, sld_body define style and legend
+                            attribution = "OFB",
                             basemap = FALSE,
                             overlayer = FALSE),
               carteign = list(name = "Plan IGN",

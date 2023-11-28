@@ -13,6 +13,8 @@ globalVariables(unique(c(
   "selected_axis_df",
   # map_add_regions_in_bassin:
   "region_hydro",
+  # data_get_station_hubeau:
+  "etat_station",
   # mod_explore_server : <anonymous>:
   "fid", "measure"
 )))
