@@ -45,7 +45,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Utilisation<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">map_region_clicked</span><span class="op">(</span><span class="va">map</span>, <span class="va">region_click</span>, <span class="va">selected_region_feature</span>, <span class="va">regions</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">map_region_clicked</span><span class="op">(</span><span class="va">map</span>, <span class="va">region_click</span>, <span class="va">selected_region_feature</span>, <span class="va">regions_data</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,7 +62,7 @@
 <dd><p>A sf data frame containing information about the selected region feature.</p></dd>
 
 
-<dt>regions</dt>
+<dt>regions_data</dt>
 <dd><p>A sf data.frame with the hydrographic regions of the bassin selected.</p></dd>
 
 </dl></div>
@@ -94,6 +94,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># map region</span></span></span>
 <span class="r-in"><span><span class="va">map_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="map_add_regions_in_bassin.html">map_add_regions_in_bassin</a></span><span class="op">(</span>map <span class="op">=</span> <span class="va">map_bassin</span>,</span></span>
+<span class="r-in"><span>                                        bassins_data <span class="op">=</span> <span class="va">bassin_hydrographique</span>,</span></span>
 <span class="r-in"><span>                                        bassin_click <span class="op">=</span> <span class="va">centre_coord</span>,</span></span>
 <span class="r-in"><span>                                        regions_data <span class="op">=</span> <span class="va">region_hydrographique</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># simulate selected region</span></span></span>
@@ -111,7 +112,7 @@
 <span class="r-in"><span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">map_region_clicked</span><span class="op">(</span>map <span class="op">=</span> <span class="va">map_region</span>,</span></span>
 <span class="r-in"><span>                          region_click <span class="op">=</span> <span class="va">centre_region_coord</span>,</span></span>
 <span class="r-in"><span>                          selected_region_feature <span class="op">=</span> <span class="va">selected_region</span>,</span></span>
-<span class="r-in"><span>                          regions <span class="op">=</span> <span class="va">region_hydrographique</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                          regions_data <span class="op">=</span> <span class="va">region_hydrographique</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> la connexion au serveur sur le socket « /var/run/postgresql/.s.PGSQL.5432 » a échoué : No such file or directory</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> 	Le serveur est-il actif localement et accepte-t-il les connexions sur ce socket ?</span>
 <span class="r-in"><span><span class="va">map</span></span></span>
