@@ -22,7 +22,7 @@ mod_explore_ui <- function(id){
       useShinyjs(),
       tags$head(
         tags$style(
-            HTML(".form-group{margin-bottom: 0px}") # less space below selectInput metric_type
+            HTML(".form-group{margin-bottom: 10px}") # less space below selectInput metric_type
         )
       ),
       fluidRow(

@@ -5,7 +5,7 @@
 #'
 #' @return An empty longitudinal profile plot with a specified title.
 #'
-#' @importFrom plotly plot_ly layout
+#' @importFrom plotly plot_ly layout toWebGL
 #'
 #' @examples
 #' # Create an empty longitudinal profile plot
@@ -21,7 +21,7 @@ lg_profile_empty <- function() {
       y = 0.80,  # y title position
       x = 0.3,   # x title position
       font = list(size = 15)
-    ))
+    )) %>% toWebGL()
   return(plot)
 }
 
