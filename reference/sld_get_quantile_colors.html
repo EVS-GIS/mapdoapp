@@ -63,11 +63,16 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Exemples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># get quantiles from active_channel_width metric</span></span></span>
-<span class="r-in"><span><span class="va">quantile_metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="sld_get_quantile_metric.html">sld_get_quantile_metric</a></span><span class="op">(</span>selected_region_id <span class="op">=</span> <span class="fl">11</span>,</span></span>
-<span class="r-in"><span>                                            selected_metric <span class="op">=</span> <span class="st">"active_channel_width"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'dbGetQuery' : la connexion au serveur sur le socket « /var/run/postgresql/.s.PGSQL.5432 » a échoué : No such file or directory</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="db_con.html">db_con</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> la connexion au serveur sur le socket « /var/run/postgresql/.s.PGSQL.5432 » a échoué : No such file or directory</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> 	Le serveur est-il actif localement et accepte-t-il les connexions sur ce socket ?</span>
+<span class="r-in"><span><span class="co"># get quantiles from active_channel_width metric</span></span></span>
+<span class="r-in"><span><span class="va">quantile_metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="sld_get_quantile_metric.html">sld_get_quantile_metric</a></span><span class="op">(</span>selected_region_id <span class="op">=</span> <span class="fl">11</span>,</span></span>
+<span class="r-in"><span>                                            selected_metric <span class="op">=</span> <span class="st">"active_channel_width"</span>,</span></span>
+<span class="r-in"><span>                                            con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'sqlInterpolate' : objet 'con' introuvable</span>
+<span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'dbDisconnect' : objet 'con' introuvable</span>
 <span class="r-in"><span><span class="co"># get color from quantile</span></span></span>
 <span class="r-in"><span><span class="va">quantile_colors</span> <span class="op">&lt;-</span> <span class="fu">sld_get_quantile_colors</span><span class="op">(</span>quantile_breaks <span class="op">=</span> <span class="va">quantile_metrics</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'quantile_metrics' introuvable</span>

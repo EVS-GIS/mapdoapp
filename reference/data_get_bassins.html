@@ -45,13 +45,17 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Utilisation<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_get_bassins</span><span class="op">(</span><span class="va">opacity</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_get_bassins</span><span class="op">(</span><span class="va">opacity</span>, <span class="va">con</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>opacity</dt>
 <dd><p>list that contain numeric values clickable and not_clickable to inform the user the non available features.</p></dd>
+
+
+<dt>con</dt>
+<dd><p>PqConnection to Postgresql database.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -63,12 +67,16 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Exemples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">opacity</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>clickable <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
-<span class="r-in"><span>               not_clickable <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">data_get_bassins</span><span class="op">(</span>opacity <span class="op">=</span> <span class="va">opacity</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="db_con.html">db_con</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> la connexion au serveur sur le socket « /var/run/postgresql/.s.PGSQL.5432 » a échoué : No such file or directory</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> 	Le serveur est-il actif localement et accepte-t-il les connexions sur ce socket ?</span>
+<span class="r-in"><span><span class="va">opacity</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>clickable <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
+<span class="r-in"><span>               not_clickable <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">data_get_bassins</span><span class="op">(</span>opacity <span class="op">=</span> <span class="va">opacity</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'con' introuvable</span>
+<span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'dbDisconnect' : objet 'con' introuvable</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
