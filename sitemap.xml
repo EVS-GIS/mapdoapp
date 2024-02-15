@@ -25,9 +25,6 @@
     <loc>https://evs-gis.github.io/mapdoapp/reference/bassin_hydrographique.html</loc>
   </url>
   <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/button_label_with_popover.html</loc>
-  </url>
-  <url>
     <loc>https://evs-gis.github.io/mapdoapp/reference/cr_profile_empty.html</loc>
   </url>
   <url>
@@ -166,9 +163,6 @@
     <loc>https://evs-gis.github.io/mapdoapp/reference/params_unit_area.html</loc>
   </url>
   <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/params_url_remonterletemps.html</loc>
-  </url>
-  <url>
     <loc>https://evs-gis.github.io/mapdoapp/reference/params_wms.html</loc>
   </url>
   <url>
@@ -190,12 +184,24 @@
     <loc>https://evs-gis.github.io/mapdoapp/reference/sld_get_style.html</loc>
   </url>
   <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utile_get_metric_name_value.html</loc>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/track_inputs.html</loc>
   </url>
   <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utile_get_metric_type.html</loc>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/track_session.html</loc>
   </url>
   <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utile_normalize_string.html</loc>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_button_label_with_popover.html</loc>
+  </url>
+  <url>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_get_metric_name_value.html</loc>
+  </url>
+  <url>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_get_metric_type.html</loc>
+  </url>
+  <url>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_normalize_string.html</loc>
+  </url>
+  <url>
+    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_url_remonterletemps.html</loc>
   </url>
 </urlset>
