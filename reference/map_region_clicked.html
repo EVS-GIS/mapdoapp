@@ -51,7 +51,7 @@
 <span>  <span class="va">selected_region_feature</span>,</span>
 <span>  <span class="va">regions_data</span>,</span>
 <span>  <span class="va">roe_region</span>,</span>
-<span>  <span class="va">hydro_station_region</span></span>
+<span>  <span class="va">hydro_sites_region</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -77,8 +77,8 @@
 <dd><p>sf data.frame ROE in selected region.</p></dd>
 
 
-<dt>hydro_station_region</dt>
-<dd><p>sf data.frame Hubeau hydrometric stations in selected region.</p></dd>
+<dt>hydro_sites_region</dt>
+<dd><p>sf data.frame hydrometric sites in selected region.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -129,8 +129,8 @@
 <span class="r-in"><span><span class="co"># get ROE in region</span></span></span>
 <span class="r-in"><span><span class="va">roe_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_get_roe_in_region.html">data_get_roe_in_region</a></span><span class="op">(</span><span class="va">centre_region_coord</span><span class="op">$</span><span class="va">id</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'sqlInterpolate' : objet 'con' introuvable</span>
-<span class="r-in"><span><span class="co"># get hydro stations in region</span></span></span>
-<span class="r-in"><span><span class="va">hydro_station_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_get_station_hubeau.html">data_get_station_hubeau</a></span><span class="op">(</span><span class="va">centre_region_coord</span><span class="op">$</span><span class="va">id</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get hydro sites in region</span></span></span>
+<span class="r-in"><span><span class="va">hydro_sites_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_get_hydro_sites.html">data_get_hydro_sites</a></span><span class="op">(</span><span class="va">centre_region_coord</span><span class="op">$</span><span class="va">id</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'sqlInterpolate' : objet 'con' introuvable</span>
 <span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'dbDisconnect' : objet 'con' introuvable</span>
@@ -141,8 +141,8 @@
 <span class="r-in"><span>                          selected_region_feature <span class="op">=</span> <span class="va">selected_region</span>,</span></span>
 <span class="r-in"><span>                          regions_data <span class="op">=</span> <span class="va">region_hydrographique</span>,</span></span>
 <span class="r-in"><span>                          roe_region <span class="op">=</span> <span class="va">roe_region</span>,</span></span>
-<span class="r-in"><span>                          hydro_station_region <span class="op">=</span> <span class="va">hydro_station_region</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'hydro_station_region' introuvable</span>
+<span class="r-in"><span>                          hydro_sites_region <span class="op">=</span> <span class="va">hydro_sites_region</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'hydro_sites_region' introuvable</span>
 <span class="r-in"><span><span class="va">map</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'map' introuvable</span>
 <span class="r-in"><span></span></span>

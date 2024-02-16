@@ -125,8 +125,8 @@
 <span class="r-in"><span><span class="co"># get ROE in region</span></span></span>
 <span class="r-in"><span><span class="va">roe_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_get_roe_in_region.html">data_get_roe_in_region</a></span><span class="op">(</span><span class="va">centre_region_coord</span><span class="op">$</span><span class="va">id</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'sqlInterpolate' : objet 'con' introuvable</span>
-<span class="r-in"><span><span class="co"># get hydro stations in region</span></span></span>
-<span class="r-in"><span><span class="va">hydro_station_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_get_station_hubeau.html">data_get_station_hubeau</a></span><span class="op">(</span><span class="va">centre_region_coord</span><span class="op">$</span><span class="va">id</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get hydro sites in region</span></span></span>
+<span class="r-in"><span><span class="va">hydro_sites_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_get_hydro_sites.html">data_get_hydro_sites</a></span><span class="op">(</span><span class="va">centre_region_coord</span><span class="op">$</span><span class="va">id</span>, con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> erreur d'ï¿½valuation de l'argument 'conn' lors de la sï¿½lection d'une mï¿½thode pour la fonction 'sqlInterpolate' : objet 'con' introuvable</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -136,8 +136,8 @@
 <span class="r-in"><span>                          selected_region_feature <span class="op">=</span> <span class="va">selected_region</span>,</span></span>
 <span class="r-in"><span>                          regions_data <span class="op">=</span> <span class="va">region_hydrographique</span>,</span></span>
 <span class="r-in"><span>                          roe_region <span class="op">=</span> <span class="va">roe_region</span>,</span></span>
-<span class="r-in"><span>                          hydro_station_region <span class="op">=</span> <span class="va">hydro_station_region</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'hydro_station_region' introuvable</span>
+<span class="r-in"><span>                          hydro_sites_region <span class="op">=</span> <span class="va">hydro_sites_region</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'hydro_sites_region' introuvable</span>
 <span class="r-in"><span><span class="va">map</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> objet 'map' introuvable</span>
 <span class="r-in"><span></span></span>
@@ -179,7 +179,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         map_wms_metric(wms_params = wms_params, cql_filter = cql_filter, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             sld_body = sld_body) %&gt;% map_axis(data_axis = data_axis)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x556a0d438b58&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55c9abb61b10&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:mapdoapp&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
