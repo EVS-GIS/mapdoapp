@@ -140,3 +140,20 @@ utils_url_remonterletemps <- function(lng=6.869433,
   url <- glue::glue("https://remonterletemps.ign.fr/comparer/basic?x={lng}&y={lat}&z={zoom}&layer1=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&layer2=ORTHOIMAGERY.ORTHOPHOTOS&mode=vSlider")
   return(url)
 }
+
+#' Get a named vector of all the metric from the metric type from the params metric list.
+#'
+#' This function extracts metric names and value with metric type stored in params metric list.
+#'
+#' @param metric_type A character with metric type.
+#'
+#' @return A named character vector with all the metric names and values.
+#'
+#' @examples
+#' metrics <- utils_get_metric_name_value_analysis("largeur")
+#'
+#' @export
+utils_get_metric_name_value_analysis <- function(metric_type){
+  metric_name <- sapply(params_metrics_choice_analysis()[[metric_type]]$metric_type_value, function(x) x$metric_title)
+  return(metric_name)
+}

@@ -12,6 +12,7 @@ Depends:
 Imports: 
     bsicons,
     bslib,
+    colourpicker,
     config (>= 0.3.1),
     DBI,
     dplyr,
@@ -22,14 +23,21 @@ Imports:
     httr,
     jsonlite,
     leaflet,
+    leaflet.extras,
     magrittr,
     plotly,
+    RColorBrewer,
+    reactable,
+    rlang,
     RPostgres,
     sf,
     shiny (>= 1.7.4.1),
     shinycssloaders,
     shinyjs,
+    sparkline,
     stats,
+    tibble,
+    tidyr,
     utils
 Suggests: 
     spelling,
@@ -38,4 +46,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

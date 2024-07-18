@@ -18,7 +18,7 @@ lg_profile_empty <- function() {
   plot <- plot_ly(data = temp, source = "plot_pg") %>%
     layout(
       title = list(
-        text = "Sélectionnez un cours d'eau sur la carte et une métrique pour afficher le graphique",
+        text = "Sélectionnez un cours d'eau sur la carte pour afficher le graphique",
         y = 0.80,  # y title position
         x = 0.3,   # x title position
         font = list(size = 15)
@@ -49,7 +49,7 @@ lg_profile_empty <- function() {
 #' vertical_line_annotation <- lg_vertical_line(x = 10, color = "red")
 #'
 #' @export
-lg_vertical_line <- function(x = 0, color = "green") {
+lg_vertical_line <- function(x = 0, color = "purple") {
   list(
     type = "line",
     y0 = 0,
@@ -144,6 +144,7 @@ lg_add_trace <- function(data, y, y_label, yaxis = 'y1'){
     key = data$fid,  # the "id" column for hover text
     type = 'scatter',
     mode = 'lines',
+    line = list(color = "#7209b7"),
     name = y_label,
     yaxis = yaxis
   )
@@ -178,16 +179,17 @@ lg_profile_main <- function(data, y, y_label, y_label_category) {
 
   plot <- plot_ly(x = data$measure, y = y, yaxis = 'y1',
                   key = data$fid,  # the "id" column for hover text
-                  type = 'scatter', mode = 'lines', name = y_label) %>%
+                  type = 'scatter', mode = 'lines', name = y_label,
+                  source = 'L', line = list(color = "#22223b")) %>%
     layout(
       xaxis = lg_xaxis_layout(data),
       yaxis = lg_yaxis_layout(y_label_category, y_label),
       # river name
       annotations = lg_annotations_layout(data),
-      showlegend=TRUE,
+      showlegend = TRUE,
       legend = list(orientation = 'h'),
       hovermode = "x unified",
-      shapes = list(lg_vertical_line(2.5)),
+      # shapes = list(shapes = NULL),
       margin = list(t = 20, b = 10, l = 50, r = 80)  # create space for the second y-axis title
     )
   return(plot)
@@ -294,3 +296,47 @@ lg_profile_second <- function(data, y, y_label, y_label_category){
 }
 
 
+
+#' Create background-layout of  classes for longitudinal profile
+#'
+#' @param classified_axis
+#'
+#' @return list ready to be used for plotly::layout()-function
+create_classes_background <- function(classified_axis) {
+
+  # Create empty list to store shapes in
+  shapes <- list()
+
+  for (i in 1:(nrow(classified_axis) - 1)) {
+
+    # set x-axis limits
+    start <- classified_axis$measure[i]
+    if (!is.na(classified_axis$measure[i + 1])) {
+      end <- classified_axis$measure[i + 1]
+    } else {
+      end <- start + 200
+    }
+
+    # set color
+    color <- classified_axis$color[i]
+
+    # create unique shape for each step
+    shapes <- append(shapes, list(
+      list(
+        type = "rect",
+        fillcolor = color,
+        line = list(color = color, width = 0),
+        opacity = 0.4,
+        x0 = start,
+        x1 = end,
+        xref = "x",
+        y0 = 0,
+        y1 = 1,
+        yref = "paper",
+        layer = "below"
+      )
+    ))
+  }
+
+  return(shapes)
+}

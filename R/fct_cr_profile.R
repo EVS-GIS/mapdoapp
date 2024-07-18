@@ -46,7 +46,8 @@ cr_profile_main <- function(data, axis_toponyme){
                      yaxis = 'y1', key = data$id, # the "id" column for hover text
                      mode = 'lines+markers', fill = 'tozeroy', fillcolor = '#B0B0B0',
                      line = list(color = '#2C2C2C'), marker = list(opacity=0),
-                     name = "elevation") %>%
+                     name = "elevation",
+                     source = "T") %>%
     layout(yaxis = list(title = "Elévation (m)",
                         range = c(min(data$profile, na.rm = TRUE), max(data$profile, na.rm = TRUE))),
            xaxis = list(title = "Distance au talweg (m)"),

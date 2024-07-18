@@ -13,7 +13,8 @@
 #' map
 #'
 #' @importFrom leaflet leaflet setView addPolygons addScaleBar addLayersControl addControl
-#' @importFrom leaflet layersControlOptions addProviderTiles scaleBarOptions providers
+#' @importFrom leaflet layersControlOptions addProviderTiles scaleBarOptions providers leafletOptions
+#' @importFrom leaflet.extras addSearchOSM searchOptions addFullscreenControl
 #' @importFrom htmltools htmlEscape
 #' @importFrom shiny tags
 #'
@@ -42,6 +43,8 @@ map_init_bassins <- function(bassins_data, id_logo_ign_remonterletemps) {
     addScaleBar(position = "bottomleft",
                 scaleBarOptions(metric = TRUE, imperial = FALSE)) %>%
     addProviderTiles(providers$CartoDB.Positron) %>%
+    addSearchOSM(options = leaflet.extras::searchOptions(hideMarkerOnCollapse = TRUE)) %>%
+    addFullscreenControl(pseudoFullscreen = TRUE) %>%
     map_add_basemaps() %>%
     addLayersControl(
       baseGroups = c("CartoDB Positron", unlist(sapply(params_wms(), function(x) if (x$basemap) x$name else NULL), use.names = FALSE)),
@@ -212,6 +215,9 @@ map_region_clicked <- function(map,
     clearGroup(c(params_map_group()[["region"]],
                  params_map_group()[["roe"]],
                  params_map_group()[["hydro_sites"]],
+                 params_map_group()[["dgo_axis"]],
+                 params_map_group()[["dgo"]],
+                 params_map_group()[["axis_start_end"]],
                  unlist(sapply(params_wms(), function(x) if (x$overlayer) x$name else NULL), use.names = FALSE))) %>%
     # restyle the regions
     addPolygons(data = regions_data,
@@ -299,6 +305,45 @@ map_wms_metric <-function(map, wms_params = params_wms()$metric,
         zIndex = 90
       ),
       group = params_map_group()[["metric"]]
+    )
+}
+
+#' Map WMS class
+#'
+#' This function adds WMS tiles with fluvial style to an existing Leaflet map, allowing for customization of style and filtering.
+#'
+#' @param map An existing Leaflet map to which WMS tiles will be added.
+#' @param wms_params A list of WMS parameters.
+#' @param cql_filter A CQL filter to apply to the WMS request.
+#' @param sld_body A custom SLD (Styled Layer Descriptor) body for symbology customization.
+#'
+#' @return An updated Leaflet map with WMS tiles containing metric data added.
+#'
+#' @importFrom leaflet addWMSTiles WMSTileOptions
+#'
+#' @examples
+#' \dontrun{
+#'   # Used in map_metric() function, see full example in map_metric() documentation
+#' }
+#'
+#' @export
+map_wms_class <- function(map, wms_params = params_wms()$class,
+                          cql_filter = "", sld_body = "") {
+  map %>%
+    addWMSTiles(
+      baseUrl = wms_params$url,
+      layers = wms_params$layer,
+      attribution = wms_params$attribution,
+      options = WMSTileOptions(
+        format = wms_params$format,
+        request = "GetMap",
+        transparent = TRUE,
+        styles = wms_params$style,
+        cql_filter = cql_filter,
+        sld_body = sld_body,
+        zIndex = 90
+      ),
+      group = params_map_group()[["class"]]
     )
 }
 
@@ -438,8 +483,41 @@ map_metric <- function(map, wms_params = params_wms()$metric,
   map %>%
     clearGroup(params_map_group()[["axis"]]) %>%
     clearGroup(params_map_group()[["metric"]]) %>%
+    clearGroup(params_map_group()[["class"]]) %>%
     # add metric with custom symbology
     map_wms_metric(wms_params = wms_params,
+                   cql_filter = cql_filter, sld_body = sld_body) %>%
+    # add transparent axis
+    map_axis(data_axis = data_axis)
+}
+
+#' Add a metric layer with custom symbology to a map.
+#'
+#' This function adds a metric layer with custom symbology to a leaflet map. It allows you to specify custom parameters for the Web Map Service (WMS) request, apply a CQL (Common Query Language) filter, and provide a custom SLD (Styled Layer Descriptor) body for styling the layer. Additionally, you can specify the data axis to display on the map.
+#'
+#' @param map A leaflet map object to which the metric layer will be added.
+#' @param wms_params A list containing WMS parameters for the metric layer. If not provided, default parameters are retrieved using the \code{\link{params_wms}} function.
+#' @param cql_filter A character string representing a CQL filter to apply to the metric layer.
+#' @param sld_body A character string representing the SLD (Styled Layer Descriptor) body for custom styling of the metric layer.
+#' @param data_axis A data axis to display on the map.
+#'
+#' @return A leaflet map object with the metric layer added.
+#'
+#' @importFrom leaflet leaflet
+#' @importFrom leaflet addTiles
+#' @importFrom leaflet setView
+#' @importFrom leaflet clearGroup
+#' @importFrom leaflet addWMSTiles
+#'
+#' @export
+map_class <- function(map, wms_params = params_wms()$class,
+                       cql_filter = "", sld_body = "", data_axis) {
+  map %>%
+    clearGroup(params_map_group()[["axis"]]) %>%
+    clearGroup(params_map_group()[["metric"]]) %>%
+    clearGroup(params_map_group()[["class"]]) %>%
+    # add metric with custom symbology
+    map_wms_class(wms_params = wms_params,
                    cql_filter = cql_filter, sld_body = sld_body) %>%
     # add transparent axis
     map_axis(data_axis = data_axis)
@@ -482,19 +560,14 @@ map_metric <- function(map, wms_params = params_wms()$metric,
 map_dgo_axis <- function(map, selected_axis, region_axis, main_metric, second_metric) {
 
   # create HTML conditional tooltip labels
-  tooltip_label <- NULL
-  if (!is.null(main_metric) && is.null(second_metric)){
-    tooltip_label <- lapply(paste0('<span style="color:blue;"> <b>', selected_axis[[main_metric]], '</b> </span>'),
+  tooltip_label <- lapply(paste0('<span style="color:#212529;"> <b>', selected_axis$toponyme, '</b> </span> <br/>',
+                                   '<span style="color:#495057;"> <b>', round(selected_axis$measure, 2), ' km depuis l\'exutoire', '</b> </span>'),
                             htmltools::HTML)
-  } else if (!is.null(main_metric) && !is.null(second_metric)){
-    tooltip_label <- lapply(paste0('<span style="color:blue;"> <b>', selected_axis[[main_metric]], '</b> </span> <br/>',
-                                   '<span style="color:#FC9D5A;"> <b>', selected_axis[[second_metric]], '</b> </span>'),
-                            htmltools::HTML)
-  }
 
   map %>%
     clearGroup(params_map_group()$dgo_axis) %>%
     clearGroup(params_map_group()$axis) %>%
+    clearGroup(params_map_group()$dgo) %>%
     map_axis(data_axis = region_axis) %>%
     addPolylines(
       data = selected_axis,
@@ -528,7 +601,7 @@ map_dgo_cross_section <- function(map, selected_dgo){
       data = selected_dgo,
       layerId = ~fid,
       weight = 8,
-      color = "yellow",
+      color = "purple",
       opacity = 1,
       group = params_map_group()$dgo,
       options = pathOptions(zIndex = 90)
@@ -618,25 +691,41 @@ map_axis_start_end <- function(map, axis_start_end, region_axis) {
 #'   # Used in map_init_bassins() function, its use is in the function
 #' }
 #'
-#' @importFrom leaflet addWMSTiles
+#' @importFrom leaflet addWMSTiles addTiles tileOptions
 #'
 #' @export
 map_add_basemaps <- function(map) {
   for (i in params_wms()) {
     if (i$basemap == TRUE){
-      map <- map %>%
-        addWMSTiles(
-          baseUrl = i$url,
-          layers = i$layer,
-          attribution = i$attribution,
-          options = WMSTileOptions(
-            format = i$format,
-            transparent = TRUE,
-            opacity = 0.7,
-            styles = i$style,
-          ),
-          group = i$name
-        )
+      if ((i$name == "Occupation du sol") || (i$name == "Géologie")){
+        map <- map %>%
+          addWMSTiles(
+            baseUrl = i$url,
+            layers = i$layer,
+            attribution = i$attribution,
+            options = WMSTileOptions(
+              format = i$format,
+              transparent = TRUE,
+              opacity = 0.7,
+              styles = i$style,
+            ),
+            group = i$name
+          )
+      } else {
+        map <- map %>%
+          addTiles(
+            urlTemplate = i$url,
+            options = tileOptions(
+              attribution = i$attribution,
+              transparent = TRUE,
+              opacity = 0.7,
+              format = i$format,
+              style = i$style
+            ),
+            group = i$name
+          )
+      }
+
     }
   }
   return(map)
@@ -665,6 +754,7 @@ map_add_wms_overlayers <- function(map) {
       map <- map %>%
         addWMSTiles(
           baseUrl = i$url,
+          layerId = i$name,
           layers = i$layer,
           attribution = i$attribution,
           options = WMSTileOptions(
@@ -672,7 +762,7 @@ map_add_wms_overlayers <- function(map) {
             transparent = TRUE
           ),
           group = i$name
-        )%>%
+        ) %>%
         hideGroup(i$name)
     }
   }
@@ -724,10 +814,7 @@ map_legend_metric <- function(sld_body){
   # Build the legend URL
   legend_url <- modify_url(params_wms()$metric$url, query = query_params)
 
-  # create an html img tag to display the legend
-  legend <- tags$img(src = legend_url, responsive = "width: 100%; height: auto;", class="responsive")
-
-  return(legend)
+  return(legend_url)
 }
 
 
@@ -779,16 +866,7 @@ map_legend_wms_overlayer <- function(wms_params){
   # Build the legend URL
   legend_url <- modify_url(wms_params$url, query = query_params)
 
-  # Create a div with centered alignment
-  div(
-    style = "display: flex; align-items: center;",
-    img(
-      src = legend_url,
-      responsive = "width: 100%; height: auto;",
-      class="responsive",
-      ""
-    ) # img
-  ) # div
+  return(legend_url)
 }
 
 

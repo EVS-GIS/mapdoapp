@@ -35,7 +35,7 @@ shiny::reactlogShow()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "explore", with_test = TRUE) # Name of the module
+golem::add_module(name = "classes_distribution", with_test = TRUE) # Name of the module
 golem::add_module(name = "documentation", with_test = TRUE) # Name of the module
 
 ## Add dependencies
@@ -48,7 +48,7 @@ usethis::edit_r_environ()
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
-golem::add_fct("helpers", with_test = TRUE)
+golem::add_fct("table_fluvialstyles", with_test = TRUE)
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources

@@ -30,15 +30,16 @@ mod_explore_ui <- function(id){
       ),
       fluidRow(
         column(
+          width = 6,
+          withSpinner(leafletOutput(ns("exploremap"), height = 700))
+        ), # column
+        column(
           width = 3,
           uiOutput(ns("metricUI")),
           uiOutput(ns("areaUI")),
           uiOutput(ns("radioButtonsUI")) # uiOutput radios buttons metrics
         ), # column
-        column(
-          width = 7,
-          withSpinner(leafletOutput(ns("exploremap")))
-        ), # column
+
         column(
           width = 2,
           uiOutput(ns("strahlerfilterUI")),

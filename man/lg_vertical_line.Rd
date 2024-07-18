@@ -4,7 +4,7 @@
 \alias{lg_vertical_line}
 \title{Create a vertical dashed line annotation for longitudinal profile plots}
 \usage{
-lg_vertical_line(x = 0, color = "green")
+lg_vertical_line(x = 0, color = "purple")
 }
 \arguments{
 \item{x}{The x-coordinate where the vertical line should be positioned.}
