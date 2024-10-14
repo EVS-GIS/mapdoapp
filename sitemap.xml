@@ -1,204 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/404.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/index.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/bassin_hydrographique.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/cr_profile_empty.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/cr_profile_main.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_axis.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_axis_start_end.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_bassins.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_dgo_in_region.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_elevation_profiles.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_hydro_sites.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_min_max_metric.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_min_max_strahler.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_network_axis.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_region.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_regions_in_bassin.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/data_get_roe_in_region.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/db_con.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_add_trace.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_annotations_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_empty.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_main.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_second.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_update_main.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_roe_vertical_line.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_vertical_line.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_xaxis_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/lg_yaxis_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_add_basemaps.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_add_regions_in_bassin.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_add_wms_overlayers.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_axis.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_axis_start_end.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_dgo_axis.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_dgo_cross_section.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_init_bassins.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_legend_metric.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_legend_vector_overlayer.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_legend_wms_overlayer.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_metric.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_region_clicked.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/map_wms_metric.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/mod_explore.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/network_axis.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/network_dgo.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/params_map_group.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/params_metrics_choice.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/params_unit_area.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/params_wms.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/region_hydrographique.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/run_app.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/sld_get_quantile_colors.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/sld_get_quantile_metric.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/sld_get_style.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/track_inputs.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/track_session.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_button_label_with_popover.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_get_metric_name_value.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_get_metric_type.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_normalize_string.html</loc>
-  </url>
-  <url>
-    <loc>https://evs-gis.github.io/mapdoapp/reference/utils_url_remonterletemps.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://evs-gis.github.io/mapdoapp/404.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/LICENSE.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/authors.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/index.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/news/index.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/analysis_plot_classes_distr.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/assign_classes_manual.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/assign_classes_proposed.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/cr_profile_empty.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/cr_profile_main.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/create_analysis_biplot.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/create_analysis_table.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/create_classes_background.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/create_df_input.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_axes.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_axis_dgos.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_axis_dgos_from_region.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_axis_start_end.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_basins.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_distr_class.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_distr_class_man.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_elevation_profiles.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_hydro_sites.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_levels_names.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_regions.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_roe_sites.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/data_get_stats_metrics.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/db_con.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/index.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_add_trace.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_annotations_layout.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_empty.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_first.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_profile_second.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_roe_vertical_line.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_vertical_line.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_xaxis_layout.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/lg_yaxis_layout.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_axes.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_axis_dgos.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_axis_start_end.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_basemaps.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_network.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_network_metric.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_add_wms_overlayers.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_dgo_cross_section.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_legend_class.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_legend_metric.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/map_legend_wms_overlayer.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/params_classes.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/params_classes_colors.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/params_get_metric_choices.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/params_map_group.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/params_metrics.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/params_wms.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/pipe.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/prepare_regions_data_for_plot.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/prepare_regions_stats_for_table.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/prepare_selact_data_for_plot.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/prepare_selact_stats_for_table.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/run_app.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/sld_get_style_legend.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/smoothen_classes.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/track_inputs.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/track_session.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/utils_is_vector_identical.html</loc></url>
+<url><loc>https://evs-gis.github.io/mapdoapp/reference/utils_url_remonterletemps.html</loc></url>
 </urlset>
+
