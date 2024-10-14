@@ -23,7 +23,7 @@ remotes::install_github("https://github.com/EVS-GIS/mapdoapp.git")
 
 ## How to cite
 
-MANIERE, L., Dunesme, S., & Vaudor, L. (2024). EVS-GIS/mapdoapp. UMR5600 Environnement, Ville, Société. https://doi.org/10.5281/zenodo.11235929
+Manière, L., Helling, L., Dunesme, S., & Vaudor, L. (2024). EVS-GIS/mapdoapp. UMR5600 Environnement, Ville, Société. https://doi.org/10.5281/zenodo.11235929
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11235928.svg)](https://doi.org/10.5281/zenodo.11235928)
 
