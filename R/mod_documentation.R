@@ -12,20 +12,35 @@ mod_documentation_ui <- function(id){
   tagList(
     golem_add_external_resources(),
     fluidPage(
-      HTML("
-            <p>MAPD&#39;O est un projet visant le d&eacute;veloppement d&#39;une interface web &agrave; l&#39;intention des op&eacute;rateurs autour des donn&eacute;es et mod&egrave;les en hydromorphologie. C&#39;est un projet r&eacute;alis&eacute; par le laboratoire Environnement Ville Soci&eacute;t&eacute; du CNRS et port&eacute; par l&#39;Office Fran&ccedil;ais de la Biodiversit&eacute; depuis janvier 2023.</p>
+      fluidRow(
+        column(
+          width = 9,
+          h1("Le projet"),
+          HTML("<p style='text-align: justify;'>
+          Le projet <b>Mapd'O</b> vise à développer une interface web permettant aux opérateurs et aux scientifiques d'analyser les données et les modèles hydromorphologiques du réseau hydrographique français. Le projet est porté par le laboratoire <i>CNRS UMR 5600 - Environnement Ville Société (EVS)</i> et est soutenu par <i>l'Office Français de la Biodiversité</i> depuis janvier 2023.<br> <br>
 
-            <p>L&#39;application repose sur des approches g&eacute;omatiques d&#39;analyse de la topographie et de l&#39;occupation du sol permettant de produire une carte de continuit&eacute; lat&eacute;rale des cours d&#39;eau du r&eacute;seau hydrographique. Diff&eacute;rentes m&eacute;triques morphologiques sont ensuite extraites &agrave; intervalle r&eacute;gulier du r&eacute;seau (largeur, pente, surface drain&eacute;e, &eacute;l&eacute;vation). L&#39;application a pour ambition de fournir des outils d&#39;analyse et d&#39;interpr&eacute;tation de ces m&eacute;triques afin de faciliter les diagnostics hydromorphologiques des cours d&#39;eau fran&ccedil;ais &agrave; l&#39;&eacute;chelle du bassin versant.</p>
+          L'application est basée sur les résultats de la <a href='https://tramebleue.github.io/fct-cli/' target='_blank' style='text-decoration: underline;'>Fluvial Corridor Toolbox (FCT)</a> appliquée au réseau hydrographique français. Également développée par le laboratoire EVS, la FCT est une boîte à outils de système d'information géographique pour l'hydromporphologie à grande échelle, fournissant des approches géomatiques à l'analyse de la topographie et de l'occupation des sols, et permettant la production de cartes de continuité latérale et d'autres caractéristiques fluviales. Les couches de fond de vallée et de corridor fluvial sont d'abord extraites d'un modèle numérique d'élévation. Diverses mesures morphologiques, telles que l'occupation et l'utilisation des sols, la largeur, la pente, la surface drainée, l'altitude, sont ensuite extraites du réseau à intervalles réguliers en fusionnant les données avec les cartes d'occupation des sols. <br> <br>
 
-            <p>L&#39;application dispose aujourd&#39;hui d&#39;un module d&#39;exploration des donn&eacute;es permettant de visualiser les diff&eacute;rentes m&eacute;triques mises &agrave; disposition pour l&#39;analyse de bassin versant.</p>
-           "),
-      HTML("
-            <p><strong>Contact</strong> : Lise Vaudor (CNRS UMR 5600, Environnement Ville Soci&eacute;t&eacute;) - <a href='mailto:louis.maniere@ens-lyon.fr?subject=Application%20MAPDO'>lise.vaudor@ens-lyon.fr</a></p>
-         "),
+          Avec <b>Mapd'O</b>, ces données peuvent être interprétées et analysées pour faciliter les diagnostics hydromorphologiques des rivières françaises à différentes échelles, telles que l'ensemble du bassin versant des principales rivières françaises, mais aussi leur sous-bassin versant et l'échelle de l'axe individuel de la rivière. </p>
+               ")
+        ),
+        column(
+          width = 3,
+          h2("Contact"),
+          HTML("
+            Lise Vaudor <br>
+            <a href='mailto:lise.vaudor@ens-lyon.fr?subject=Application%20MAPDO'>lise.vaudor@ens-lyon.fr</a> <br>
+            CNRS UMR 5600, Environnement Ville Soci&eacute;t&eacute; <br>
+            <a href='https://umr5600.cnrs.fr/' target='_blank'>https://umr5600.cnrs.fr/</a></p>
+         ")
+        )
+      ),
+
+
       tags$a(
         href = "https://evs-gis.github.io/mapdowebsite/",
         icon("book"),
-        "Toute la documentation est ici",
+        "Cliquez ici pour ouvrir la documentation et en savoir plus sur le projet et sa méthodologie.",
         target = "_blank"
       )
     )

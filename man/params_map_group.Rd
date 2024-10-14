@@ -4,7 +4,7 @@
 \alias{params_map_group}
 \title{Get Parameters for Map Layer Groups}
 \usage{
-params_map_group()
+params_map_group(wms_params)
 }
 \value{
 A list of parameters including names for groups such as "BASSIN," "REGION," "SELECT_REGION," "METRIC," "AXIS," "LEGEND," and "ROE".

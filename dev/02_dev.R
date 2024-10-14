@@ -24,18 +24,20 @@ golem::run_dev()
 # load packages app
 pkgload::load_all()
 # run application
-run_app()
+# options(shiny.reactlog=TRUE)
+
+run_app(options = options(shiny.reactlog = TRUE))
 
 # check function examples
 attachment::att_amend_desc()
-devtools::run_examples(run=FALSE, fresh = T)
+devtools::run_examples(run = FALSE, fresh = T)
 
 # show react log (run after run_app())
 shiny::reactlogShow()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "explore", with_test = TRUE) # Name of the module
+golem::add_module(name = "download", with_test = FALSE) # Name of the module
 golem::add_module(name = "documentation", with_test = TRUE) # Name of the module
 
 ## Add dependencies
@@ -48,7 +50,7 @@ usethis::edit_r_environ()
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
-golem::add_fct("helpers", with_test = TRUE)
+golem::add_fct("analysis_plots", with_test = FALSE)
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources

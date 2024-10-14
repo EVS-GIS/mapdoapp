@@ -4,33 +4,16 @@
 \alias{map_legend_metric}
 \title{Generate and display a legend for a map layer using a provided SLD (Styled Layer Descriptor) body.}
 \usage{
-map_legend_metric(sld_body)
+map_legend_metric(sld_body, wms_params)
 }
 \arguments{
 \item{sld_body}{A character string containing the SLD (Styled Layer Descriptor) body that defines the map layer's styling.}
+
+\item{wms_params}{list containing the specific network-WMS parameters.}
 }
 \value{
 An HTML img tag representing the legend for the specified map layer.
 }
 \description{
 This function constructs a legend for a map layer by sending a GetLegendGraphic request to a WMS (Web Map Service) server.
-}
-\examples{
-con <- db_con()
-# Define an SLD body for a map layer
-sld_body <- sld_get_style(breaks = sld_get_quantile_metric(
-                                     selected_region_id = 11,
-                                     selected_metric = "active_channel_width",
-                                     con = con),
-                          colors = sld_get_quantile_colors(
-                                     quantile_breaks = sld_get_quantile_metric(
-                                                         selected_region_id = 11,
-                                                         selected_metric = "active_channel_width",
-                                                         con = con)),
-                          metric = "active_channel_width")
-DBI::dbDisconnect(con)
-
-# Generate and display the legend for the map layer
-legend <- map_legend_metric(sld_body)
-
 }

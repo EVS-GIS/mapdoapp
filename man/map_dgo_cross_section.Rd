@@ -4,7 +4,7 @@
 \alias{map_dgo_cross_section}
 \title{Highlight DGO clicked for cross section.}
 \usage{
-map_dgo_cross_section(map, selected_dgo)
+map_dgo_cross_section(map, selected_dgo, group)
 }
 \arguments{
 \item{map}{A Leaflet map object.}

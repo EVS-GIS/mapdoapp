@@ -4,10 +4,12 @@
 \alias{map_add_basemaps}
 \title{Add Basemap Layers to an Existing Leaflet Map}
 \usage{
-map_add_basemaps(map)
+map_add_basemaps(map, params_wms)
 }
 \arguments{
 \item{map}{An existing Leaflet map to which basemap layers will be added.}
+
+\item{params_wms}{parameters defining properties of wms maps to be added}
 }
 \value{
 An updated Leaflet map with basemap layers added.

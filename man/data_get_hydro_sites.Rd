@@ -4,22 +4,20 @@
 \alias{data_get_hydro_sites}
 \title{Get hydrometric sites.}
 \usage{
-data_get_hydro_sites(selected_region_id, con)
+data_get_hydro_sites(con)
 }
 \arguments{
-\item{selected_region_id}{The ID of the selected region.}
-
-\item{con}{PqConnection to Postgresql database.}
+\item{con}{Connection to Postgresql database.}
 }
 \value{
-sf data frame containing information about the hydrometric sites within the specified region.
+sf data frame containing the datapoints of the hydrometric sites available on the server
 }
 \description{
-This function retrieves data about the hydrometric sites from Hubeau.
+This function retrieves the locations of the hydrometric sites from Hubeau.
 }
 \examples{
 con <- db_con()
-hydro_sites <- data_get_hydro_sites(selected_region_id = 11, con = con)
+hydro_sites <- data_get_hydro_sites(con = con)
 DBI::dbDisconnect(con)
 
 }

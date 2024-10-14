@@ -4,7 +4,7 @@
 \alias{map_add_wms_overlayers}
 \title{Add Overlayer Layers to an Existing Leaflet Map}
 \usage{
-map_add_wms_overlayers(map)
+map_add_wms_overlayers(map, params_wms)
 }
 \arguments{
 \item{map}{An existing Leaflet map to which overlayer layers will be added.}
