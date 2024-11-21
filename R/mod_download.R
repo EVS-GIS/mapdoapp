@@ -315,7 +315,7 @@ mod_download_server <- function(id, con, r_val, globals){
         # download handling
         output$download_button <- downloadHandler(
           filename = function() {
-            paste0(r_val$dataset_input_name, ".csv")
+            paste0(r_val_local$dataset_input_name, ".csv")
           },
           content = function(file) {
             write.csv(r_val$dataset_input, file, row.names = FALSE)
