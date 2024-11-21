@@ -192,7 +192,7 @@ mod_download_server <- function(id, con, r_val, globals){
     observeEvent(input$prepare_download_button, {
 
       # check if tab open
-      if (r_val$tab_page == "Télechargement" && input$select_scale %in% c("Bassin", "Région", "Axe") && !is.null(r_val$dataset_input)) {
+      if (r_val$tab_page == "Télechargement" && input$select_scale %in% c("Bassin", "Région", "Axe") ) { #&& !is.null(r_val$dataset_input)
 
         ### network ####
         if (input$select_type == "Réseau hydrographique") {
@@ -295,11 +295,11 @@ mod_download_server <- function(id, con, r_val, globals){
     # Download ----
     observe({
 
-      if (!is.null(r_val_local$dataset_input)) {
+      if (!is.null(r_val$dataset_input)) {
 
         # prepare table
         output$table_data <- renderTable(
-          head(r_val_local$dataset_input, n = 10),
+          head(r_val$dataset_input, n = 10),
           striped = TRUE,
           hover = TRUE,
           bordered = TRUE,
@@ -315,10 +315,10 @@ mod_download_server <- function(id, con, r_val, globals){
         # download handling
         output$download_button <- downloadHandler(
           filename = function() {
-            paste0(r_val_local$dataset_input_name, ".csv")
+            paste0(r_val$dataset_input_name, ".csv")
           },
           content = function(file) {
-            write.csv(r_val_local$dataset_input, file, row.names = FALSE)
+            write.csv(r_val$dataset_input, file, row.names = FALSE)
           }
         )
       }
