@@ -32,10 +32,12 @@ mod_download_ui <- function(id) {
           ),
 
           # Input: choose scale
-          uiOutput(ns("select_scaleUI")),
+          uiOutput(
+            ns("select_scaleUI")),
 
           # apply button
-          actionButton(ns("prepare_download_button"), "Préparer et visualiser les données", icon = icon("magnifying-glass-chart"))
+          uiOutput(
+            ns("prepare_download_buttonUI"))
         )
       ),
       column(
@@ -85,7 +87,8 @@ mod_download_server <- function(id, con, r_val, globals){
     # reactive values ----
     r_val_local <- reactiveValues(
       scale = NULL, # scale selectInput
-      dataset_input_name = NULL # dataset input name
+      dataset_input_name = NULL, # dataset input name
+      prepare_download_button = NULL # prepare download button
     )
 
 
@@ -93,6 +96,20 @@ mod_download_server <- function(id, con, r_val, globals){
 
     output$select_scaleUI <- renderUI({
       r_val_local$scale
+    })
+
+    output$prepare_download_buttonUI <- renderUI({
+      r_val_local$prepare_download_button
+    })
+
+    # only create prepare download button if scale is selected
+    observeEvent(r_val_local$scale,{
+
+      if (is.null(r_val_local$scale) | as.character(r_val_local$scale) == "Sélectionnez une entité hydrographique (bassin / région / axe) pour continuer.") {
+        r_val_local$prepare_download_button <- NULL
+      } else {
+        r_val_local$prepare_download_button <- actionButton(ns("prepare_download_button"), "Préparer et visualiser les données", icon = icon("magnifying-glass-chart"))
+      }
     })
 
     # create select-input based on selected hydrographic entity
@@ -175,7 +192,7 @@ mod_download_server <- function(id, con, r_val, globals){
     observeEvent(input$prepare_download_button, {
 
       # check if tab open
-      if (r_val$tab_page == "Télechargement" && input$select_scale %in% c("Bassin", "Région", "Axe")) {
+      if (r_val$tab_page == "Télechargement" && input$select_scale %in% c("Bassin", "Région", "Axe") ) { #&& !is.null(r_val$dataset_input)
 
         ### network ####
         if (input$select_type == "Réseau hydrographique") {
@@ -278,11 +295,11 @@ mod_download_server <- function(id, con, r_val, globals){
     # Download ----
     observe({
 
-      if (!is.null(r_val_local$dataset_input)) {
+      if (!is.null(r_val$dataset_input)) {
 
         # prepare table
         output$table_data <- renderTable(
-          head(r_val_local$dataset_input, n = 10),
+          head(r_val$dataset_input, n = 10),
           striped = TRUE,
           hover = TRUE,
           bordered = TRUE,
@@ -301,7 +318,7 @@ mod_download_server <- function(id, con, r_val, globals){
             paste0(r_val_local$dataset_input_name, ".csv")
           },
           content = function(file) {
-            write.csv(r_val_local$dataset_input, file, row.names = FALSE)
+            write.csv(r_val$dataset_input, file, row.names = FALSE)
           }
         )
       }

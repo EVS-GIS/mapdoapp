@@ -66,7 +66,7 @@ app_server <- function(input, output, session) {
     swath_data_dgo = NULL, # data of selected swath dgo
 
     # download
-    dataset_input = NULL, # dataset input to be download
+    dataset_input = NULL, # dataset input to be downloaded
 
     # first time clicked
     axis_clicked = FALSE, # if axis was clicked
