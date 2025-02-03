@@ -1,7 +1,10 @@
 Package: mapdoapp
 Title: Application MAPDO
-Version: 1.0.0
+Version: 2.0.1
 Authors@R: 
+    person("Samuel", "Dunesme", , "samuel.dunesme@ens-lyon.fr", role = c("cre", "aut"))
+    person("Lise", "Vaudor", , "lise.vaudor@ens-lyon.fr", role = c("cre", "aut"))
+    person("Leo", "Helling", , "jan.helling@ens-lyon.fr", role = c("cre", "aut"))
     person("Louis", "Manière", , "louis.maniere@ens-lyon.fr", role = c("cre", "aut"))
 Description: Application de description des caractéristiques
     morphologiques des réseaux hydrographiques.

@@ -6,3 +6,4 @@
 .quarto
 restart.txt
 docs
+docker-compose.yml
