@@ -32,7 +32,7 @@ app_ui <- function(request){
     ")
     ),
 
-    useWaitress(color = "#366EC0"), # Add a loading screen to the app
+    # useWaitress(color = "#366EC0"), # Add a loading screen to the app
 
     # Define the help button outside of navbarPage, but position it inside with CSS
     div(class = "help-btn",

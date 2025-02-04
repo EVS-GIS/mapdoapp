@@ -38,10 +38,10 @@ mod_analysis_ui <- function(id){
                  column(
                    width = 9,
                    hr(), # horizontal line
-                   uiOutput(ns("selact_tableUI")), # overview table
+                   uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # overview table
                    hr(), # horizontal line
                    fluidRow(style = "margin-top: 20px;"),
-                   plotlyOutput(ns("selact_plotUI")), # distribution plot
+                   plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
                  ),
                  column(
                    width = 3,
@@ -70,10 +70,10 @@ mod_analysis_ui <- function(id){
                  column(
                    width = 9,
                    hr(), # horizontal line
-                   reactableOutput(ns("regions_table"), width = "100%"),
+                   reactableOutput(ns("regions_table"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."),
                    hr(),
                    fluidRow(style = "margin-top: 20px;"),
-                   plotlyOutput(ns("regions_plotUI"), width = "100%")
+                   plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
                  ),
                  column(
                    width = 3,

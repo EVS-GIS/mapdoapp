@@ -35,7 +35,7 @@ mod_explore_ui <- function(id){
       fluidRow(
         column(
           width = 8,
-          leafletOutput(ns("map"), height = 500),
+          leafletOutput(ns("map"), height = 500) %>% shinycssloaders::withSpinner(type = 8, caption = "Chargement des données..."),
           fluidRow(
             column(
               width = 10,
