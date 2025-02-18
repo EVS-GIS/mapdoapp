@@ -3,7 +3,7 @@ services:
     image: gcr.io/evs-gis/mapdoapp:latest
     build: .
     ports:
-      - "3838:3838"
+      - "3838:3840"
     environment:
       - DBMAPDO_HOST=
       - DBMAPDO_PORT=
