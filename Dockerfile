@@ -3,7 +3,6 @@ FROM rocker/r2u:jammy
 LABEL org.opencontainers.image.authors="Samuel Dunesme <samuel.dunesme@ens-lyon.fr>"
 LABEL org.opencontainers.image.source="https://github.com/evs-gis/mapdoapp"
 LABEL org.opencontainers.image.documentation="https://evs-gis.github.io/mapdowebsite/"
-LABEL org.opencontainers.image.version="2.0.1"
 LABEL org.opencontainers.image.description="Application de description des caractéristiques morphologiques des réseaux hydrographiques."
 
 RUN locale-gen fr_FR.UTF-8
