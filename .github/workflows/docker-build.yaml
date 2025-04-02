@@ -32,4 +32,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/evs-gis/mapdoapp:latest
-            ghcr.io/evs-gis/mapdoapp:${{ github.sha }}
+            ghcr.io/evs-gis/mapdoapp:$(git rev-parse --short ${{ github.sha }})
