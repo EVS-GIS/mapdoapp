@@ -2,9 +2,13 @@ name: Build and publish Docker image
 
 on:
   push:
-    branches: [ prod ]
+    branches: [ master ]
   workflow_dispatch:
-    
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -25,11 +29,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+        
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: |
+          tags: | 
             ghcr.io/evs-gis/mapdoapp:latest
-            ghcr.io/evs-gis/mapdoapp:$(git rev-parse --short ${{ github.sha }})
+            ghcr.io/evs-gis/mapdoapp:${{ env.COMMIT_SHORT_SHA }}
