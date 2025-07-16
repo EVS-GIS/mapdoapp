@@ -21,7 +21,8 @@ mod_analysis_ui <- function(id){
     tags$head(
       tags$style(
         HTML("
-          .form-group{margin-bottom: 10px}
+          .form-group{}
+          .nav-pills > li > a {line-height: 5%;}
           ")
       )
     ), # head
@@ -33,19 +34,20 @@ mod_analysis_ui <- function(id){
                # stats together with selected axis
                # below show distribution plots of selection
                fluidRow(
-                 style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
+                 style = "margin-top: 2px; margin-bottom: 2px; margin-left: 2px;",
                  textOutput(ns("selection_textUI")),
                  column(
                    width = 9,
                    hr(), # horizontal line
+                   fluidRow(style = "margin-top: 2px; margin-bottom: -55px;"),
                    uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # overview table
                    hr(), # horizontal line
-                   fluidRow(style = "margin-top: 20px;"),
+                   fluidRow(style = "margin-top: 2px; margin-bottom: 2px;"),
                    plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
                  ),
                  column(
                    width = 3,
-                   div(
+                   div(style = "height: 20%;",
                      id = ns("selact_modifications"),
                      multiInput(
                        inputId = ns("selact_metric_select"),
@@ -66,14 +68,15 @@ mod_analysis_ui <- function(id){
                  ))),
       tabPanel("Comparaison des Régions",
                fluidRow(
-                 style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
+                 style = "margin-top: 2px; margin-bottom: 2px; margin-left: 2px;",
                  column(
                    width = 9,
                    hr(), # horizontal line
+                   fluidRow(style = "margin-top: 5px; margin-bottom: 10px;"),
                    reactableOutput(ns("regions_table"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."),
                    hr(),
-                   fluidRow(style = "margin-top: 20px;"),
-                   plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
+                   fluidRow(style = "margin-top: 12px; margin-bottom: 2px;"),
+                   #plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
                  ),
                  column(
                    width = 3,
@@ -96,7 +99,7 @@ mod_analysis_ui <- function(id){
                      actionButton(inputId = ns("regions_apply_button"), "Actualiser")
                    )
                  )
-               )
+               ),
       ),
       tabPanel("Analyse Bimétrique",
                mod_analysis_bimetric_ui("analysis_bimetric_1")
