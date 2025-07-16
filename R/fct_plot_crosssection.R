@@ -68,6 +68,11 @@ cr_profile_main <- function(data, axis_toponyme){
                font = list(size = 14, weight = "bold")
              ),
              list(
+               text = paste("depuis l'exutoire ", sep = ""), x = 0.5, y = 1.1,
+               xref = "paper", yref = "paper", showarrow = FALSE,
+               font = list(size = 14, weight = "bold")
+             ),
+             list(
                text = axis_toponyme, x = 1, y = -0.18,
                xref = "paper", yref = "paper", showarrow = FALSE,
                font = list(size = 14, weight = "bold")
