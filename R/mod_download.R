@@ -63,7 +63,7 @@ mod_download_ui <- function(id) {
         ),
 
         # table
-        div(style = 'overflow-x: auto; width: 100%;',  # Horizontal scroll and full-width div
+        div(style = 'overflow-x: auto; width: 100%; height: 75vh',  # Horizontal scroll and full-width div
             tableOutput(ns("table_data"))
         ),
       )
