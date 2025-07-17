@@ -13,7 +13,7 @@
 mod_help_guide_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    actionButton(ns("help_btn"), " Aide",
+    actionButton(ns("help_btn"), " Aide", class = "btn-primary",
                  icon = icon("circle-question")),
     use_cicerone() # Load the cicerone dependencies
   )
