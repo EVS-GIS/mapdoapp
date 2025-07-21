@@ -14,7 +14,8 @@ mod_download_ui <- function(id) {
     tags$head(
       tags$style(
         HTML("
-          .form-group{margin-bottom: 10px}
+          .form-group{margin-bottom: 5px}
+          .nav-pills > li > a {line-height: 5%;}
           ")
       )
     ), # head
