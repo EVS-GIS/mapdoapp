@@ -102,7 +102,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
           span(
             style = "display: flex; margin-left: 10px; margin-top: 20px",
             popover(
-              trigger = bsicons::bs_icon("info-circle"),
+              trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
               "",
               placement = "right",
               id = ns("popover_metric")
@@ -122,7 +122,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
           span(
             style = "margin-left: 10px; margin-top: 20px",
             popover(
-              trigger = bsicons::bs_icon("info-circle"),
+              trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
               "",
               placement = "right",
               id = ns("popover_metric2")
