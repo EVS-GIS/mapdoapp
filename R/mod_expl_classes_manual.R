@@ -77,7 +77,7 @@ mod_expl_classes_manual_server <- function(id, con, r_val, globals){
           span(
             style = "display: flex; margin-left: 10px; margin-top: -10px",
             popover(
-              trigger = bsicons::bs_icon("info-circle"),
+              trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
               "",
               placement = "right",
               id = ns("popover_metric")
