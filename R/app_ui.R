@@ -26,6 +26,13 @@ app_ui <- function(request){
           z-index: 1000; /* Make sure it's above other UI elements */
         }
 
+      /* quand l'icône est focus ou actif (sélectionné) */
+      .bi-info-circle {
+        border: 2px solid white !important;
+        border-radius: 50%;
+        outline: none !important;
+      }
+
       .navbar {
         position: relative;
       }
