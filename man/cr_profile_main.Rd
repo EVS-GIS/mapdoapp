@@ -4,7 +4,7 @@
 \alias{cr_profile_main}
 \title{Create a cross section plot for selected DGO data.}
 \usage{
-cr_profile_main(data, axis_toponyme)
+cr_profile_main(data, selected_dgo, axis_toponyme)
 }
 \arguments{
 \item{data}{data.frame elevation profiles from selected dgo.}
