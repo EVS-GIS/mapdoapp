@@ -57,6 +57,7 @@ prepare_selact_stats_for_table <- function(data,
                        .names = "{.col}_{.fn}")) %>%
       mutate(scale = "Axe",
              strahler = max(axis_data$strahler))  # Add the scale and strahler column
+    #browser()
   }
 
   # default and only France-scale stats
@@ -101,6 +102,7 @@ prepare_selact_stats_for_table <- function(data,
       .default = scale
     )) %>%
     select(-scale)
+  #browser() #Here en 3ème
 }
 
 #' Prepare metrics-statistics dataframe for reactable table for regions
@@ -120,8 +122,9 @@ prepare_regions_stats_for_table <- function(data, region_names = NULL) {
              # if_else(strahler != 0,
              #              paste0(r_names[level_name], ", Ordre ", strahler),
              #              r_names[level_name]))
-
+  #browser()
   return(df)
+  #Passe ici en premier
 }
 
 
@@ -187,17 +190,16 @@ create_analysis_table <- function(df, vars, scale_name = "") {
     )
   }
 
-  # Create the reactable
   table <- reactable(
     data = df,
     columns = columns_list,
-    height = 420,
+    height = "auto",
     defaultPageSize = 9,
     highlight = TRUE,  # highlight rows on hover
     compact = TRUE,
     pagination = FALSE,
     striped = TRUE
   )
-
+  #browser() #Here 2èmes
   return(table)
 }
