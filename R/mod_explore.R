@@ -31,7 +31,7 @@ mod_explore_ui <- function(id){
           .form-group{margin-bottom: 5px}
           .nav-pills > li > a {line-height: 5%;}
           ")
-        )
+        ) # style
       ), # head
       fluidRow(
         column(
