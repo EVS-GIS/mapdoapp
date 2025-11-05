@@ -89,9 +89,13 @@ mod_expl_classes_proposed_server <- function(id, r_val, globals){
       }
 
       # reload of the tooltip_label for the axis dgo
-      if(r_val$classes_proposed_selected!=1){
-        r_val$map_proxy %>%
-          map_add_axis_dgos(globals$axis_data(), Proposed_class = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name, group = globals$map_group_params[["dgo_axis"]])
+      if(r_val$selection_text != ""){
+        if(r_val$classes_proposed_selected!=1){
+          r_val$map_proxy %>%
+            map_add_axis_dgos(globals$axis_data(),
+                              Proposed_class = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name,
+                              group = globals$map_group_params[["dgo_axis"]])
+        }
       }
     })
 
