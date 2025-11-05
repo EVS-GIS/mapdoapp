@@ -22,7 +22,7 @@ mod_expl_classes_manual_ui <- function(id){
       id = ns("manual_classificationUI"),
       fluidRow(
         style = "margin-top: 10px;",
-        uiOutput(ns("metric_selectUI"))
+        uiOutput(ns("metric_selectUI"))%>% shinycssloaders::withSpinner(type = 1, caption = "Construction...")
       ),
       fluidRow(
         style = "margin-bottom: 0px; padding-bottom: 0px;",
