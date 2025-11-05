@@ -33,17 +33,16 @@ mod_analysis_ui <- function(id){
                # show table with France, basin, region (+ same stats but just for the strahler order of selected axis),
                # stats together with selected axis
                # below show distribution plots of selection
-               fluidRow(
-                 style = "margin-top: 2px; margin-bottom: 2px; margin-left: 2px;",
-                 textOutput(ns("selection_textUI")),
+               fluidRow(style = "margin-top: 2px; margin-bottom: 2px",
                  column(
                    width = 9,
                    hr(), # horizontal line
-                   fluidRow(style = "margin-top: 2px; margin-bottom: -55px;"),
-                   uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # overview table
+                   fluidRow(style = "margin-top: 2px; margin-bottom: 0px",
+                   uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")), # overview table
                    hr(), # horizontal line
-                   fluidRow(style = "margin-top: 2px; margin-bottom: 2px;"),
-                   plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
+                   textOutput(ns("selection_textUI")),
+                   fluidRow(style = "margin-top:2px; margin-bottom: 0px;"),
+                            plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
                  ),
                  column(
                    width = 3,
