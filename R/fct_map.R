@@ -525,7 +525,7 @@ map_add_axis_dgos <- function(map, axis_data, Proposed_class, group) {
   # create HTML conditional tooltip labels
   tooltip_label <- lapply(paste0('<span style="color:#212529;"> <b>', axis_data$toponyme, '</b> </span> <br/>',
                                  '<span style="color:#495057;"> <b>', round(axis_data$measure/1000, 2), ' km depuis l\'exutoire', '</b> </span> <br/>',
-                                 '<span style="color:#495057;"> Classe : <b>', axis_data[[Proposed_class]], '</b> </span>'), #axis_data[[Proposed_class]],
+                                 '<span style="color:#495057;"> Classe : <b>', axis_data[[Proposed_class]], '</b> </span>'),
                           htmltools::HTML)
 
   map %>%
