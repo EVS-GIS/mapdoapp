@@ -319,10 +319,10 @@ params_classes <- function() {
       - Très confiné (chenal actif < 10 % du fond de la vallée)",
       # habitat connectivity
       "Indique la présence d'un corridor riverain naturel. Basé sur ratio de la surface du corridor connecté (comprenant le chenal actif, le corridor naturel et les corridors semi-naturels) et le fond de la vallée :
-      - élevée (>= 70 %)
+      - Élevée (>= 70 %)
       - Bonne (>= 40 %)
       - Moyenne (>= 10 % )
-      - Faible / Absente (< 10 %)"
+      - Faible/Absente (< 10 %)"
     ),
     class_name = c(
       "class_strahler",
@@ -527,7 +527,7 @@ params_classes_colors <- function() {
   # HABITAT CONNECTIVITY
   df$class_habitat <- c("#2d6a4f", "#99d98c", "#ffdd00", "#ba181b") %>%
     setNames(
-      c("Élevée", "Bonne", "Moyenne", "Faible / Absente")
+      c("Élevée", "Bonne", "Moyenne", "Faible/Absente")
     )
 
   return(df)

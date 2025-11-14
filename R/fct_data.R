@@ -319,28 +319,28 @@ data_get_distr_class <- function(con, class_name) {
       class_name == "class_urban" ~
         "CASE
           WHEN built_environment_pc IS NULL THEN 'unvalid'
-          WHEN built_environment_pc >= 70 THEN 'fortement urbanisé'
-          WHEN built_environment_pc >= 40 THEN 'urbanisé'
-          WHEN built_environment_pc >= 10 THEN 'modérément urbanisé'
-          WHEN built_environment_pc >= 0 THEN 'Presque pas/pas urbanisé'
+          WHEN built_environment_pc >= 70 THEN 'Fortement urbanisé'
+          WHEN built_environment_pc >= 40 THEN 'Urbanisé'
+          WHEN built_environment_pc >= 10 THEN 'Modérément urbanisé'
+          WHEN built_environment_pc >= 0 THEN 'Presque pas/Pas urbanisé'
           ELSE 'unvalid'
         END AS class_name",
       class_name == "class_agriculture" ~
         "CASE
           WHEN crops_pc IS NULL THEN 'unvalid'
-          WHEN crops_pc >= 70 THEN 'Forte impact agricole'
-          WHEN crops_pc >= 40 THEN 'Impact agricole élevé'
-          WHEN crops_pc >= 10 THEN 'Impact agricole modéré'
-          WHEN crops_pc >= 0 THEN 'Presque pas/pas d''impact agricole'
+          WHEN crops_pc >= 70 THEN 'Très Forte'
+          WHEN crops_pc >= 40 THEN 'Forte'
+          WHEN crops_pc >= 10 THEN 'Modéré'
+          WHEN crops_pc >= 0 THEN 'Basse/Absente'
           ELSE 'unvalid'
         END AS class_name",
       class_name == "class_nature" ~
         "CASE
           WHEN natural_open_pc IS NULL OR forest_pc IS NULL OR grassland_pc IS NULL THEN 'unvalid'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Utilisation naturelle modérée'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/pas naturelle'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Modérée'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/Pas naturelle'
           ELSE 'unvalid'
         END AS class_name",
       class_name == "class_gravel" ~
@@ -354,19 +354,19 @@ data_get_distr_class <- function(con, class_name) {
       class_name == "class_confinement" ~
         "CASE
           WHEN idx_confinement IS NULL THEN 'unvalid'
-          WHEN idx_confinement >= 0.7 THEN 'espace abondant'
-          WHEN idx_confinement >= 0.4 THEN 'modérement espace'
-          WHEN idx_confinement >= 0.1 THEN 'confiné'
-          WHEN idx_confinement >= 0 THEN 'très confiné'
+          WHEN idx_confinement >= 0.7 THEN 'Peu confiné'
+          WHEN idx_confinement >= 0.4 THEN 'Modérement confiné'
+          WHEN idx_confinement >= 0.1 THEN 'Confiné'
+          WHEN idx_confinement >= 0 THEN 'Très confiné'
           ELSE 'unvalid'
         END AS class_name",
       class_name == "class_habitat" ~
         "CASE
           WHEN riparian_corridor_pc IS NULL OR semi_natural_pc IS NULL THEN 'unvalid'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'très bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'moyen connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'faible / absente'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'Élevée'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'Bonne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'Moyenne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
           ELSE 'unvalid'
         END AS class_name",
       .default = NULL
@@ -772,59 +772,59 @@ data_get_axis_dgos <- function(selected_axis_id, con) {
         -- Urban Land Use Classification
         CASE
           WHEN built_environment_pc IS NULL THEN 'unvalid'
-          WHEN built_environment_pc >= 70 THEN 'fortement urbanisé'
-          WHEN built_environment_pc >= 40 THEN 'urbanisé'
-          WHEN built_environment_pc >= 10 THEN 'modérément urbanisé'
-          WHEN built_environment_pc >= 0 THEN 'Presque pas/pas urbanisé'
+          WHEN built_environment_pc >= 70 THEN 'Fortement urbanisé'
+          WHEN built_environment_pc >= 40 THEN 'Urbanisé'
+          WHEN built_environment_pc >= 10 THEN 'Modérément urbanisé'
+          WHEN built_environment_pc >= 0 THEN 'Presque pas/Pas urbanisé'
           ELSE 'unvalid'
         END AS class_urban,
 
         -- Agricultural Land Use Classification
         CASE
           WHEN crops_pc IS NULL THEN 'unvalid'
-          WHEN crops_pc >= 70 THEN 'Forte impact agricole'
-          WHEN crops_pc >= 40 THEN 'Impact agricole élevé'
-          WHEN crops_pc >= 10 THEN 'Impact agricole modéré'
-          WHEN crops_pc >= 0 THEN 'Presque pas/pas d''impact agricole'
+          WHEN crops_pc >= 70 THEN 'Très Forte'
+          WHEN crops_pc >= 40 THEN 'Forte'
+          WHEN crops_pc >= 10 THEN 'Modéré'
+          WHEN crops_pc >= 0 THEN 'Basse/Absente'
           ELSE 'unvalid'
         END AS class_agriculture,
 
         -- Natural Land Use Classification
         CASE
           WHEN natural_open_pc IS NULL OR forest_pc IS NULL OR grassland_pc IS NULL THEN 'unvalid'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Utilisation naturelle modérée'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/pas naturelle'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Modérée'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/Pas naturelle'
           ELSE 'unvalid'
         END AS class_nature,
 
         -- Gravel Bars Classification
         CASE
           WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'abundant'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'moyennement présente'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'absent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
           ELSE 'unvalid'
         END AS class_gravel,
 
         -- Confinement Classification
         CASE
           WHEN idx_confinement IS NULL THEN 'unvalid'
-          WHEN idx_confinement >= 0.7 THEN 'espace abondant'
-          WHEN idx_confinement >= 0.4 THEN 'modérement espace'
-          WHEN idx_confinement >= 0.1 THEN 'confiné'
-          WHEN idx_confinement >= 0 THEN 'très confiné'
+          WHEN idx_confinement >= 0.7 THEN 'Peu confiné'
+          WHEN idx_confinement >= 0.4 THEN 'Modérément confiné'
+          WHEN idx_confinement >= 0.1 THEN 'Confiné'
+          WHEN idx_confinement >= 0 THEN 'Très confiné'
           ELSE 'unvalid'
         END AS class_confinement,
 
         -- Habitat Classification
         CASE
           WHEN riparian_corridor_pc IS NULL OR semi_natural_pc IS NULL THEN 'unvalid'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'très bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'moyen connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'faible / absente'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'Élevée'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'Bonne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'Moyenne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
           ELSE 'unvalid'
         END AS class_habitat
       FROM network_metrics
@@ -916,59 +916,59 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
         -- Urban Land Use Classification
         CASE
           WHEN built_environment_pc IS NULL THEN 'unvalid'
-          WHEN built_environment_pc >= 70 THEN 'fortement urbanisé'
-          WHEN built_environment_pc >= 40 THEN 'urbanisé'
-          WHEN built_environment_pc >= 10 THEN 'modérément urbanisé'
-          WHEN built_environment_pc >= 0 THEN 'Presque pas/pas urbanisé'
+          WHEN built_environment_pc >= 70 THEN 'Fortement urbanisé'
+          WHEN built_environment_pc >= 40 THEN 'Urbanisé'
+          WHEN built_environment_pc >= 10 THEN 'Modérément urbanisé'
+          WHEN built_environment_pc >= 0 THEN 'Presque pas/Pas urbanisé'
           ELSE 'unvalid'
         END AS class_urban,
 
         -- Agricultural Land Use Classification
         CASE
           WHEN crops_pc IS NULL THEN 'unvalid'
-          WHEN crops_pc >= 70 THEN 'Forte impact agricole'
-          WHEN crops_pc >= 40 THEN 'Impact agricole élevé'
-          WHEN crops_pc >= 10 THEN 'Impact agricole modéré'
-          WHEN crops_pc >= 0 THEN 'Presque pas/pas d''impact agricole'
+          WHEN crops_pc >= 70 THEN 'Très Forte'
+          WHEN crops_pc >= 40 THEN 'Forte'
+          WHEN crops_pc >= 10 THEN 'Modéré'
+          WHEN crops_pc >= 0 THEN 'Basse/Absente'
           ELSE 'unvalid'
         END AS class_agriculture,
 
         -- Natural Land Use Classification
         CASE
           WHEN natural_open_pc IS NULL OR forest_pc IS NULL OR grassland_pc IS NULL THEN 'unvalid'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Utilisation naturelle modérée'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/pas naturelle'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Modérée'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/Pas naturelle'
           ELSE 'unvalid'
         END AS class_nature,
 
         -- Gravel Bars Classification
         CASE
           WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'abundant'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'moyennement présente'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'absent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
           ELSE 'unvalid'
         END AS class_gravel,
 
         -- Confinement Classification
         CASE
           WHEN idx_confinement IS NULL THEN 'unvalid'
-          WHEN idx_confinement >= 0.7 THEN 'espace abondant'
-          WHEN idx_confinement >= 0.4 THEN 'modérement espace'
-          WHEN idx_confinement >= 0.1 THEN 'confiné'
-          WHEN idx_confinement >= 0 THEN 'très confiné'
+          WHEN idx_confinement >= 0.7 THEN 'Peu confiné'
+          WHEN idx_confinement >= 0.4 THEN 'Modérément confiné'
+          WHEN idx_confinement >= 0.1 THEN 'Confiné'
+          WHEN idx_confinement >= 0 THEN 'Très confiné'
           ELSE 'unvalid'
         END AS class_confinement,
 
         -- Habitat Classification
         CASE
           WHEN riparian_corridor_pc IS NULL OR semi_natural_pc IS NULL THEN 'unvalid'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'très bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'moyen connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'faible / absente'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'Élevée'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'Bonne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'Moyenne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
           ELSE 'unvalid'
         END AS class_habitat
       FROM network_metrics
