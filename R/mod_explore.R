@@ -116,7 +116,8 @@ mod_explore_server <- function(id, con, r_val, globals, waitress){
                      regions_data = globals$regions,
                      axes_data = globals$axes(),
                      roe_sites = globals$roe_sites(),
-                     hydro_sites = globals$hydro_sites()
+                     hydro_sites = globals$hydro_sites(),
+                     carhyce_stations=globals$carhyce_stations()
       )
     }) %>%
       bindCache(globals$regions_gids_key)

@@ -111,6 +111,7 @@ app_server <- function(input, output, session) {
   globals$roe_sites <- reactive({
     data_get_roe_sites(con)
   }) %>%
+
     bindCache(globals$regions_gids_key)
   waitress$inc(step_progress)  # Increment progress 6
   Sys.sleep(.3)
@@ -123,13 +124,39 @@ app_server <- function(input, output, session) {
   waitress$inc(step_progress)  # Increment progress 7
   Sys.sleep(.3)
 
-
+  # load carhyce stations sf data (cached)
+  globals$carhyce_stations <- reactive({
+    f_make_popup=function(id, nom) {
+      tagList(
+        tags$div(
+          tags$a("IED CarHyCE", href = "https://analytics.huma-num.fr/ied_carhyce/", target = "_blank"),
+          tags$p(nom),
+          tags$br(),
+          tags$span(id),
+          tags$button(bsicons::bs_icon("copy"),
+                      onclick = sprintf("navigator.clipboard.writeText('%s')",id))
+        )) %>%
+        as.character()
+      }
+    data_carhyce_stations=data_get_carhyce_stations(con) %>%
+      mutate(
+        popup = purrr::pmap(
+          list(code_station, name_station),
+          f_make_popup
+        )
+      )
+    print(head(data_carhyce_stations))
+    data_carhyce_stations
+  })
+  waitress$inc(step_progress)  # Increment progress 8
+  Sys.sleep(.3)
+   print(names(globals))
   #### Metric stats caching ####
   globals$metric_stats <- reactive({
     data_get_stats_metrics(con)
   }) %>%
     bindCache(globals$regions_gids_key)
-  waitress$inc(step_progress)  # Increment progress 8
+  waitress$inc(step_progress)  # Increment progress 9
   Sys.sleep(.3)
 
   #### Axis data caching ####

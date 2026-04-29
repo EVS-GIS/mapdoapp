@@ -159,9 +159,9 @@ mod_analysis_bimetric_server <- function(id, con, r_val, globals){
 
     # create plot
     observeEvent(input$create_plot, {
-
+      print("in observeEvent")
       if (!is.null(r_val$axis_data_classified)) {
-
+        print(r_val$axis_data_classified)
         r_val_local$plot <- create_analysis_biplot(df = r_val$axis_data_classified,
                                                    metric_x = input$x_metric,
                                                    metric_y = input$y_metric,

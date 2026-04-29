@@ -114,6 +114,35 @@ data_get_roe_sites <- function(con) {
   return(data)
 }
 
+
+#' Get Stations Carhyce
+#'
+#' This function retrieves the datapoints of the CarHyCe hydrological stations.
+#'
+#' @param con Connection to Postgresql database.
+#'
+#' @return A sf data frame containing the CarHyCe datapoints.
+#'
+#' @examples
+#' con <- db_con()
+#' carhyce_stations <- data_get_carhyce_stations(con = con)
+#' DBI::dbDisconnect(con)
+#'
+#' @importFrom sf st_read
+#' @importFrom DBI sqlInterpolate
+#'
+#' @export
+data_get_carhyce_stations <- function(con) {
+  query <- "
+      SELECT code_station, name_station, geometry
+      FROM carhyce_stations"
+
+  data <- sf::st_read(dsn = con, query = query)
+
+  return(data)
+}
+
+
 #' Get hydrometric sites.
 #'
 #' This function retrieves the locations of the hydrometric sites from Hubeau.

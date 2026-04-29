@@ -232,6 +232,7 @@ params_map_group <- function(wms_params){
     legend = "LEGEND",
     roe = "Obstacles à l'ecoulement",
     hydro_sites = "Sites hydrométriques",
+    carhyce_stations="Stations CarHyCE",
     light = "LIGHT",
     inondation = wms_params$inondation$name,
     ouvrage_protection = wms_params$ouvrage_protection$name,
