@@ -268,7 +268,8 @@ params_classes <- function() {
       "Utilisation naturelle des sols",
       "Présence de bancs sédimentaires",
       "Confinement de la bande active",
-      "Connectivité des habitats riverains"
+      "Connectivité des habitats riverains",
+      "Style fluvial"
     ),
     description = c(
       # strahler
@@ -323,7 +324,20 @@ params_classes <- function() {
       - très bien connecté (>= 70 %)
       - bien connecté (>= 40 %)
       - moyen connecté (>= 10 % )
-      - faible / absente (< 10 %)"
+      - faible / absente (< 10 %)",
+      # style
+      "Classification des styles, basée sur la méthod décrite dans De Almeida et al, 2026.
+      - anabranche
+      - anastomosé
+      - bancs alternés
+      - divagant
+      - méandre passif
+      - rectiligne
+      - réservoir
+      - sinueux
+      - sinueux à bancs,
+      - tresse
+      "
     ),
     class_name = c(
       "class_strahler",
@@ -334,7 +348,8 @@ params_classes <- function() {
       "class_nature",
       "class_gravel",
       "class_confinement",
-      "class_habitat"
+      "class_habitat",
+      "class_style"
     ),
     sld_style = c(
       "classes_proposed_strahler",
@@ -345,7 +360,8 @@ params_classes <- function() {
       "classes_proposed_nature",
       "classes_proposed_gravel",
       "classes_proposed_confinement",
-      "classes_proposed_habitat"
+      "classes_proposed_habitat",
+      "classes_proposed_style"
     )
   )
 
@@ -405,7 +421,8 @@ params_metrics <- function(){
                     "diffuse_urban", "dense_urban", "infrastructures", "active_channel_pc", "riparian_corridor_pc",
                     "semi_natural_pc", "reversible_pc", "disconnected_pc", "built_environment_pc", "active_channel",
                     "riparian_corridor", "semi_natural", "reversible", "disconnected", "built_environment",
-                    "idx_confinement"),
+                    "idx_confinement",
+                    "sinuosite","angle_local"),
     metric_type_title = c("Elévation (m)", "Largeurs (m)", "Largeurs (m)", "Largeurs (m)", "Largeurs (m)", "Pentes (%)",
                           "Pentes (%)", "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (%)",
                           "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (%)",
@@ -414,7 +431,7 @@ params_metrics <- function(){
                           "Occupation du sol (ha)", "Occupation du sol (ha)", "Occupation du sol (ha)", "Continuité latérale (%)",
                           "Continuité latérale (%)", "Continuité latérale (%)", "Continuité latérale (%)", "Continuité latérale (%)",
                           "Continuité latérale (%)", "Continuité latérale (ha)", "Continuité latérale (ha)", "Continuité latérale (ha)",
-                          "Continuité latérale (ha)", "Continuité latérale (ha)", "Continuité latérale (ha)", "Indice"),
+                          "Continuité latérale (ha)", "Continuité latérale (ha)", "Continuité latérale (ha)", "Indice","Sinuosité","Sinuosité"),
     metric_title = c("Elévation (m)", "Chenal actif (m)", "Corridor naturel (m)", "Corridor connecté (m)",
                      "Fond de vallée (m)", "Pente talweg (%)", "Pente fond de vallée (%)", "Surface en eau (%)",
                      "Banc sédimentaire (%)", "Espace naturel ouvert (%)", "Forêt (%)", "Prairie permanente (%)",
@@ -424,7 +441,7 @@ params_metrics <- function(){
                      "Bande active (%)", "Corridor naturel (%)", "Corridor semi-naturel (%)", "Espace de réversibilité (%)",
                      "Espace déconnecté (%)", "Espace artificialisé (%)", "Bande active (ha)", "Corridor naturel (ha)",
                      "Corridor semi-naturel (ha)", "Espace de réversibilité (ha)", "Espace déconnecté (ha)",
-                     "Espace artificialisé (ha)", "Indice de confinement"),
+                     "Espace artificialisé (ha)", "Indice de confinement", "Indice de sinuosité", "Angle de déflexion local"),
     metric_description = c("Elévation minimale du talweg.", "Surface en eau et bancs sédimentaires.",
                            "Surface en eau, bancs sédimentaires et végétation rivulaire connectée.",
                            "Surface en eau, bancs sédimentaires, végétation rivulaire connectée et surfaces agricoles connectées.",
@@ -459,7 +476,9 @@ params_metrics <- function(){
                            "Le corridor semi-naturel avec les cultures connectées. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
                            "Espace non urbanisé déconnecté du corridor fluvial par des infrastructures ou du bâti. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
                            "Zone bâti, dense ou peu dense, et les infrastructures de transport. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Ratio de la largeur de la bande active sur la largeur du fond de vallée. Il permet d'estimer si le cours d'eau est contraint par la topographie. Plus l'indice est faible plus le cours d'eau a d'espace potentiel pour s'élargir.")
+                           "Ratio de la largeur de la bande active sur la largeur du fond de vallée. Il permet d'estimer si le cours d'eau est contraint par la topographie. Plus l'indice est faible plus le cours d'eau a d'espace potentiel pour s'élargir.",
+                           "Ratio de la longueur du talweg sur la distance à vol d'oiseau entre les extrémités du tronçon. Plus la sinuosité est élevée, plus le cours d'eau est sinueux.",
+                           "Valeur absolue de la différence d'angle entre la centerline pour le DGO considéré et celle du DGO suivant")
   )
   return(metric_info)
 }
@@ -531,5 +550,13 @@ params_classes_colors <- function() {
       c("très bien connecté", "bien connecté", "moyen connecté", "faible / absente")
     )
 
+  # FLUVIAL STYLES
+  df$class_style <- c("#33a02c", "#b2df8a","#b3cde3", "#b012d4", "#363232", "#542788",
+                      "#807dba", "#4988C4","#9e9e9e", "#1C4D8D", "#629FAD", "#e69f00") %>%
+    setNames(
+      c("Anabranche", "Anastomosé", "Bancs alternés", "Divagant","Intermittent","Méandre actif",
+        "Méandre passif","Rectiligne","Réservoir","Sinueux","Sinueux à bancs","Tresse")
+    )
   return(df)
 }
+

@@ -156,19 +156,22 @@ mod_analysis_bimetric_server <- function(id, con, r_val, globals){
         }
       }
     })
-
     # create plot
     observeEvent(input$create_plot, {
-      print("in observeEvent")
-      if (!is.null(r_val$axis_data_classified)) {
-        print(r_val$axis_data_classified)
-        r_val_local$plot <- create_analysis_biplot(df = r_val$axis_data_classified,
+        print("in observeEvent")
+        data=data_get_metrics(con,
+                              filter_by_basin_id=r_val$basin_id,
+                              filter_by_region_id=r_val$region_id,
+                              axis_id=r_val$axis_id)
+        data=data %>%
+          assign_classes_proposed(proposed_class = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name,
+                                  colors_df = globals$classes_proposed_colors)
+        r_val_local$plot <- create_analysis_biplot(df = data,
                                                    metric_x = input$x_metric,
                                                    metric_y = input$y_metric,
                                                    classes = input$apply_classes,
                                                    lm = input$apply_lm,
                                                    axis_name = r_val$axis_name)
-      }
     })
 
   })

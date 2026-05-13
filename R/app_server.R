@@ -43,6 +43,7 @@ app_server <- function(input, output, session) {
     tab_classes = NULL, # selected tab in classes tabset
     tab_plots = NULL, # selected tab in plots tabset
     tab_analysis = NULL, # selected tab in analysis tabset
+    aggregated=FALSE,
 
     # map
     map_proxy = NULL, # proxy object for map
@@ -70,6 +71,7 @@ app_server <- function(input, output, session) {
 
     # first time clicked
     axis_clicked = FALSE, # if axis was clicked
+    aggregated=FALSE, # if axis data is aggregated or not
 
     manual_classes_table = NULL, # values of classes and assigned colors from manual classification
     classes_man_stats = NULL, # metric statistics for manual classes
@@ -111,7 +113,6 @@ app_server <- function(input, output, session) {
   globals$roe_sites <- reactive({
     data_get_roe_sites(con)
   }) %>%
-
     bindCache(globals$regions_gids_key)
   waitress$inc(step_progress)  # Increment progress 6
   Sys.sleep(.3)
@@ -145,12 +146,10 @@ app_server <- function(input, output, session) {
           f_make_popup
         )
       )
-    print(head(data_carhyce_stations))
     data_carhyce_stations
   })
   waitress$inc(step_progress)  # Increment progress 8
   Sys.sleep(.3)
-   print(names(globals))
   #### Metric stats caching ####
   globals$metric_stats <- reactive({
     data_get_stats_metrics(con)
@@ -161,9 +160,10 @@ app_server <- function(input, output, session) {
 
   #### Axis data caching ####
   globals$axis_data <- reactive({
-    data_get_axis_dgos(selected_axis_id = r_val$axis_id, con)
+    aggregated=r_val$aggregated
+    data_get_axis_dgos(selected_axis_id = r_val$axis_id, aggregated=aggregated, con)
   }) %>%
-    bindCache(c(r_val$axis_id, globals$regions_gids_key))
+    bindCache(c(r_val$axis_id, globals$regions_gids_key, r_val$aggregated))
 
   #### Classes stats caching ####
   globals$classes_stats <- reactive({

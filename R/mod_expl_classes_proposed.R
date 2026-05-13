@@ -58,11 +58,11 @@ mod_expl_classes_proposed_server <- function(id, r_val, globals){
       # check if row is actually selected
       if (!is.null(selected)) {
 
-
         # add styling to map
         r_val$map_proxy %>%
           clearGroup(globals$map_group_params[["network"]]) %>% # clear existing network layer
-          map_add_network(globals$wms_params$network, group = globals$map_group_params[["network"]],
+          map_add_network(globals$wms_params$network,
+                          group = globals$map_group_params[["network"]],
                           style = paste0("mapdo:", globals$classes_proposed[selected,]$sld_style))
 
         # set visualisation to classes to tell app that proposed classes are selected

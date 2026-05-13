@@ -251,7 +251,6 @@ map_add_network <- function(map, wms_params_network,
                             group,
                             cql_filter = "",
                             style = "mapdo:classes_proposed_strahler") {
-
   map %>%
     clearGroup(group) %>%
     addWMSTiles(
@@ -260,6 +259,7 @@ map_add_network <- function(map, wms_params_network,
       attribution = wms_params_network$attribution,
       options = WMSTileOptions(
         format = wms_params_network$format,
+        request = "GetMap",
         request = "GetMap",
         transparent = TRUE,
         styles = style,

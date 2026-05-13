@@ -19,7 +19,7 @@ This function retrieves data about network metrics for a specific region based o
 }
 \examples{
 con <- db_con()
-network_metrics_data <- data_get_axis_dgos(selected_region_id = 33, con = con)
+network_metrics_data <- data_get_axis_dgos_from_region(selected_region_id = 33, con = con)
 DBI::dbDisconnect(con)
 
 }

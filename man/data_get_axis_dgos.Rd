@@ -4,10 +4,12 @@
 \alias{data_get_axis_dgos}
 \title{Get Network Metrics Data for a Specific Network Axis}
 \usage{
-data_get_axis_dgos(selected_axis_id, con)
+data_get_axis_dgos(selected_axis_id, aggregated = FALSE, con)
 }
 \arguments{
 \item{selected_axis_id}{The ID of the selected network axis.}
+
+\item{aggregated}{A boolean indicating whether to retrieve aggregated data (TRUE) or detailed data (FALSE). Default is FALSE.}
 
 \item{con}{Connection to Postgresql database.}
 }
