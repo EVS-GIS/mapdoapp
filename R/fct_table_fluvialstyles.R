@@ -8,7 +8,7 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-create_table_fluvialstyles <- function(params_styles) {
+create_table_fluvialstyles <- function(metrics_info) {
 
   table <- reactable(params_styles,
                      columns = list(
