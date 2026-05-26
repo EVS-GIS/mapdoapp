@@ -1,8 +1,8 @@
-pandoc: 3.1.11
-pkgdown: 2.1.1
+pandoc: 3.8.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-04-02T11:39Z
+last_built: 2026-05-26T15:52Z
 urls:
   reference: https://evs-gis.github.io/mapdoapp/reference
   article: https://evs-gis.github.io/mapdoapp/articles
