@@ -379,9 +379,8 @@ params_classes <- function() {
 #' params_get_metric_choices()
 params_get_metric_choices <- function(){
   # get parameters and create empty list object
-  metric_info <- params_metrics()
   input <- list()
-
+  data(metric_info)
   # loop through all types and store metric names
   for (type in unique(metric_info$metric_type_title)) {
     input[type] <- list(
@@ -396,91 +395,6 @@ params_get_metric_choices <- function(){
     )
   }
   return(input)
-}
-
-#' Get Metric parameters
-#'
-#' This function returns a nested list of metrics, their names and titles used for plots as well as their description.
-#' Can for example be used for the creation of a selectInput of metrics.
-#'
-#' @importFrom tibble tibble
-#'
-#' @return A table of all metrics and corresponding info
-#'
-#' @examples
-#' metric_choices <- params_metrics()
-#'
-#' @export
-params_metrics <- function(){
-
-  metric_info <- tibble(
-    metric_name = c("talweg_elevation_min", "active_channel_width", "natural_corridor_width", "connected_corridor_width",
-                    "valley_bottom_width", "talweg_slope", "floodplain_slope", "water_channel_pc", "gravel_bars_pc",
-                    "natural_open_pc", "forest_pc", "grassland_pc", "crops_pc", "diffuse_urban_pc", "dense_urban_pc",
-                    "infrastructures_pc", "water_channel", "gravel_bars", "natural_open", "forest", "grassland", "crops",
-                    "diffuse_urban", "dense_urban", "infrastructures", "active_channel_pc", "riparian_corridor_pc",
-                    "semi_natural_pc", "reversible_pc", "disconnected_pc", "built_environment_pc", "active_channel",
-                    "riparian_corridor", "semi_natural", "reversible", "disconnected", "built_environment",
-                    "idx_confinement",
-                    "sinuosite","angle_local"),
-    metric_type_title = c("Elévation (m)", "Largeurs (m)", "Largeurs (m)", "Largeurs (m)", "Largeurs (m)", "Pentes (%)",
-                          "Pentes (%)", "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (%)",
-                          "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (%)",
-                          "Occupation du sol (%)", "Occupation du sol (%)", "Occupation du sol (ha)", "Occupation du sol (ha)",
-                          "Occupation du sol (ha)", "Occupation du sol (ha)", "Occupation du sol (ha)", "Occupation du sol (ha)",
-                          "Occupation du sol (ha)", "Occupation du sol (ha)", "Occupation du sol (ha)", "Continuité latérale (%)",
-                          "Continuité latérale (%)", "Continuité latérale (%)", "Continuité latérale (%)", "Continuité latérale (%)",
-                          "Continuité latérale (%)", "Continuité latérale (ha)", "Continuité latérale (ha)", "Continuité latérale (ha)",
-                          "Continuité latérale (ha)", "Continuité latérale (ha)", "Continuité latérale (ha)", "Indice","Sinuosité","Sinuosité"),
-    metric_title = c("Elévation (m)", "Chenal actif (m)", "Corridor naturel (m)", "Corridor connecté (m)",
-                     "Fond de vallée (m)", "Pente talweg (%)", "Pente fond de vallée (%)", "Surface en eau (%)",
-                     "Banc sédimentaire (%)", "Espace naturel ouvert (%)", "Forêt (%)", "Prairie permanente (%)",
-                     "Culture (%)", "Périurbain (%)", "Urbain dense (%)", "Infrastructure de transport (%)", "Surface en eau (ha)",
-                     "Banc sédimentaire (ha)", "Espace naturel ouvert (ha)", "Forêt (ha)", "Prairie permanente (ha)",
-                     "Culture (ha)", "Périurbain (ha)", "Urbain dense (ha)", "Infrastructure de transport (ha)",
-                     "Bande active (%)", "Corridor naturel (%)", "Corridor semi-naturel (%)", "Espace de réversibilité (%)",
-                     "Espace déconnecté (%)", "Espace artificialisé (%)", "Bande active (ha)", "Corridor naturel (ha)",
-                     "Corridor semi-naturel (ha)", "Espace de réversibilité (ha)", "Espace déconnecté (ha)",
-                     "Espace artificialisé (ha)", "Indice de confinement", "Indice de sinuosité", "Angle de déflexion local"),
-    metric_description = c("Elévation minimale du talweg.", "Surface en eau et bancs sédimentaires.",
-                           "Surface en eau, bancs sédimentaires et végétation rivulaire connectée.",
-                           "Surface en eau, bancs sédimentaires, végétation rivulaire connectée et surfaces agricoles connectées.",
-                           "Fond de vallée déterminé par seuil de pente et d'élévation.", "Pente moyenne du talweg.",
-                           "Pente moyenne du fond de vallée.", "Surface en eau définie par la BD TOPO® de l'IGN. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Surface des eaux intermittentes de la BD TOPO® de l'IGN. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone de végétation ouverte telles que les forêts ouvertes, les haies ou bandes ligneuses. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone de végétation fermée. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Parcelle de prairie permanente définie dans le RPG®. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone de culture rassemblant les grandes cultures, l'arboriculture et les vignes. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone d'habitation diffus proche de la zone d'habitation de la BD TOPO®. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone continue de l'espace bâti dense ou artificialisée. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Infrastructure routière et ferroviaire. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Surface en eau définie par la BD TOPO® de l'IGN. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Surface des eaux intermittentes de la BD TOPO® de l'IGN. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone de végétation ouverte telles que les forêts ouvertes, les haies ou bandes ligneuses. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone de végétation fermée. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Parcelle de prairie permanente définie dans le RPG®. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone de culture rassemblant les grandes cultures, l'arboriculture et les vignes. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone d'habitation diffus proche de la zone d'habitation de la BD TOPO®. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone continue de l'espace bâti dense ou artificialisée. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Infrastructure routière et ferroviaire. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Les surfaces en eau et les bancs sédimentaires connectés. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Le chenal actif avec la végétation ouverte et fermée connectée. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Le corridor naturel avec les prairies permanentes connectées. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Le corridor semi-naturel avec les cultures connectées. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Espace non urbanisé déconnecté du corridor fluvial par des infrastructures ou du bâti. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone bâti, dense ou peu dense, et les infrastructures de transport. La surface est exprimée en pourcentage du fond de vallée découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Les surfaces en eau et les bancs sédimentaires connectés. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Le chenal actif avec la végétation ouverte et fermée connectée. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Le corridor naturel avec les prairies permanentes connectées. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Le corridor semi-naturel avec les cultures connectées. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Espace non urbanisé déconnecté du corridor fluvial par des infrastructures ou du bâti. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Zone bâti, dense ou peu dense, et les infrastructures de transport. La surface est exprimée en hectares découpée à partir des tronçons de 200m du réseau hydrographique.",
-                           "Ratio de la largeur de la bande active sur la largeur du fond de vallée. Il permet d'estimer si le cours d'eau est contraint par la topographie. Plus l'indice est faible plus le cours d'eau a d'espace potentiel pour s'élargir.",
-                           "Ratio de la longueur du talweg sur la distance à vol d'oiseau entre les extrémités du tronçon. Plus la sinuosité est élevée, plus le cours d'eau est sinueux.",
-                           "Valeur absolue de la différence d'angle entre la centerline pour le DGO considéré et celle du DGO suivant")
-  )
-  return(metric_info)
 }
 
 #' Get classes names and colors for proposed classifications

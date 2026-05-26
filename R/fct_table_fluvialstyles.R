@@ -8,9 +8,9 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-create_table_fluvialstyles <- function(metrics_info) {
-
-  table <- reactable(params_styles,
+create_table_fluvialstyles <- function() {
+  data(metric_info)
+  table <- reactable(metric_info,
                      columns = list(
                        class_title = colDef(name = "Classification", sortable = FALSE),
                        description = colDef(show = FALSE),  # Hide column

@@ -163,7 +163,7 @@ create_analysis_table <- function(df, vars, scale_name = "") {
     mutate(strahler = if_else(strahler == 0, "tous", as.character(strahler)))
 
   # get names of metrics
-  metric_names <- setNames(params_metrics()$metric_title, params_metrics()$metric_name)
+  metric_names <- setNames(metric_info$metric_title, metric_info$metric_name)
 
   # Add column definitions dynamically based on the selected metrics (vars)
   for (var in vars) {
