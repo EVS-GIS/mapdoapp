@@ -23,7 +23,7 @@
 #' @importFrom dplyr mutate if_else
 #'
 #' @export
-data_get_basins <- function(con, opacity) {
+data_get_basins <- function(con, opacity=list(clickable = 0.01, not_clickable = 0.10)) {
 
   query <- "SELECT * FROM bassin_hydrographique"
 
@@ -51,7 +51,7 @@ data_get_basins <- function(con, opacity) {
 #' @importFrom DBI sqlInterpolate
 #'
 #' @export
-data_get_regions <- function(con, opacity) {
+data_get_regions <- function(con, opacity=list(clickable = 0.01, not_clickable = 0.10)) {
 
   query <- "SELECT * FROM region_hydrographique"
 
@@ -114,6 +114,35 @@ data_get_roe_sites <- function(con) {
   return(data)
 }
 
+
+#' Get Stations Carhyce
+#'
+#' This function retrieves the datapoints of the CarHyCe hydrological stations.
+#'
+#' @param con Connection to Postgresql database.
+#'
+#' @return A sf data frame containing the CarHyCe datapoints.
+#'
+#' @examples
+#' con <- db_con()
+#' carhyce_stations <- data_get_carhyce_stations(con = con)
+#' DBI::dbDisconnect(con)
+#'
+#' @importFrom sf st_read
+#' @importFrom DBI sqlInterpolate
+#'
+#' @export
+data_get_carhyce_stations <- function(con) {
+  query <- "
+      SELECT code_station, name_station, geometry
+      FROM carhyce_stations"
+
+  data <- sf::st_read(dsn = con, query = query)
+
+  return(data)
+}
+
+
 #' Get hydrometric sites.
 #'
 #' This function retrieves the locations of the hydrometric sites from Hubeau.
@@ -142,6 +171,54 @@ data_get_hydro_sites <- function(con){
   return(data)
 }
 
+
+#' This function retrieves the aggregated metrics for the whole network.
+#'
+#' @param con Connection to Postgresql database.
+#' @param filter_by_basin_id if not NULL, filter the data by the specified basin id (cdbh)
+#' @param filter_by_region_id if not NULL, filter the data by the specified region id (gid)
+#' @param axis_id if not NULL, add a column "selected" to the data, with TRUE for the datapoints of the specified axis and FALSE for the others
+#' @return sf data frame containing the datapoints of the homogenous segments' metrics
+#'
+#' @examples
+#' con <- db_con()
+#' data_get_metrics(con, "01","12","2000810055")
+#' DBI::dbDisconnect(con)
+#'
+#' @importFrom DBI sqlInterpolate
+#'
+#' @export
+data_get_metrics=function(con,
+                          filter_by_basin_id=NULL,
+                          filter_by_region_id=NULL,
+                          axis_id=NULL){
+  query <-"
+          SELECT *
+          FROM network_metrics_aggregated"
+  data_axes_metrics= DBI::dbGetQuery(conn = con, statement = query) %>%
+    sf::st_drop_geometry() %>%
+    select(-geom)
+  query = "SELECT gid, cdbh FROM region_hydrographique"
+  data_regions=DBI::dbGetQuery(conn = con, statement=query)
+  data=data_axes_metrics %>%
+    left_join(data_regions, by=c("gid_region"="gid"))
+  if(!is.null(filter_by_basin_id)){
+    data=data %>%
+      filter(cdbh==filter_by_basin_id)
+  }
+  if(!is.null(filter_by_region_id)){
+    data=data %>%
+      filter(gid_region==filter_by_region_id)
+  }
+  if(!is.null(axis_id)){
+      data=data %>%
+        mutate(selected=case_when(axis==axis_id~TRUE,
+                                  TRUE~ FALSE))
+  }
+  return(data)
+}
+
+
 #' Get statistics on network metrics for different levels (france, basin, region)
 #'
 #' @param con Connection to Postgresql database.
@@ -152,7 +229,7 @@ data_get_hydro_sites <- function(con){
 #'
 #' @return Dataframe which contains the statistics for all metrics for different entities: France, Basins, Regions
 data_get_stats_metrics <- function(con) {
-
+  print("in data_get_stats_metrics")
   variables <- c(
     "talweg_elevation_min", "active_channel_width", "natural_corridor_width",
     "connected_corridor_width", "valley_bottom_width", "talweg_slope", "floodplain_slope",
@@ -183,7 +260,7 @@ data_get_stats_metrics <- function(con) {
         }),
         collapse = ",\n"
       ),
-      "\nFROM network_metrics\n"
+      "\nFROM network_metrics_aggregated AS network_metrics\n"
     )
 
   # Constructing the SQL query
@@ -385,7 +462,7 @@ data_get_distr_class <- function(con, class_name) {
       "'France' AS level_name,\n",
       "0 AS strahler, \n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY class_name",
@@ -404,7 +481,7 @@ data_get_distr_class <- function(con, class_name) {
       "'France' AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY strahler, class_name",
@@ -424,7 +501,7 @@ data_get_distr_class <- function(con, class_name) {
       "region_hydrographique.cdbh AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -444,7 +521,7 @@ data_get_distr_class <- function(con, class_name) {
       "region_hydrographique.cdbh AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -465,7 +542,7 @@ data_get_distr_class <- function(con, class_name) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -485,7 +562,7 @@ data_get_distr_class <- function(con, class_name) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -548,7 +625,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "'France' AS level_name,\n",
       "0 AS strahler, \n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY class_name",
@@ -567,7 +644,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "'France' AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY strahler, class_name",
@@ -587,7 +664,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "region_hydrographique.cdbh AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -607,7 +684,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "region_hydrographique.cdbh AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -628,7 +705,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -648,7 +725,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics\n",
+      "FROM network_metrics_v2 AS network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -704,6 +781,7 @@ data_get_levels_names <- function(con) {
 #' This function retrieves data about network metrics for a specific network axis based on its ID.
 #'
 #' @param selected_axis_id The ID of the selected network axis.
+#' @param aggregated A boolean indicating whether to retrieve aggregated data (TRUE) or detailed data (FALSE). Default is FALSE.
 #' @param con Connection to Postgresql database.
 #'
 #' @return A sf data frame containing information about network metrics for the specified network axis.
@@ -718,10 +796,9 @@ data_get_levels_names <- function(con) {
 #' @importFrom DBI sqlInterpolate
 #'
 #' @export
-data_get_axis_dgos <- function(selected_axis_id, con) {
-
+data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
   if (!is.null(selected_axis_id)) {
-
+    if(aggregated==FALSE){
     sql <- "
       SELECT
         network_metrics.fid, axis, measure, toponyme, strahler, talweg_elevation_min,
@@ -734,6 +811,10 @@ data_get_axis_dgos <- function(selected_axis_id, con) {
         diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
         riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
         built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
+        style AS class_style,
+        sinuosite,
+        angle_local,
+        ids,
 
         -- Strahler Classification
         CASE
@@ -827,18 +908,39 @@ data_get_axis_dgos <- function(selected_axis_id, con) {
           WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
           ELSE 'unvalid'
         END AS class_habitat
-      FROM network_metrics
+      FROM network_metrics_v2 AS network_metrics
       WHERE  axis = ?selected_axis_id"
+    }
+    if(aggregated==TRUE){
+      sql <- "
+      SELECT
+        fid, axis, measure, toponyme, strahler, talweg_elevation_min,
+        active_channel_width, natural_corridor_width,
+        connected_corridor_width, valley_bottom_width, talweg_slope, floodplain_slope,
+        water_channel, gravel_bars, natural_open, forest, grassland, crops,
+        diffuse_urban, dense_urban, infrastructures, active_channel, riparian_corridor,
+        semi_natural, reversible, disconnected, built_environment,
+        water_channel_pc, gravel_bars_pc, natural_open_pc, forest_pc, grassland_pc, crops_pc,
+        diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
+        riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
+        built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
+        class_style,
+        sinuosite,
+        angle_local,
+        class_strahler, class_topographie, class_lu_dominante, class_urban,
+        class_agriculture, class_nature, class_gravel, class_confinement, class_habitat
+
+      FROM network_metrics_aggregated AS network_metrics
+      WHERE  axis = ?selected_axis_id"
+    }
     query <- sqlInterpolate(con, sql, selected_axis_id = selected_axis_id)
 
     data <- sf::st_read(dsn = con, query = query) %>%
       dplyr::arrange(measure)
-  }
-  else {
+
+  } else { # if axis is null
     data <- NULL
   }
-
-
   return(data)
 }
 
@@ -854,7 +956,7 @@ data_get_axis_dgos <- function(selected_axis_id, con) {
 #'
 #' @examples
 #' con <- db_con()
-#' network_metrics_data <- data_get_axis_dgos(selected_region_id = 33, con = con)
+#' network_metrics_data <- data_get_axis_dgos_from_region(selected_region_id = 33, con = con)
 #' DBI::dbDisconnect(con)
 #'
 #' @importFrom sf st_read
@@ -867,112 +969,23 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
   if (!is.null(selected_region_id)) {
 
     sql <- "
-      SELECT
-        network_metrics.fid, network_metrics.gid_region, axis, measure, toponyme, strahler, talweg_elevation_min,
-        active_channel_width, natural_corridor_width,
-        connected_corridor_width, valley_bottom_width, talweg_slope, floodplain_slope,
-        water_channel, gravel_bars, natural_open, forest, grassland, crops,
-        diffuse_urban, dense_urban, infrastructures, active_channel, riparian_corridor,
-        semi_natural, reversible, disconnected, built_environment,
-        water_channel_pc, gravel_bars_pc, natural_open_pc, forest_pc, grassland_pc, crops_pc,
-        diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
-        riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
-        built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
-
-        -- Strahler Classification
-        CASE
-          WHEN strahler IS NULL THEN 'unvalid'
-          WHEN strahler = 1 THEN '1'
-          WHEN strahler = 2 THEN '2'
-          WHEN strahler = 3 THEN '3'
-          WHEN strahler = 4 THEN '4'
-          WHEN strahler = 5 THEN '5'
-          WHEN strahler = 6 THEN '6'
-          ELSE 'unvalid'
-        END AS class_strahler,
-
-        -- Topography Classification
-        CASE
-          WHEN talweg_elevation_min IS NULL OR talweg_slope IS NULL THEN 'unvalid'
-          WHEN talweg_elevation_min >= 1000 AND talweg_slope >= 0.05 THEN 'Pentes de montagne'
-          WHEN talweg_elevation_min >= 1000 AND talweg_slope < 0.05 THEN 'Plaines de montagne'
-          WHEN talweg_elevation_min >= 300 AND talweg_slope >= 0.05 THEN 'Pentes de moyenne altitude'
-          WHEN talweg_elevation_min >= 300 AND talweg_slope < 0.05 THEN 'Plaines de moyenne altitude'
-          WHEN talweg_elevation_min >= -50 AND talweg_slope >= 0.05 THEN 'Pentes de basse altitude'
-          WHEN talweg_elevation_min >= -50 AND talweg_slope < 0.05 THEN 'Plaines de basse altitude'
-          ELSE 'unvalid'
-        END AS class_topographie,
-
-        -- Dominant Land Use Classification
-        CASE
-          WHEN forest_pc IS NULL OR grassland_pc IS NULL OR natural_open_pc IS NULL OR crops_pc IS NULL OR built_environment_pc IS NULL THEN 'unvalid'
-          WHEN forest_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Forêt'
-          WHEN grassland_pc + natural_open_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Prairies et sols nus'
-          WHEN crops_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Cultures'
-          WHEN built_environment_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Espace construit'
-          ELSE 'unvalid'
-        END AS class_lu_dominante,
-
-        -- Urban Land Use Classification
-        CASE
-          WHEN built_environment_pc IS NULL THEN 'unvalid'
-          WHEN built_environment_pc >= 70 THEN 'Fortement urbanisé'
-          WHEN built_environment_pc >= 40 THEN 'Urbanisé'
-          WHEN built_environment_pc >= 10 THEN 'Modérément urbanisé'
-          WHEN built_environment_pc >= 0 THEN 'Presque pas/Pas urbanisé'
-          ELSE 'unvalid'
-        END AS class_urban,
-
-        -- Agricultural Land Use Classification
-        CASE
-          WHEN crops_pc IS NULL THEN 'unvalid'
-          WHEN crops_pc >= 70 THEN 'Très Forte'
-          WHEN crops_pc >= 40 THEN 'Forte'
-          WHEN crops_pc >= 10 THEN 'Modéré'
-          WHEN crops_pc >= 0 THEN 'Basse/Absente'
-          ELSE 'unvalid'
-        END AS class_agriculture,
-
-        -- Natural Land Use Classification
-        CASE
-          WHEN natural_open_pc IS NULL OR forest_pc IS NULL OR grassland_pc IS NULL THEN 'unvalid'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Modérée'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/Pas naturelle'
-          ELSE 'unvalid'
-        END AS class_nature,
-
-        -- Gravel Bars Classification
-        CASE
-          WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
-          ELSE 'unvalid'
-        END AS class_gravel,
-
-        -- Confinement Classification
-        CASE
-          WHEN idx_confinement IS NULL THEN 'unvalid'
-          WHEN idx_confinement >= 0.7 THEN 'Peu confiné'
-          WHEN idx_confinement >= 0.4 THEN 'Modérément confiné'
-          WHEN idx_confinement >= 0.1 THEN 'Confiné'
-          WHEN idx_confinement >= 0 THEN 'Très confiné'
-          ELSE 'unvalid'
-        END AS class_confinement,
-
-        -- Habitat Classification
-        CASE
-          WHEN riparian_corridor_pc IS NULL OR semi_natural_pc IS NULL THEN 'unvalid'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'Élevée'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'Bonne'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'Moyenne'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
-          ELSE 'unvalid'
-        END AS class_habitat
-      FROM network_metrics
-      WHERE  network_metrics.gid_region = ?selected_region_id"
+    SELECT
+    fid, axis, measure, toponyme, strahler, talweg_elevation_min,
+    active_channel_width, natural_corridor_width,
+    connected_corridor_width, valley_bottom_width, talweg_slope, floodplain_slope,
+    water_channel, gravel_bars, natural_open, forest, grassland, crops,
+    diffuse_urban, dense_urban, infrastructures, active_channel, riparian_corridor,
+    semi_natural, reversible, disconnected, built_environment,
+    water_channel_pc, gravel_bars_pc, natural_open_pc, forest_pc, grassland_pc, crops_pc,
+    diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
+    riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
+    built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
+    class_style,
+    sinuosite,
+    class_strahler, class_topographie, class_lu_dominante, class_urban,
+    class_agriculture, class_nature, class_gravel, class_confinement, class_habitat
+    FROM network_metrics_v2 AS network_metrics
+    WHERE  network_metrics.gid_region = ?selected_region_id"
     query <- sqlInterpolate(con, sql, selected_region_id = selected_region_id)
 
     data <- sf::st_read(dsn = con, query = query) %>%
@@ -981,8 +994,6 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
   else {
     data <- NULL
   }
-
-
   return(data)
 }
 #' Get the start and end coordinates of a spatial object's axis

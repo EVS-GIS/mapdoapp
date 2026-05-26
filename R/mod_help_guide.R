@@ -55,7 +55,6 @@ mod_help_guide_server <- function(id, r_val){
         prev_btn_text = "Précédent",
       )
 
-      # browser()
 
       #| notes:
         #| <p> for paragraph, <br/> for line break

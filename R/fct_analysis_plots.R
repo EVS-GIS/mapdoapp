@@ -267,7 +267,6 @@ prepare_regions_data_for_plot <- function(data,
 #' }
 #' @export
 analysis_plot_classes_distr <- function(df){
-
   # Create a named vector for colors to ensure correct mapping
   unique_classes <- unique(df$class_name)
   color_palette <- setNames(unique(df$color), unique_classes)
