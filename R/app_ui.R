@@ -26,6 +26,13 @@ app_ui <- function(request){
           z-index: 1000; /* Make sure it's above other UI elements */
         }
 
+      /* quand l'icône est focus ou actif (sélectionné) */
+      .bi-info-circle {
+        border: 2px solid white !important;
+        border-radius: 50%;
+        outline: none !important;
+      }
+
       .navbar {
         position: relative;
       }
@@ -44,6 +51,22 @@ app_ui <- function(request){
       title =
         img(src = "www/logos_mapdo_evs_ofb.png"),
       windowTitle = "Mapd'O App",
+      header = tagList(
+        tags$head(
+          tags$style(HTML("
+        /* texte des onglets */
+        .navbar-nav > li > a {
+          font-size: 24px;       /* augmenter taille */
+          font-weight: bold;     /* mettre en gras */
+          color: #000000 !important; /* couleur texte */
+        }
+
+        /* barre du haut */
+        .navbar {
+          background-color: #DEEDFF; /* gris clair */
+        }
+      "))
+        )),
       tabPanel("Exploration & Classification", icon = icon("compass"), # find more icons here: https://fontawesome.com/search?q=info&o=r&m=free
                mod_explore_ui("explore_1")
       ),

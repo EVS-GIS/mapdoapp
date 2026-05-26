@@ -14,7 +14,19 @@ mod_download_ui <- function(id) {
     tags$head(
       tags$style(
         HTML("
-          .form-group{margin-bottom: 10px}
+          .form-group{margin-bottom: 5px}
+          .nav-pills > li > a {line-height: 5%;}
+          .sticky-table thead th {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 2;
+    }
+    .sticky-wrapper {
+      height: 300px;      /* zone scrollable */
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+    }
           ")
       )
     ), # head
@@ -63,7 +75,8 @@ mod_download_ui <- function(id) {
         ),
 
         # table
-        div(style = 'overflow-x: auto; width: 100%;',  # Horizontal scroll and full-width div
+        div(class = "sticky-wrapper",
+            class = "sticky-table", style = 'overflow-x: auto; width: 100%; height: 75vh',  # Horizontal scroll and full-width div
             tableOutput(ns("table_data"))
         ),
       )

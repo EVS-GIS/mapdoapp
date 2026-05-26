@@ -32,7 +32,7 @@ mod_expl_plot_long_ui <- function(id){
           uiOutput(ns("profile_backgroundUI")),
           uiOutput(ns("profile_background_smoothUI")),
           uiOutput(ns("profile_background_smooth_selUI"),
-                   style = "margin-left : 23px;")
+                   style = "margin-left : 15px;")
         )
       )
     )
@@ -102,7 +102,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
           span(
             style = "display: flex; margin-left: 10px; margin-top: 20px",
             popover(
-              trigger = bsicons::bs_icon("info-circle"),
+              trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
               "",
               placement = "right",
               id = ns("popover_metric")
@@ -122,7 +122,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
           span(
             style = "margin-left: 10px; margin-top: 20px",
             popover(
-              trigger = bsicons::bs_icon("info-circle"),
+              trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
               "",
               placement = "right",
               id = ns("popover_metric2")
@@ -149,10 +149,22 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
 
     # selectinput for background classification smoothing
     output$profile_background_smooth_selUI <- renderUI({
-      r_val_local$ui_background_smooth_sel
+      if (!is.null(r_val_local$ui_background_smooth_sel)) {
+        div(
+          style = "display: flex; align-items: center",
+          r_val_local$ui_background_smooth_sel,
+          span(
+            style = "margin-left: 10px; margin-bottom: -10px; margin-top: 20px",
+            popover(
+              trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
+              "",
+              placement = "right",
+              id = ns("popover_metric3")
+            )
+          )
+        )
+      }
     })
-
-
 
 
     # make plot available to other
@@ -210,6 +222,23 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
                              pull(metric_description)
                          }
                          ))
+      }
+    })
+
+    ## update infobutton when metric selected changes for the homogeneisation "singuliers" et "en paires"
+    observe({
+      if (!is.null(input$background_profile)) {
+        update_popover("popover_metric3",
+                       HTML(
+                         # check if no metric is selected
+                         if (is.null(input$background_smooth_sel)){
+                           "Permet l'affichage en fond de la classification"
+                         } else if (input$background_smooth_sel == "singuliers") {
+                             "description de l'homogénéisation dites singuliers"
+                         } else {
+                           "description de l'homogénéisation dites en paires"
+                         }
+                       ))
       }
     })
 

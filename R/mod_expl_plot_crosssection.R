@@ -43,6 +43,7 @@ mod_expl_plot_crosssection_server <- function(id, r_val){
         # check if dgo is selected
         if (!is.null(r_val$swath_data_section)) {
           r_val_locals$section = cr_profile_main(data = r_val$swath_data_section,
+                                                 selected_dgo = r_val$swath_data_dgo,
                                                  axis_toponyme = r_val$axis_name)
         }
 

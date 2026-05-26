@@ -28,9 +28,10 @@ mod_explore_ui <- function(id){
       tags$head(
         tags$style(
           HTML("
-          .form-group{margin-bottom: 10px}
+          .form-group{margin-bottom: 5px}
+          .nav-pills > li > a {line-height: 5%;}
           ")
-        )
+        ) # style
       ), # head
       fluidRow(
         column(
@@ -426,7 +427,7 @@ mod_explore_server <- function(id, con, r_val, globals, waitress){
           # add axis to map
           r_val$map_proxy %>%
             map_add_axes(globals$axes(), group = globals$map_group_params[["axis"]], selected_axis_id = r_val$axis_id) %>%
-            map_add_axis_dgos(globals$axis_data(), group = globals$map_group_params[["dgo_axis"]]) %>%
+            map_add_axis_dgos(globals$axis_data(), Proposed_class = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name, group = globals$map_group_params[["dgo_axis"]]) %>%
             map_add_axis_start_end(axis_start_end = r_val$axis_start_end,
                                    group = globals$map_group_params[["axis_start_end"]]) %>%
             clearGroup(globals$map_group_params[["dgo"]])

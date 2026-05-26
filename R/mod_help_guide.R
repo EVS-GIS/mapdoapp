@@ -13,7 +13,20 @@
 mod_help_guide_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    actionButton(ns("help_btn"), " Aide",
+    tags$head(
+    tags$style(HTML("
+  .highlight-on-start {
+    animation: pulseGlow 2.5s ease-in-out 100;
+  }
+
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 0 5px 2px #2e61d9; }
+    50% { box-shadow: 0 0 20px 8px #2e61d9; }
+    100% { box-shadow: 0 0 5px 2px #2e61d9; }
+  }
+"))
+    ),
+    actionButton(ns("help_btn"), " Aide", class = "btn-primary highlight-on-start",
                  icon = icon("circle-question")),
     use_cicerone() # Load the cicerone dependencies
   )
@@ -27,8 +40,6 @@ mod_help_guide_ui <- function(id) {
 mod_help_guide_server <- function(id, r_val){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
-
-
 
     # Set up a dynamic observer based on the active tab
     observeEvent(input$help_btn, {
@@ -82,7 +93,7 @@ mod_help_guide_server <- function(id, r_val){
 
         if (r_val$tab_classes == "Classification manuelle") {
           tour$step("expl_classes_manual_1-manual_classificationUI", "Classification manuelle",
-                    description = "Créez une classification basée sur une mesure spécifique. Choisissez d'abord une métrique, puis éditez les noms de classe, les seuils et les couleurs pour chaque classe. Les seuils initiaux des classes sont, pour exclure les valeurs aberrantes, basés sur le quantile à 95 % de la métrique correspondante pour l'ensemble du réseau français. En cliquant sur la flèche en haut à droite, vous pouvez ajuster l'étendue du quantile ou la base de l'échelle. En outre, vous pouvez définir le nombre de classes que vous souhaitez appliquer. Des informations sur la métrique sélectionnée peuvent être obtenues en cliquant sur le bouton info à côté de la sélection de la métrique.",
+                    description = "Créez une classification basée sur une mesure spécifique. Choisissez d'abord une métrique, puis éditez les noms de classe, les seuils et les couleurs pour chaque classe. Les seuils initiaux des classes sont, pour exclure les valeurs aberrantes, basés sur le quantile à 95 % de la métrique correspondante pour l'ensemble du réseau français. En cliquant sur la flèche en haut à droite, vous pouvez ajuster l'étendue du quantile ou la base de l'échelle. En outre, vous pouvez définir le nombre de classes que vous souhaitez appliquer dans la flèche en-dessous du i d'information. Des informations sur la métrique sélectionnée peuvent être obtenues en cliquant sur le bouton info à côté de la sélection de la métrique.",
                     position = "left")
         }
 

@@ -43,7 +43,7 @@ cr_profile_empty <- function() {
 #'
 #' @return plotly cross section plot.
 #' @export
-cr_profile_main <- function(data, axis_toponyme){
+cr_profile_main <- function(data, selected_dgo, axis_toponyme){
   section <- plot_ly(data = data, x = ~distance, y = ~profile, type = 'scatter',
                      yaxis = 'y1', key = data$id, # the "id" column for hover text
                      mode = 'lines+markers', fill = 'tozeroy', fillcolor = '#B0B0B0',
@@ -64,6 +64,11 @@ cr_profile_main <- function(data, axis_toponyme){
              ),
              list(
                text = "Rive droite", x = 1, y = 1.1,
+               xref = "paper", yref = "paper", showarrow = FALSE,
+               font = list(size = 14, weight = "bold")
+             ),
+             list(
+               text = paste(round(selected_dgo$measure/1000, 2)," km depuis l'exutoire ", sep = ""), x = 0.5, y = 1.1,
                xref = "paper", yref = "paper", showarrow = FALSE,
                font = list(size = 14, weight = "bold")
              ),
