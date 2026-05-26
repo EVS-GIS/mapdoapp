@@ -27,7 +27,7 @@ globals$map_group_params <<- params_map_group(globals$wms_params)
 
 globals$metric_choices <<- params_get_metric_choices()
 
-globals$metrics_params <<- params_metrics()
+globals$metrics_params <<- metric_info
 
 # save classes once to be able to access it directly
 globals$classes_proposed <<- params_classes()

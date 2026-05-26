@@ -148,19 +148,19 @@ mod_expl_classes_manual_server <- function(id, con, r_val, globals){
           ))
 
         # create classes-table to initialize classes UI
-        r_val_local$initial_classes_table = create_df_input(
-          variable_name = globals$metric_choices[[1]],
-          q_0025 =
-            globals$metric_stats() %>%
-            dplyr::filter(level_type == "France (total)") %>%
-            dplyr::pull(paste0(globals$metric_choices[[1]], "_0025")),
-          q_0975 =
-            globals$metric_stats() %>%
-            dplyr::filter(level_type == "France (total)") %>%
-            dplyr::pull(paste0(globals$metric_choices[[1]], "_0975"))  ,
-          no_classes = 4,
-          quantile = 95
-        )
+        # r_val_local$initial_classes_table = create_df_input(
+        #   variable_name = globals$metric_choices[[1]],
+        #   q_0025 =
+        #     globals$metric_stats() %>%
+        #     dplyr::filter(level_type == "France (total)") %>%
+        #     dplyr::pull(paste0(globals$metric_choices[[1]], "_0025")),
+        #   q_0975 =
+        #     globals$metric_stats() %>%
+        #     dplyr::filter(level_type == "France (total)") %>%
+        #     dplyr::pull(paste0(globals$metric_choices[[1]], "_0975"))  ,
+        #   no_classes = 4,
+        #   quantile = 95
+        # )
       }
 
     })
@@ -227,38 +227,38 @@ mod_expl_classes_manual_server <- function(id, con, r_val, globals){
           )
 
           # create classes-table to initialize classes UI
-          r_val_local$initial_classes_table = create_df_input(
-            variable_name = input$metric,
-            q_0025 =
-              globals$metric_stats() %>%
-              dplyr::filter(level_type == scale & level_name == name) %>%
-              dplyr::pull(paste0(input$metric, "_0025")),
-            q_0975 =
-              globals$metric_stats() %>%
-              dplyr::filter(level_type == scale & level_name == name) %>%
-              dplyr::pull(paste0(input$metric, "_0975"))  ,
-            no_classes = input$man_grouping_no_classes,
-            quantile = input$man_grouping_quantile
-          )
-        }
+        #   r_val_local$initial_classes_table = create_df_input(
+        #     variable_name = input$metric,
+        #     q_0025 =
+        #       globals$metric_stats() %>%
+        #       dplyr::filter(level_type == scale & level_name == name) %>%
+        #       dplyr::pull(paste0(input$metric, "_0025")),
+        #     q_0975 =
+        #       globals$metric_stats() %>%
+        #       dplyr::filter(level_type == scale & level_name == name) %>%
+        #       dplyr::pull(paste0(input$metric, "_0975"))  ,
+        #     no_classes = input$man_grouping_no_classes,
+        #     quantile = input$man_grouping_quantile
+        #   )
+        # }
         # when scale selection not created
-        else if (!is.null(input$metric) &&
-                 is.null(input$man_grouping_scale_select)){
+        # else if (!is.null(input$metric) &&
+        #          is.null(input$man_grouping_scale_select)){
 
           # create classes-table to initialize classes UI
-          r_val_local$initial_classes_table = create_df_input(
-            variable_name = input$metric,
-            q_0025 =
-              globals$metric_stats() %>%
-              dplyr::filter(level_type == "France (total)") %>%
-              dplyr::pull(paste0(input$metric, "_0025")),
-            q_0975 =
-              globals$metric_stats() %>%
-              dplyr::filter(level_type == "France (total)") %>%
-              dplyr::pull(paste0(input$metric, "_0975"))  ,
-            no_classes = 4,
-            quantile = 95
-          )
+          # r_val_local$initial_classes_table = create_df_input(
+          #   variable_name = input$metric,
+          #   q_0025 =
+          #     globals$metric_stats() %>%
+          #     dplyr::filter(level_type == "France (total)") %>%
+          #     dplyr::pull(paste0(input$metric, "_0025")),
+          #   q_0975 =
+          #     globals$metric_stats() %>%
+          #     dplyr::filter(level_type == "France (total)") %>%
+          #     dplyr::pull(paste0(input$metric, "_0975"))  ,
+          #   no_classes = 4,
+          #   quantile = 95
+          # )
         }
       }
 

@@ -20,5 +20,5 @@ reactable table with variables and sparklines
 Create reactable table for metrics-statistics
 }
 \examples{
-create_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban"))
+create_analysis_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban"))
 }

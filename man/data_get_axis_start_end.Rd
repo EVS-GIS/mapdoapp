@@ -4,10 +4,12 @@
 \alias{data_get_axis_start_end}
 \title{Get the start and end coordinates of a spatial object's axis}
 \usage{
-data_get_axis_start_end(dgo_axis)
+data_get_axis_start_end(selected_axis_id, con)
 }
 \arguments{
-\item{dgo_axis}{A spatial sf object with a LINESTRING geometry representing an axis.}
+\item{selected_axis_id}{The ID of the selected axis for which to retrieve the start and end coordinates.}
+
+\item{con}{Connection to Postgresql database.}
 }
 \value{
 A data frame with two rows, where the first row contains the start
@@ -18,10 +20,7 @@ This function takes a spatial object with a LINESTRING geometry and returns
 a data frame containing the start and end coordinates of the axis.
 }
 \examples{
-library(sf)
-line_coords <- matrix(c(0, 0, 1, 1), ncol = 2)
-# Create an sf object with the LINESTRING
-line_sf <- st_sf(geometry = st_sfc(st_linestring(line_coords)))
+
 df <- data_get_axis_start_end(line_sf)
 
 }

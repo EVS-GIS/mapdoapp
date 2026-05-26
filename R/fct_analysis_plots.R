@@ -29,7 +29,6 @@ prepare_selact_data_for_plot <- function(data,
 
 
   # create filter to select scales ------------------------------------------
-
   # France-Basin scale stats
   if (!is.null(basin_id) & is.null(region_id) & is.null(axis_data)) {
     filter <- c(paste0("France (total)_France_", strahler),
@@ -270,7 +269,6 @@ analysis_plot_classes_distr <- function(df){
   # Create a named vector for colors to ensure correct mapping
   unique_classes <- unique(df$class_name)
   color_palette <- setNames(unique(df$color), unique_classes)
-
   # Create the stacked bar plot
   plot <-
     plotly::plot_ly(data = df,

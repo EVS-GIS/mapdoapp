@@ -26,83 +26,84 @@ mod_analysis_ui <- function(id){
       )
     ), # head
 
-    tabsetPanel(
-      id = ns("tabset"),
-      tabPanel("Caractérisation de la sélection",
-               # show table with France, basin, region (+ same stats but just for the strahler order of selected axis),
-               # stats together with selected axis
-               # below show distribution plots of selection
-               fluidRow(
-                 style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
-                 textOutput(ns("selection_textUI")),
-                 column(
-                   width = 9,
-                   hr(), # horizontal line
-                   uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # overview table
-                   hr(), # horizontal line
-                   fluidRow(style = "margin-top: 20px;"),
-                   plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
-                 ),
-                 column(
-                   width = 3,
-                   div(
-                     id = ns("selact_modifications"),
-                     multiInput(
-                       inputId = ns("selact_metric_select"),
-                       label = "Métriques",
-                       choiceNames = params_metrics()$metric_title,
-                       choiceValues = params_metrics()$metric_name,
-                       selected = params_metrics()$metric_name[1:5]
-                     ),
-                     selectInput(
-                       inputId = ns("selact_strahler_select"),
-                       label = "Ordre de Strahler",
-                       choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
-                       selected = 0,
-                       multiple = TRUE
-                     ),
-                     actionButton(inputId = ns("selact_apply_button"), "Actualiser")
-                   )
-                 ))),
-      tabPanel("Comparaison des Régions",
-               fluidRow(
-                 style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
-                 column(
-                   width = 9,
-                   hr(), # horizontal line
-                   reactableOutput(ns("regions_table"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."),
-                   hr(),
-                   fluidRow(style = "margin-top: 20px;"),
-                   plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
-                 ),
-                 column(
-                   width = 3,
-                   div(
-                     id = ns("regions_modifications"),
-                     multiInput(
-                       inputId = ns("regions_metric_select"),
-                       label = "Métriques",
-                       choiceNames = params_metrics()$metric_title,
-                       choiceValues = params_metrics()$metric_name,
-                       selected = params_metrics()$metric_name[1:5]
-                     ),
-                     selectInput(
-                       inputId = ns("regions_strahler_select"),
-                       label = "Ordre de Strahler",
-                       choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
-                       selected = 0,
-                       multiple = TRUE
-                     ),
-                     actionButton(inputId = ns("regions_apply_button"), "Actualiser")
-                   )
-                 )
-               )
-      ),
-      tabPanel("Analyse Bimétrique",
+    # tabsetPanel(
+    #   id = ns("tabset"),
+    #   tabPanel("Caractérisation de la sélection",
+    #            # show table with France, basin, region (+ same stats but just for the strahler order of selected axis),
+    #            # stats together with selected axis
+    #            # below show distribution plots of selection
+    #            fluidRow(
+    #              style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
+    #              textOutput(ns("selection_textUI")),
+    #              column(
+    #                width = 9,
+    #                hr(), # horizontal line
+    #                uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # overview table
+    #                hr(), # horizontal line
+    #                fluidRow(style = "margin-top: 20px;"),
+    #                plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
+    #              ),
+    #              column(
+    #                width = 3,
+    #                div(
+    #                  id = ns("selact_modifications"),
+    #                  multiInput(
+    #                    inputId = ns("selact_metric_select"),
+    #                    label = "Métriques",
+    #                    choiceNames = metric_info$metric_title,
+    #                    choiceValues = metric_info$metric_name,
+    #                    selected = metric_info$metric_name[1:5]
+    #                  ),
+    #                  selectInput(
+    #                    inputId = ns("selact_strahler_select"),
+    #                    label = "Ordre de Strahler",
+    #                    choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
+    #                    selected = 0,
+    #                    multiple = TRUE
+    #                  ),
+    #                  actionButton(inputId = ns("selact_apply_button"), "Actualiser")
+    #                )
+    #              ))),
+    #   tabPanel("Comparaison des Régions",
+    #            fluidRow(
+    #              style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
+    #              column(
+    #                width = 9,
+    #                hr(), # horizontal line
+    #                reactableOutput(ns("regions_table"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."),
+    #                hr(),
+    #                fluidRow(style = "margin-top: 20px;"),
+    #                plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
+    #              ),
+    #              column(
+    #                width = 3,
+    #                div(
+    #                  id = ns("regions_modifications"),
+    #                  multiInput(
+    #                    inputId = ns("regions_metric_select"),
+    #                    label = "Métriques",
+    #                    choiceNames = metric_info$metric_title,
+    #                    choiceValues = metric_info$metric_name,
+    #                    selected = metric_info$metric_name[1:5]
+    #                  ),
+    #                  selectInput(
+    #                    inputId = ns("regions_strahler_select"),
+    #                    label = "Ordre de Strahler",
+    #                    choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
+    #                    selected = 0,
+    #                    multiple = TRUE
+    #                  ),
+    #                  actionButton(inputId = ns("regions_apply_button"), "Actualiser")
+    #                )
+    #              )
+    #            )
+    #   ),
+    #  tabPanel("Analyse Bimétrique",
                mod_analysis_bimetric_ui("analysis_bimetric_1")
-      ),
-      type = "pills"
-    ) #tabsetpanel
+    #  )
+    #,
+    #  type = "pills"
+    #) #tabsetpanel
   )
 }
 
@@ -226,33 +227,33 @@ mod_analysis_server <- function(id, con, r_val, globals){
 
               ##### Tables ####
               # REGIONS TAB - change table only when changes that apply to them are detected
-              if (changes_metrics_regions || changes_strahler_regions) {
-                # prepare stats for reactable
-                r_val_local$region_stats_prep = prepare_regions_stats_for_table(globals$metric_stats(),
-                                                                                region_names = globals$regions)
-
-                # create table
-                r_val_local$regions_table = create_analysis_table(r_val_local$region_stats_prep %>%
-                                                                    filter(strahler == input$regions_strahler_select),
-                                                                  input$regions_metric_select,
-                                                                  scale_name = "Région")
-              }
+              # if (changes_metrics_regions || changes_strahler_regions) {
+              #   # prepare stats for reactable
+              #   r_val_local$region_stats_prep = prepare_regions_stats_for_table(globals$metric_stats(),
+              #                                                                   region_names = globals$regions)
+              #
+              #   # create table
+              #   r_val_local$regions_table = create_analysis_table(r_val_local$region_stats_prep %>%
+              #                                                       filter(strahler == input$regions_strahler_select),
+              #                                                     input$regions_metric_select,
+              #                                                     scale_name = "Région")
+              # }
 
               # SELACT TAB - change table only when changes that apply to them are detected
-              if (changes_metrics_selact || changes_strahler_selact || changes_scales_selact) {
-                # get dataset of actual selection
-                r_val_local$selact_stats_prep = prepare_selact_stats_for_table(globals$metric_stats(),
-                                                                               basin_id = r_val$basin_id,
-                                                                               region_id = r_val$region_id,
-                                                                               axis_data = r_val$axis_data_classified)
-
-                # create table
-                r_val_local$selact_table = create_analysis_table(r_val_local$selact_stats_prep  %>%
-                                                                   filter(strahler %in% input$selact_strahler_select | name == "Axe"),
-                                                                 input$selact_metric_select,
-                                                                 scale_name = "Sélection"
-                )
-              }
+              # if (changes_metrics_selact || changes_strahler_selact || changes_scales_selact) {
+              #   # get dataset of actual selection
+              #   r_val_local$selact_stats_prep = prepare_selact_stats_for_table(globals$metric_stats(),
+              #                                                                  basin_id = r_val$basin_id,
+              #                                                                  region_id = r_val$region_id,
+              #                                                                  axis_data = r_val$axis_data_classified)
+              #
+              #   # create table
+              #   r_val_local$selact_table = create_analysis_table(r_val_local$selact_stats_prep  %>%
+              #                                                      filter(strahler %in% input$selact_strahler_select | name == "Axe"),
+              #                                                    input$selact_metric_select,
+              #                                                    scale_name = "Sélection"
+              #   )
+              # }
 
 
               ##### Plots #####

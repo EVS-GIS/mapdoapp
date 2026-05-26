@@ -21,7 +21,8 @@ This function retrieves data about network metrics for a specific network axis b
 }
 \examples{
 con <- db_con()
-network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con)
+network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=TRUE)
+network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=FALSE)
 DBI::dbDisconnect(con)
 
 }
