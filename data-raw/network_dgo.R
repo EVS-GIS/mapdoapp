@@ -11,7 +11,7 @@ query <- "SELECT
             diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
             riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
             built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom, confinement, ID_segment
-          FROM network_metrics_v2 as network_metrics
+          FROM network_metrics
           WHERE  axis = 9"
 
 network_dgo <- sf::st_read(dsn = db_con(), query = query) %>%

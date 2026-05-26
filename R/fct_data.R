@@ -462,7 +462,7 @@ data_get_distr_class <- function(con, class_name) {
       "'France' AS level_name,\n",
       "0 AS strahler, \n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY class_name",
@@ -481,7 +481,7 @@ data_get_distr_class <- function(con, class_name) {
       "'France' AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY strahler, class_name",
@@ -501,7 +501,7 @@ data_get_distr_class <- function(con, class_name) {
       "region_hydrographique.cdbh AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -521,7 +521,7 @@ data_get_distr_class <- function(con, class_name) {
       "region_hydrographique.cdbh AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -542,7 +542,7 @@ data_get_distr_class <- function(con, class_name) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -562,7 +562,7 @@ data_get_distr_class <- function(con, class_name) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -625,7 +625,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "'France' AS level_name,\n",
       "0 AS strahler, \n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY class_name",
@@ -644,7 +644,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "'France' AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
       "GROUP BY strahler, class_name",
@@ -664,7 +664,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "region_hydrographique.cdbh AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -684,7 +684,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "region_hydrographique.cdbh AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -705,7 +705,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "0 AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -725,7 +725,7 @@ data_get_distr_class_man <- function(con, manual_classes_table) {
       "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
       "network_metrics.strahler AS strahler,\n",
       classification_query, "\n",
-      "FROM network_metrics_v2 AS network_metrics\n",
+      "FROM network_metrics\n",
       "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
       "WHERE network_metrics.gid_region IS NOT NULL\n",
       ") AS subquery\n",
@@ -908,7 +908,7 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
           WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
           ELSE 'unvalid'
         END AS class_habitat
-      FROM network_metrics_v2 AS network_metrics
+      FROM network_metrics
       WHERE  axis = ?selected_axis_id"
     }
     if(aggregated==TRUE){
@@ -984,7 +984,7 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
     sinuosite,
     class_strahler, class_topographie, class_lu_dominante, class_urban,
     class_agriculture, class_nature, class_gravel, class_confinement, class_habitat
-    FROM network_metrics_v2 AS network_metrics
+    FROM network_metrics
     WHERE  network_metrics.gid_region = ?selected_region_id"
     query <- sqlInterpolate(con, sql, selected_region_id = selected_region_id)
 
