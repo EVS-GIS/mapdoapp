@@ -4,7 +4,7 @@
 \alias{data_get_regions}
 \title{Get hydrological regions}
 \usage{
-data_get_regions(con, opacity)
+data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.1))
 }
 \arguments{
 \item{con}{Connection to Postgresql database.}
