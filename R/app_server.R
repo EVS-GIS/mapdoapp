@@ -81,7 +81,7 @@ app_server <- function(input, output, session) {
 
   ### GLOBALS ####
   # create empty list to store fixed global values which can be accessed by other modules
-  # globals <- list()
+  globals <- list()
 
   # load regions sf data
   globals$regions = data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
