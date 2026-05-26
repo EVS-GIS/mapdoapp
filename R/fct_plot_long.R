@@ -250,10 +250,8 @@ lg_roe_vertical_line <- function(roe_distance_axis){
 #'     colors_df = globals$classes_proposed_colors)
 #'
 assign_classes_proposed <- function(data, proposed_class, colors_df) {
-
   # Extract the relevant color mapping for the main_class
   color_mapping <- colors_df[[proposed_class]]
-
   # Add color column based on the class_name
   df <- data %>%
     sf::st_drop_geometry() %>%

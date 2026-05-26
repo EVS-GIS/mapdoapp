@@ -128,6 +128,15 @@ test_that("data_get_hydro_sites works", {
   expect_true(nrow(data) > 0,
               info = "Data is not empty")
 })
+test_that("data_get_carhyce_stations works", {
+  con <- db_con()
+  data <- data_get_carhyce_stations(con = con)
+  DBI::dbDisconnect(con)
+  expect_true(inherits(data, "sf"),
+              "sf data loaded")
+  expect_true(nrow(data) > 0,
+              info = "Data is not empty")
+})
 
 test_that("data_get_elevation_profiles works", {
   con <- db_con()

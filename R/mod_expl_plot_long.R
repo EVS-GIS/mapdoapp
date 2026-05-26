@@ -167,19 +167,23 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
 
       if (!is.null(globals$axis_data()) & (r_val$axis_clicked == TRUE)) {
 
-        # build second axis input selector
-        r_val_local$profile_first_metric = selectInput(ns("profile_first_metric"), label = "Métrique :",
-                                                       choices = globals$metric_choices,
-                                                       selected  = globals$metric_choices[1])
+        # build first axis input selector
+        r_val_local$profile_first_metric = fluidRow(checkboxInput(ns("aggregated"),label="données agrégées par segments",value=FALSE),
+                                                    selectInput(ns("profile_first_metric"), label = "Métrique :",
+                                                               choices = globals$metric_choices,
+                                                               selected  = globals$metric_choices[1]))
 
         # build second axis input selector
-        r_val_local$profile_sec_metric = selectInput(ns("profile_sec_metric"), label = "2éme métrique :",
+        r_val_local$profile_sec_metric = selectInput(ns("profile_sec_metric"), label = "2ème métrique :",
                                                      choices = c("aucun", globals$metric_choices),
                                                      selected  = 1,
                                                      width = "100%")
       }
     })
 
+    observeEvent(input$aggregated,{
+      r_val$aggregated=input$aggregated
+    })
 
     ##### Metric info ####
 
@@ -222,9 +226,9 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
 
         # create the list to add trace and layout to change second axe plot
         r_val_local$proxy_first_axe <- lg_profile_first(data = globals$axis_data(),
-                                                          y = globals$axis_data()[[input$profile_first_metric]],
-                                                          y_label = r_val_local$first_metric_name,
-                                                          y_label_category = r_val_local$first_metric_type)
+                                                        y = globals$axis_data()[[input$profile_first_metric]],
+                                                        y_label = r_val_local$first_metric_name,
+                                                        y_label_category = r_val_local$first_metric_type)
         # add second metric to plot
         plotlyProxy("long_profile") %>%
           plotlyProxyInvoke("deleteTraces", 0) %>%
@@ -255,7 +259,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
 
     #### add / remove 2nd axis ####
 
-    observeEvent(c(input$profile_sec_metric, input$profile_first_metric), {
+    observeEvent(c(input$profile_sec_metric, input$profile_first_metric, globals$axis_data()), {
       req(globals$axis_data())  # Ensure data exists
 
       # add second axis
@@ -334,7 +338,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
         # add background classification shapes
         if (input$background_profile == TRUE && !is.null(r_val$axis_data_classified)) {
 
-          # create bckground shapes based on classified axis data
+          # create background shapes based on classified axis data
           if (!is.null(r_val$axis_data_classified)) {
             r_val_local$shapes_background = create_classes_background(r_val$axis_data_classified)
           }

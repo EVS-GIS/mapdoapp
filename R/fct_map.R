@@ -16,7 +16,7 @@
 map_initialize <- function(params_wms, params_map_group,
                            id_logo_ign_remonterletemps,
                            basins_data, regions_data, axes_data,
-                           roe_sites, hydro_sites) {
+                           roe_sites, hydro_sites, carhyce_stations) {
 
   leaflet(options = leafletOptions(zoomSnap = 0.25, zoomDelta = 0.75)) %>%
     # zoom on France
@@ -98,6 +98,18 @@ map_initialize <- function(params_wms, params_map_group,
     ) %>%
     # Hydrometric sites layer hidden by default
     hideGroup(params_map_group[["hydro_sites"]]) %>%
+    addCircleMarkers(data = carhyce_stations,
+                     radius = 4.5,
+                     weight = 0.5,
+                     opacity = 0.9,
+                     color = "#CAEDDE",
+                     fillColor = "#4DE3A1",
+                     fillOpacity = 0.9,
+                     popup = ~popup,
+                     group = params_map_group[["carhyce_stations"]]
+    ) %>%
+    # Hydrometric sites layer hidden by default
+    hideGroup(params_map_group[["carhyce_stations"]]) %>%
     # add WMS overlayers
     map_add_wms_overlayers(params_wms) %>%
     # add transparent axis
@@ -110,6 +122,7 @@ map_initialize <- function(params_wms, params_map_group,
                         params_map_group[["region"]],
                         params_map_group[["roe"]],
                         params_map_group[["hydro_sites"]],
+                        params_map_group[["carhyce_stations"]],
                         unlist(sapply(params_wms, function(x) if (x$overlayer) x$name else NULL), use.names = FALSE))
     ) %>%
     addControl(
@@ -238,7 +251,6 @@ map_add_network <- function(map, wms_params_network,
                             group,
                             cql_filter = "",
                             style = "mapdo:classes_proposed_strahler") {
-
   map %>%
     clearGroup(group) %>%
     addWMSTiles(
@@ -247,6 +259,7 @@ map_add_network <- function(map, wms_params_network,
       attribution = wms_params_network$attribution,
       options = WMSTileOptions(
         format = wms_params_network$format,
+        request = "GetMap",
         request = "GetMap",
         transparent = TRUE,
         styles = style,
