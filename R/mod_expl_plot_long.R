@@ -25,6 +25,7 @@ mod_expl_plot_long_ui <- function(id){
         column(
           width = 2,
           style = "margin-top: 20px;",
+          checkboxInput(ns("aggregated"),label="données agrégées par segments",value=TRUE),
           uiOutput(ns("profile_first_metricUI")),
           uiOutput(ns("profile_sec_metricUI")),
           hr(),
@@ -181,10 +182,11 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
         data(metric_info)
         print(metric_info)
         # build first axis input selector
-        r_val_local$profile_first_metric = fluidRow(checkboxInput(ns("aggregated"),label="données agrégées par segments",value=FALSE),
-                                                    selectInput(ns("profile_first_metric"), label = "Métrique :",
-                                                               choices = metric_info$metric_title,
-                                                               selected  = metric_info$metric_title[1]))
+        r_val_local$profile_first_metric = selectInput(ns("profile_first_metric"),
+                                                       label = "Métrique :",
+                                                       choices = metric_info$metric_name,
+                                                       selected  = 1,
+                                                       width="100%")
 
         # build second axis input selector
         r_val_local$profile_sec_metric = selectInput(ns("profile_sec_metric"), label = "2ème métrique :",
