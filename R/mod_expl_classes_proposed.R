@@ -82,10 +82,13 @@ mod_expl_classes_proposed_server <- function(id, r_val, globals){
     observeEvent(c(globals$axis_data(), r_val$classes_proposed_selected), {
       # proposed classification applied
       if (r_val$visualization == "classes" && !is.null(globals$axis_data())) {
-
         r_val$axis_data_classified = globals$axis_data() %>%
           assign_classes_proposed(proposed_class = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name,
                                   colors_df = globals$classes_proposed_colors)
+        class_name=globals$classes_proposed[r_val$classes_proposed_selected,]$class_name
+        print(class_name)
+        print(r_val$axis_data_classified[[class_name]] %>% unique())
+        print(r_val$axis_data_classified$color %>% unique())
       }
 
       # reload of the tooltip_label for the axis dgo

@@ -366,7 +366,6 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
     ##### background classes ####
 
     observeEvent(c(input$background_profile, r_val$axis_data_classified),  {
-
       if (!is.null(input$background_profile) && !is.null(globals$axis_data())) {
         # add background classification shapes
         if (input$background_profile == TRUE && !is.null(r_val$axis_data_classified)) {
@@ -496,6 +495,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
 
       # classes
       if (!is.null(r_val_local$shapes_background)) {
+        print("pouet")
         shapes_list <- c(shapes_list, r_val_local$shapes_background)
       }
 
@@ -514,7 +514,7 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
       req(input$profile_first_metric)
 
       if (!is.null(combined_shapes())) {
-
+        print("gwek")
         # update profile with changed shapes
         plotlyProxy("long_profile") %>%
           plotlyProxyInvoke("relayout", list(shapes = combined_shapes()))

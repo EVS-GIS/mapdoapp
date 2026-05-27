@@ -905,7 +905,38 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
         mutate(maxmeasure=case_when(ids<max(ids)~lead(minmeasure,1),
                                     TRUE~maxmeasure)) %>%
         tidyr::pivot_longer(cols=minmeasure:maxmeasure, names_to="measure_type",values_to="measure") %>%
-        dplyr::arrange(ids)
+        dplyr::arrange(ids,measure) %>%
+        mutate(class_agriculture=case_when(class_agriculture=="Impact agricole modéré" ~ "Modéré",
+                                           class_agriculture=="Impact agricole élevé" ~ "Forte",
+                                           class_agriculture=="Forte impact agricole" ~ "Très Forte",
+                                           class_agriculture=="Presque pas/pas d'impact agricole"~"Basse/Absente",
+                                           TRUE~class_agriculture),
+               class_urban=case_when(class_urban=="Presque pas/pas urbanisé"~"Presque pas/Pas urbanisé",
+                                     class_urban=="modérément urbanisé"~"Modérément urbanisé",
+                                     class_urban=="urbanisé"~"Urbanisé",
+                                     class_urban=="fortement urbanisé"~"Fortement urbanisé",
+                                     TRUE~class_urban),
+               class_nature=case_when(class_nature=="Presque pas/pas naturelle"~"Presque pas/Pas naturelle",
+                                      class_nature=="Utilisation naturelle modérée"~"Modérée",
+                                      class_nature=="Forte utilisation naturelle"~"Forte",
+                                      class_nature=="Très forte utilisation naturelle"~"Très forte",
+                                      TRUE~class_nature),
+               class_gravel=case_when(class_gravel=="abundant"~"Fréquent",
+                                      class_gravel=="moyennement présente"~"Occasionnel",
+                                      class_gravel=="absent"~"Absent",
+                                      TRUE~class_gravel),
+               class_confinement=case_when(class_confinement=="confiné"~"Confiné",
+                                           class_confinement=="très confiné"~"Très confiné",
+                                           class_confinement=="modérement espace"~"Modérément confiné",
+                                           class_confinement=="espace abondant"~"Peu confiné",
+                                           TRUE~class_confinement),
+               class_habitat=case_when(class_habitat=="très bien connecté"~"Elevée",
+                                       class_habitat=="bien connecté"~"Bonne",
+                                       class_habitat=="moyen connecté"~"Moyenne",
+                                       class_habitat=="faible / absente"~"Faible/Absente",
+                                       TRUE~class_habitat)
+               )
+
     }else{
       data= data %>%
         arrange(measure)

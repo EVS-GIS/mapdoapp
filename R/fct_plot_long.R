@@ -314,7 +314,6 @@ create_classes_background <- function(classified_axis) {
 
   # Create empty list to store shapes in
   shapes <- list()
-
   for (i in 1:(nrow(classified_axis) - 1)) {
 
     # set x-axis limits
