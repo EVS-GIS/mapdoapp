@@ -412,9 +412,9 @@ data_get_distr_class <- function(con, class_name) {
       class_name == "class_gravel" ~
         "CASE
           WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'abundant'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'moyennement présente'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'absent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
           ELSE 'unvalid'
         END AS class_name",
       class_name == "class_confinement" ~
