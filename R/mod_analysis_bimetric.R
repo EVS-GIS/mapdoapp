@@ -7,7 +7,6 @@
 #' @importFrom plotly plotlyOutput
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#'
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
@@ -32,8 +31,8 @@ mod_analysis_bimetric_ui <- function(id) {
           div(
             style = "display: flex; align-items: center",
             selectInput(ns("x_metric"), label = "Métrique X:",
-                        choices = globals$metric_choices,
-                        selected  = globals$metric_choices[1]),
+                        choices =  mapdoapp::params_get_metric_choices(),
+                        selected  =  mapdoapp::params_get_metric_choices()[1]),
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
@@ -47,8 +46,8 @@ mod_analysis_bimetric_ui <- function(id) {
           div(
             style = "display: flex; align-items: center",
             selectInput(ns("y_metric"), label = "Métrique Y:",
-                        choices = globals$metric_choices,
-                        selected  = globals$metric_choices[2]),
+                        choices = mapdoapp::params_get_metric_choices(),
+                        selected  = mapdoapp::params_get_metric_choices()[2]),
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
