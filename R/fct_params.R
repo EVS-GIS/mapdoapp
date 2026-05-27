@@ -327,18 +327,15 @@ params_classes <- function() {
       - faible / absente (< 10 %)",
       # style
       "Classification des styles, basée sur la méthode décrite dans De Almeida et al, 2026.
-      Chenal unique:
       - Réservoir : Elargissement de la largeur du chenal en eau sous l'effet d'une retenue
-      - Rectiligne : très faible sinuosité, tracé linéaire, absence de bancs
-      - Sinueux : sinuosité intermédiaire, tracé légèrement courbé, absence de bancs
-      - Méandre passif :  très forte sinuosité, méandres bien développés, berges relativement stable, absence de bancs
-      - Rectiligne à bancs alternés : faible sinuosité, bancs latéraux alternés
-      - Sinueux avec bancs :sinuosité intermédiaire, présence de bancs
-      - Méandre actif : forte sinuosité, présence de bancs (scroll bars)
-      Intermédiaire:
-      - Divagant : divisions locales, abondants bancs latéraux
+      - Rectiligne : Chenal unique,très faible sinuosité, tracé linéaire, absence de bancs
+      - Sinueux : Chenal unique, sinuosité intermédiaire, tracé légèrement courbé, absence de bancs
+      - Méandre passif : Chenal unique, très forte sinuosité, méandres bien développés, berges relativement stable, absence de bancs
+      - Rectiligne à bancs alternés : Chenal unique, faible sinuosité, bancs latéraux alternés
+      - Sinueux avec bancs : Chenal unique, sinuosité intermédiaire, présence de bancs
+      - Méandre actif : Chenal unique, forte sinuosité, présence de bancs (scroll bars)
+      - Divagant : Chenal unique avec divisions locales, abondants bancs latéraux
       - Iles éparses : Chenal unique avec des divisons locales par des îles végétalisés dispersée
-      Chenaux multiples:
       - Anastomosé : Cours d'eau à chenaux multiples composé de large et stable îles végétalisées. Nombreux chenaux interconnectés à faible énergie
       - Anabranche : Cours d'eau à chenaux multiples, présence d'îles végétalisése et de bancs
       - Tresse : Cours d'eau à chenaux multiples, chenaux de taille égale séparés par des bancs pas ou peu végétalisés"
@@ -473,7 +470,7 @@ params_classes_colors <- function() {
   df$class_style <- c("#956d3e", "#93DA97","#E7D283", "#7a1073",  "#d96c0e",  "#3E7B27",
                       "#121358", "#4BB8FA","#9E9E9E", "#2C5EAD", "#fcb429", "#DD0303") %>%
     setNames(
-      c("Anabranche", "Anastomosé", "Bancs alternés", "Divagant","Méandre actif","Sparse islands",
+      c("Anabranche", "Anastomosé", "Bancs alternés", "Divagant","Méandre actif","Iles éparses",
         "Méandre passif","Rectiligne","Réservoir","Sinueux","Sinueux à bancs","Tresse")
     )
   return(df)

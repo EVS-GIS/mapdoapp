@@ -247,7 +247,8 @@ map_add_wms_overlayers <- function(map, params_wms) {
 #' map_add_network(wms_params = params_wms()$network, cql_filter = "gid_region <> 11", style = "mapdo:classes_proposed_urban")
 #'
 #' @export
-map_add_network <- function(map, wms_params_network,
+map_add_network <- function(map,
+                            wms_params_network,
                             group,
                             cql_filter = "",
                             style = "mapdo:classes_proposed_strahler") {
