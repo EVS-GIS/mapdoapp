@@ -16,6 +16,7 @@
 #' @importFrom shiny NS tagList
 mod_analysis_ui <- function(id){
   ns <- NS(id)
+  data(metric_info)
   tagList(
     useShinyjs(),
     tags$head(
@@ -51,9 +52,9 @@ mod_analysis_ui <- function(id){
                      multiInput(
                        inputId = ns("selact_metric_select"),
                        label = "Métriques",
-                       choiceNames = params_metrics()$metric_title,
-                       choiceValues = params_metrics()$metric_name,
-                       selected = params_metrics()$metric_name[1:5]
+                       choiceNames = metric_info$metric_title,
+                       choiceValues = metric_info$metric_name,
+                       selected = metric_info$metric_name[1:5]
                      ),
                      selectInput(
                        inputId = ns("selact_strahler_select"),
@@ -84,9 +85,9 @@ mod_analysis_ui <- function(id){
                      multiInput(
                        inputId = ns("regions_metric_select"),
                        label = "Métriques",
-                       choiceNames = params_metrics()$metric_title,
-                       choiceValues = params_metrics()$metric_name,
-                       selected = params_metrics()$metric_name[1:5]
+                       choiceNames = metric_info$metric_title,
+                       choiceValues = metric_info$metric_name,
+                       selected = metric_info$metric_name[1:5]
                      ),
                      selectInput(
                        inputId = ns("regions_strahler_select"),

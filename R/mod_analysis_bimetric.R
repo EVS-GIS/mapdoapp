@@ -117,18 +117,20 @@ mod_analysis_bimetric_server <- function(id, con, r_val, globals){
 
     # update infobutton when metric selected changes for the first and second metric
     observe({
+      data(metric_info)
       if (!is.null(input$x_metric)) {
         update_popover("popover_metric_x",
-                       HTML(globals$metrics_params %>%
+                       HTML(metric_info %>%
                               filter(metric_name == input$x_metric) %>%
                               pull(metric_description)))
       }
     })
 
     observe({
+      data(metric_info)
       if (!is.null(input$y_metric)) {
         update_popover("popover_metric_y",
-                       HTML(globals$metrics_params %>%
+                       HTML(metric_info %>%
                               filter(metric_name == input$y_metric) %>%
                               pull(metric_description)))
       }

@@ -1,34 +1,34 @@
-globalVariables(unique(c(
-  # data_get_axis:
-  "region_click",
-  # data_get_network_axis:
-  "measure",
-  # data_get_regions_in_bassin:
-  "bassin_click",
-  # data_get_roe_in_region:
-  "region_click",
-  # lg_profile_main:
-  "selected_axis_df",
-  # lg_profile_second:
-  "selected_axis_df",
-  # map_add_regions_in_bassin:
-  "region_hydro",
-  # mod_explore_server : <anonymous>:
-  "fid", "measure", "axis", "cdbh", "click", "gid",
-  # data_get_elevation_profiles:
-  "distance", "profile"
-)))
-
-globals <<- list()
-
-globals$wms_params <<- params_wms()
-
-globals$map_group_params <<- params_map_group(globals$wms_params)
-
-globals$metric_choices <<- params_get_metric_choices()
-
-globals$metrics_params <<- metric_info
-
-# save classes once to be able to access it directly
-globals$classes_proposed <<- params_classes()
-globals$classes_proposed_colors <<- params_classes_colors()
+# globalVariables(unique(c(
+#   # data_get_axis:
+#   "region_click",
+#   # data_get_network_axis:
+#   "measure",
+#   # data_get_regions_in_bassin:
+#   "bassin_click",
+#   # data_get_roe_in_region:
+#   "region_click",
+#   # lg_profile_main:
+#   "selected_axis_df",
+#   # lg_profile_second:
+#   "selected_axis_df",
+#   # map_add_regions_in_bassin:
+#   "region_hydro",
+#   # mod_explore_server : <anonymous>:
+#   "fid", "measure", "axis", "cdbh", "click", "gid",
+#   # data_get_elevation_profiles:
+#   "distance", "profile"
+# )))
+#
+# globals <<- list()
+#
+# globals$wms_params <<- params_wms()
+#
+# globals$map_group_params <<- params_map_group(globals$wms_params)
+#
+# globals$metric_choices <<- params_get_metric_choices()
+#
+# globals$metrics_params <<- metric_info
+#
+# # save classes once to be able to access it directly
+# globals$classes_proposed <<- params_classes()
+# globals$classes_proposed_colors <<- params_classes_colors()

@@ -229,6 +229,7 @@ data_get_metrics=function(con,
 #'
 #' @return Dataframe which contains the statistics for all metrics for different entities: France, Basins, Regions
 data_get_stats_metrics <- function(con) {
+  data(metric_info)
   variables <- metric_info$metric_name
   query_stats <-
     paste0(
@@ -787,6 +788,7 @@ data_get_levels_names <- function(con) {
 #'
 #' @export
 data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
+  data(metric_info)
   if (!is.null(selected_axis_id)) {
     if(aggregated==FALSE){
     sql <- paste0("SELECT network_metrics.fid, gid_region, axis, ids, measure, toponyme, strahler, geom,",

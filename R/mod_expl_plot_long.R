@@ -178,16 +178,17 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
     observeEvent(r_val$axis_clicked, {
 
       if (!is.null(globals$axis_data()) & (r_val$axis_clicked == TRUE)) {
-
+        data(metric_info)
+        print(metric_info)
         # build first axis input selector
         r_val_local$profile_first_metric = fluidRow(checkboxInput(ns("aggregated"),label="données agrégées par segments",value=FALSE),
                                                     selectInput(ns("profile_first_metric"), label = "Métrique :",
-                                                               choices = globals$metric_choices,
-                                                               selected  = globals$metric_choices[1]))
+                                                               choices = metric_info$metric_title,
+                                                               selected  = metric_info$metric_title[1]))
 
         # build second axis input selector
         r_val_local$profile_sec_metric = selectInput(ns("profile_sec_metric"), label = "2ème métrique :",
-                                                     choices = c("aucun", globals$metric_choices),
+                                                     choices = c("aucun", metric_info$metric_name),
                                                      selected  = 1,
                                                      width = "100%")
       }
@@ -202,8 +203,9 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
     # update infobutton when metric selected changes for the first and second metric
     observe({
       if (!is.null(input$profile_first_metric)) {
+        data(metric_info)
         update_popover("popover_metric",
-                       HTML(globals$metrics_params %>%
+                       HTML(metric_info %>%
                               filter(metric_name == input$profile_first_metric) %>%
                               pull(metric_description)))
       }
@@ -211,13 +213,14 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
 
     observe({
       if (!is.null(input$profile_sec_metric)) {
+        data(metric_info)
         update_popover("popover_metric2",
                        HTML(
                          # check if no metric is selected
                          if (input$profile_sec_metric == "aucun") {
                            "Choisissez une deuxième métrique"
                          } else{
-                           globals$metrics_params %>%
+                           metric_info %>%
                              filter(metric_name == input$profile_sec_metric) %>%
                              pull(metric_description)
                          }
@@ -248,10 +251,11 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
       if (!is.null(input$profile_first_metric) & !is.null(globals$axis_data())) {
 
         # get metric title and type
+        data(metric_info)
         r_val_local$first_metric_name =
-          globals$metrics_params |> filter(metric_name == input$profile_first_metric) |> pull(metric_title)
+          metric_info |> filter(metric_name == input$profile_first_metric) |> pull(metric_title)
         r_val_local$first_metric_type =
-          globals$metrics_params |> filter(metric_name == input$profile_first_metric) |> pull(metric_type_title)
+          metric_info |> filter(metric_name == input$profile_first_metric) |> pull(metric_type_title)
 
         # create the list to add trace and layout to change second axe plot
         r_val_local$proxy_first_axe <- lg_profile_first(data = globals$axis_data(),
@@ -294,10 +298,11 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
       # add second axis
       if (!is.null(input$profile_sec_metric) && input$profile_sec_metric != "aucun") {
         # get metric title and type
+        data(metric_info)
         r_val_local$sec_metric_name =
-          globals$metrics_params |> filter(metric_name == input$profile_sec_metric) |> pull(metric_title)
+          metric_info |> filter(metric_name == input$profile_sec_metric) |> pull(metric_title)
         r_val_local$sec_metric_type =
-          globals$metrics_params |> filter(metric_name == input$profile_sec_metric) |> pull(metric_type_title)
+          metric_info |> filter(metric_name == input$profile_sec_metric) |> pull(metric_type_title)
 
         # create the list to add trace and layout to change second axe plot
         r_val_local$proxy_second_axe <- lg_profile_second(data = globals$axis_data(),
