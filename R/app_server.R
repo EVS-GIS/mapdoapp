@@ -82,6 +82,12 @@ app_server <- function(input, output, session) {
   ### GLOBALS ####
   # create empty list to store fixed global values which can be accessed by other modules
   globals <- list()
+  print(1)
+  # get parameters for metrics, classes, wms
+  # globals$metric_info=metric_info
+  globals$classes_proposed=params_classes()
+  globals$wms_params= params_wms()
+  globals$map_group_params = params_map_group(globals$wms_params)
   # load regions sf data
   globals$regions = data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
   waitress$inc(step_progress)  # Increment progress 2

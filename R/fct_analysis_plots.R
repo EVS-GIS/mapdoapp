@@ -333,8 +333,9 @@ create_analysis_biplot <- function(df, metric_x, metric_y, classes = FALSE, lm =
   data <- na.omit(df)
 
   # Get metric titles
-  metric_x_title <- globals$metrics_params |> filter(metric_name == metric_x) |> pull(metric_title)
-  metric_y_title <- globals$metrics_params |> filter(metric_name == metric_y) |> pull(metric_title)
+  data(metric_info)
+  metric_x_title <- metric_info |> filter(metric_name == metric_x) |> pull(metric_title)
+  metric_y_title <- metric_info |> filter(metric_name == metric_y) |> pull(metric_title)
 
   # Prepare linear regression data if lm is TRUE
   if (lm && metric_x != metric_y) {

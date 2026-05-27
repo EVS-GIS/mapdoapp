@@ -106,9 +106,10 @@ mod_expl_classes_manual_server <- function(id, con, r_val, globals){
 
     # update infobutton when metric selected changes for the first and second metric
     observe({
+      data(metric_info)
       if (!is.null(input$metric)) {
         update_popover("popover_metric",
-                       HTML(globals$metrics_params %>%
+                       HTML(metric_info %>%
                               filter(metric_name == input$metric) %>%
                               pull(metric_description)))
       }
