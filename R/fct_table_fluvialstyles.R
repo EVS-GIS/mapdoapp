@@ -9,8 +9,9 @@
 #'
 #' @noRd
 create_table_fluvialstyles <- function() {
+  data_classes=params_classes()
   data(metric_info)
-  table <- reactable(metric_info,
+  table <- reactable(data_classes,
                      columns = list(
                        class_title = colDef(name = "Classification", sortable = FALSE),
                        description = colDef(show = FALSE),  # Hide column
@@ -22,7 +23,7 @@ create_table_fluvialstyles <- function() {
                        htmltools::div(
                          style = "padding: 10px; margin-left: 84px; white-space: pre-wrap;",  # Add text indentation
                          # htmltools::strong("Details: "),
-                         params_styles$description[index]  # Display the detail column for the specific row
+                         metric_info$metric_description[index]  # Display the detail column for the specific row
                        )
                      }, selection = "single", defaultSelected = 1, onClick = "select",
                      highlight = TRUE)

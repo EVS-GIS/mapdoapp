@@ -13,6 +13,7 @@
 #' @importFrom shiny NS tagList
 mod_analysis_bimetric_ui <- function(id) {
   ns <- NS(id)
+  data(metric_info)
   tagList(
     fluidRow(
       style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
@@ -32,8 +33,8 @@ mod_analysis_bimetric_ui <- function(id) {
           div(
             style = "display: flex; align-items: center",
             selectInput(ns("x_metric"), label = "Métrique X:",
-                        choices = globals$metric_choices,
-                        selected  = globals$metric_choices[1]),
+                        choices = metric_info$metric_name,,
+                        selected  = metric_info$metric_name[1]),
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
@@ -47,8 +48,8 @@ mod_analysis_bimetric_ui <- function(id) {
           div(
             style = "display: flex; align-items: center",
             selectInput(ns("y_metric"), label = "Métrique Y:",
-                        choices = globals$metric_choices,
-                        selected  = globals$metric_choices[2]),
+                        choices = metric_info$metric_name,
+                        selected  = metric_info$metric_name[2]),
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(

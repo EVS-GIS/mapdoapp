@@ -41,7 +41,7 @@ mod_expl_classes_proposed_server <- function(id, r_val, globals){
 
     # build table
     output$table <- renderReactable(
-      create_table_fluvialstyles(globals$classes_proposed)
+      create_table_fluvialstyles()
     ) %>%
       bindCache(globals$classes_proposed$sld_style)
 
@@ -61,7 +61,7 @@ mod_expl_classes_proposed_server <- function(id, r_val, globals){
         # add styling to map
         r_val$map_proxy %>%
           clearGroup(globals$map_group_params[["network"]]) %>% # clear existing network layer
-          map_add_network(globals$wms_params$network,
+          map_add_network(params_wms()$network,
                           group = globals$map_group_params[["network"]],
                           style = paste0("mapdo:", globals$classes_proposed[selected,]$sld_style))
 

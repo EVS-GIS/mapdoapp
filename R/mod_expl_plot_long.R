@@ -180,7 +180,9 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
       if (!is.null(globals$axis_data()) & (r_val$axis_clicked == TRUE)) {
 
         # build first axis input selector
-        r_val_local$profile_first_metric = fluidRow(checkboxInput(ns("aggregated"),label="données agrégées par segments",value=FALSE),
+        r_val_local$profile_first_metric = fluidRow(checkboxInput(ns("aggregated"),
+                                                                  label="données agrégées par segments",
+                                                                  value=TRUE),
                                                     selectInput(ns("profile_first_metric"), label = "Métrique :",
                                                                choices = globals$metric_choices,
                                                                selected  = globals$metric_choices[1]))

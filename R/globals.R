@@ -27,6 +27,8 @@ globals$map_group_params <<- params_map_group(globals$wms_params)
 
 globals$metric_choices <<- params_get_metric_choices()
 
+data(metric_info)
+print("in globals.R")
 globals$metrics_params <<- metric_info
 
 # save classes once to be able to access it directly

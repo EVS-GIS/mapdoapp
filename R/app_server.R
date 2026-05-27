@@ -83,17 +83,26 @@ app_server <- function(input, output, session) {
   # create empty list to store fixed global values which can be accessed by other modules
   globals <- list()
 
+  # load metric info data
+  print(1)
+  data(metric_info)
+  globals$metrics_params = metric_info
+  globals$wms_params = params_wms()
+  globals$map_group_params = params_map_group(globals$wms_params)
   # load regions sf data
+  print(2)
   globals$regions = data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
   waitress$inc(step_progress)  # Increment progress 2
   Sys.sleep(.3)
 
   # Create a unique key based on the regions_gids content
+  print(3)
   globals$regions_gids_key = paste(collapse = "_", sort(globals$regions$gid))
   waitress$inc(step_progress)  # Increment progress 3
   Sys.sleep(.3)
 
   # load basins sf data (cached)
+  print(4)
   globals$basins <- reactive({
     data_get_basins(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
   }) %>%
@@ -102,6 +111,7 @@ app_server <- function(input, output, session) {
   Sys.sleep(.3)
 
   # load axes sf data (cached)
+  print(5)
   globals$axes <- reactive({
     data_get_axes(con)
   }) %>%
@@ -110,6 +120,7 @@ app_server <- function(input, output, session) {
   Sys.sleep(.3)
 
   # load roe sf data (cached)
+  print(6)
   globals$roe_sites <- reactive({
     data_get_roe_sites(con)
   }) %>%
@@ -118,6 +129,7 @@ app_server <- function(input, output, session) {
   Sys.sleep(.3)
 
   # load discharge stations sf data (cached)
+  print(7)
   globals$hydro_sites <- reactive({
     data_get_hydro_sites(con)
   }) %>%
@@ -126,6 +138,7 @@ app_server <- function(input, output, session) {
   Sys.sleep(.3)
 
   # load carhyce stations sf data (cached)
+  print(8)
   globals$carhyce_stations <- reactive({
     f_make_popup=function(id, nom) {
       tagList(
@@ -151,6 +164,7 @@ app_server <- function(input, output, session) {
   waitress$inc(step_progress)  # Increment progress 8
   Sys.sleep(.3)
   #### Metric stats caching ####
+  print(9)
   globals$metric_stats <- reactive({
     data_get_stats_metrics(con)
   }) %>%
@@ -159,6 +173,7 @@ app_server <- function(input, output, session) {
   Sys.sleep(.3)
 
   #### Axis data caching ####
+  print(10)
   globals$axis_data <- reactive({
     aggregated=r_val$aggregated
     data_get_axis_dgos(selected_axis_id = r_val$axis_id, aggregated=aggregated, con)
@@ -166,6 +181,7 @@ app_server <- function(input, output, session) {
     bindCache(c(r_val$axis_id, globals$regions_gids_key, r_val$aggregated))
 
   #### Classes stats caching ####
+  print(11)
   globals$classes_stats <- reactive({
     if (!is.null(r_val$classes_proposed_selected)) {
       data_get_distr_class(con = con, class_name = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name)
@@ -176,6 +192,7 @@ app_server <- function(input, output, session) {
     bindCache(globals$regions_gids_key, r_val$classes_proposed_selected)
 
   # navbarPage identifier
+  print(12)
   observeEvent(input$navbarPage, {
     r_val$tab_page = input$navbarPage
   })
@@ -183,7 +200,9 @@ app_server <- function(input, output, session) {
 
   ### Server activation ####
   # main servers
+  print(13)
   mod_explore_server("explore_1", con, r_val, globals, waitress)
+  print(14)
   mod_analysis_server("analysis_1", con, r_val, globals)
   mod_download_server("download_1" , con, r_val, globals)
   mod_documentation_server("documentation_1")
