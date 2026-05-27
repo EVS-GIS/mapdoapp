@@ -47,6 +47,7 @@ app_server <- function(input, output, session) {
 
     # map
     map_proxy = NULL, # proxy object for map
+
     opacity_basins = list(clickable = 0.01, not_clickable = 0.10), # opacity value to inform the user about available bassins and regions
     leaflet_hover_measure = NULL, # measure to be displayed in the leaflet hover
 
@@ -85,9 +86,11 @@ app_server <- function(input, output, session) {
   print(1)
   # get parameters for metrics, classes, wms
   # globals$metric_info=metric_info
-  globals$classes_proposed=params_classes()
+  globals$classes_proposed = params_classes()
+  globals$classes_proposed_colors = params_classes_colors()
   globals$wms_params= params_wms()
   globals$map_group_params = params_map_group(globals$wms_params)
+  globals$metric_choices = mapdoapp::params_get_metric_choices()
   # load regions sf data
   globals$regions = data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
   waitress$inc(step_progress)  # Increment progress 2
@@ -157,12 +160,12 @@ app_server <- function(input, output, session) {
   Sys.sleep(.3)
   print(8)
   #### Metric stats caching ####
-  # globals$metric_stats <- reactive({
-  #   data_get_stats_metrics(con)
-  # }) %>%
-  #   bindCache(globals$regions_gids_key)
-  # waitress$inc(step_progress)  # Increment progress 9
-  # Sys.sleep(.3)
+  globals$metric_stats <- reactive({
+    data_get_stats_metrics(con)
+  }) %>%
+    bindCache(globals$regions_gids_key)
+  waitress$inc(step_progress)  # Increment progress 9
+  Sys.sleep(.3)
 
   #### Axis data caching ####
   globals$axis_data <- reactive({
@@ -213,10 +216,10 @@ app_server <- function(input, output, session) {
 
 
   #### Region data caching ####
-  # globals$region_data <- reactive({
-  #   data_get_axis_dgos_from_region(selected_region_id = r_val$region_id_data, con)
-  # }) %>%
-  #   bindCache(c(r_val$region_id_data, globals$regions_gids_key))
+  globals$region_data <- reactive({
+    data_get_axis_dgos_from_region(selected_region_id = r_val$region_id_data, con)
+  }) %>%
+    bindCache(c(r_val$region_id_data, globals$regions_gids_key))
 
 
   ### DB disconnect when closing session ####

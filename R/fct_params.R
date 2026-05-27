@@ -326,18 +326,22 @@ params_classes <- function() {
       - moyen connecté (>= 10 % )
       - faible / absente (< 10 %)",
       # style
-      "Classification des styles, basée sur la méthod décrite dans De Almeida et al, 2026.
-      - anabranche
-      - anastomosé
-      - bancs alternés
-      - divagant
-      - méandre passif
-      - rectiligne
-      - réservoir
-      - sinueux
-      - sinueux à bancs,
-      - tresse
-      "
+      "Classification des styles, basée sur la méthode décrite dans De Almeida et al, 2026.
+      Chenal unique:
+      - Réservoir : Elargissement de la largeur du chenal en eau sous l'effet d'une retenue
+      - Rectiligne : très faible sinuosité, tracé linéaire, absence de bancs
+      - Sinueux : sinuosité intermédiaire, tracé légèrement courbé, absence de bancs
+      - Méandre passif :  très forte sinuosité, méandres bien développés, berges relativement stable, absence de bancs
+      - Rectiligne à bancs alternés : faible sinuosité, bancs latéraux alternés
+      - Sinueux avec bancs :sinuosité intermédiaire, présence de bancs
+      - Méandre actif : forte sinuosité, présence de bancs (scroll bars)
+      Intermédiaire:
+      - Divagant : divisions locales, abondants bancs latéraux
+      - Iles éparses : Chenal unique avec des divisons locales par des îles végétalisés dispersée
+      Chenaux multiples:
+      - Anastomosé : Cours d'eau à chenaux multiples composé de large et stable îles végétalisées. Nombreux chenaux interconnectés à faible énergie
+      - Anabranche : Cours d'eau à chenaux multiples, présence d'îles végétalisése et de bancs
+      - Tresse : Cours d'eau à chenaux multiples, chenaux de taille égale séparés par des bancs pas ou peu végétalisés"
     ),
     class_name = c(
       "class_strahler",
@@ -374,7 +378,7 @@ params_classes <- function() {
 #' @importFrom dplyr filter pull
 #'
 #' @return list-object with first level the names of metric types and second levels the corresponding metrics for each type
-#'
+#' @export
 #' @examples
 #' params_get_metric_choices()
 params_get_metric_choices <- function(){
