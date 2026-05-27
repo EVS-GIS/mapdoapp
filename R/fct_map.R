@@ -271,7 +271,7 @@ map_add_network <- function(map, wms_params_network,
     ) %>%
   # Add WMS Legend
   addWMSLegend(uri = map_legend_class(style = style, wms_params_network),
-               title = globals$classes_proposed[globals$classes_proposed$sld_style == sub("mapdo:", "", style),]$class_title,
+               title = wms_params_network$name,
                position = "bottomleft",
                layerId = "legend_metric")
 
