@@ -52,5 +52,5 @@ statistical annotations.
 
 ``` r
 create_analysis_biplot(df = mtcars, metric_x = "mpg", metric_y = "wt", classes = FALSE, lm = TRUE)
-#> Error in create_analysis_biplot(df = mtcars, metric_x = "mpg", metric_y = "wt",     classes = FALSE, lm = TRUE): object 'globals' not found
+#> Error: argument "axis_name" is missing, with no default
 ```
