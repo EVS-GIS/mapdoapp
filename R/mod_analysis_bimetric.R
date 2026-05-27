@@ -37,7 +37,7 @@ mod_analysis_bimetric_ui <- function(id) {
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
-                trigger = bsicons::bs_icon("info-circle"),
+                trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
                 "",
                 placement = "right",
                 id = ns("popover_metric_x")
@@ -52,7 +52,7 @@ mod_analysis_bimetric_ui <- function(id) {
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
-                trigger = bsicons::bs_icon("info-circle"),
+                trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
                 "",
                 placement = "right",
                 id = ns("popover_metric_y")
@@ -67,7 +67,7 @@ mod_analysis_bimetric_ui <- function(id) {
             span(
               style = "display: flex; margin-left: 10px; margin-top: -5px",
               popover(
-                trigger = bsicons::bs_icon("info-circle"),
+                trigger = bsicons::bs_icon("info-circle", size="1.5rem", class = "text-primary"),
                 "",
                 placement = "right",
                 id = ns("popover_lm")

@@ -290,7 +290,8 @@ analysis_plot_classes_distr <- function(df){
       yaxis = list(title = "Pourcentage", showgrid = T, showticklabels = T),
       showlegend = TRUE
       # margin = list(b = 70, autoexpand = FALSE)
-    )
+    )%>%
+    plotly::config(displaylogo = FALSE) # Remove plotly logo
 
   return(plot)
 }
@@ -386,7 +387,8 @@ create_analysis_biplot <- function(df, metric_x, metric_y, classes = FALSE, lm =
                                     metric_x_title, get(metric_x),
                                     metric_y_title, get(metric_y),
                                     measure / 1000), # Convert measure to kilometers
-                    hoverinfo = 'text')
+                    hoverinfo = 'text')%>%
+      plotly::config(displaylogo = FALSE) # Remove plotly logo
   }
 
 
@@ -412,7 +414,8 @@ create_analysis_biplot <- function(df, metric_x, metric_y, classes = FALSE, lm =
         xref = 'paper', yref = 'paper', # Use 'paper' units (relative to the plot)
         bgcolor = "#ffccd5", bordercolor = "#000", borderwidth = 1,
         font = list(size = 11)
-      ))
+      ))%>%
+      plotly::config(displaylogo = FALSE) # Remove plotly logo
   }
 
 

@@ -4,7 +4,7 @@
 \alias{map_add_axis_dgos}
 \title{Add Axis Data to an Existing Leaflet Map}
 \usage{
-map_add_axis_dgos(map, axis_data, group)
+map_add_axis_dgos(map, axis_data, Proposed_class, group)
 }
 \arguments{
 \item{map}{An existing Leaflet map to which axis data will be added.}

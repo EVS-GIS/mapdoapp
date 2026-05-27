@@ -346,15 +346,220 @@ data_get_stats_metrics <- function(con) {
 #' @examples
 #' con=db_con()
 #' data_get_distr_class(con,"class_style")
-data_get_distr_class <- function(con, class_name_selected) {
+data_get_distr_class <- function(con, class_name) {
 
-  if (!is.null(class_name_selected)) {
-    sql <- paste0("SELECT axis, toponyme, gid_region, geom, ",
-                  class_name_selected,
-                  " FROM  network_metrics_aggregated")
-    data <- sf::st_read(dsn = con, query = sql) %>%
-      sf::st_drop_geometry() %>%
-      group_by
+  if (!is.null(class_name)) {
+
+    classification_query <- case_when(
+      class_name == "class_strahler" ~
+        "CASE
+          WHEN strahler IS NULL THEN 'unvalid'
+          WHEN strahler = 1 THEN '1'
+          WHEN strahler = 2 THEN '2'
+          WHEN strahler = 3 THEN '3'
+          WHEN strahler = 4 THEN '4'
+          WHEN strahler = 5 THEN '5'
+          WHEN strahler = 6 THEN '6'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_topographie" ~
+        "CASE
+        WHEN talweg_elevation_min IS NULL OR talweg_slope IS NULL THEN 'unvalid'
+        WHEN talweg_elevation_min >= 1000 AND talweg_slope >= 0.05 THEN 'Pentes de montagne'
+        WHEN talweg_elevation_min >= 1000 AND talweg_slope < 0.05 THEN 'Plaines de montagne'
+        WHEN talweg_elevation_min >= 300 AND talweg_slope >= 0.05 THEN 'Pentes de moyenne altitude'
+        WHEN talweg_elevation_min >= 300 AND talweg_slope < 0.05 THEN 'Plaines de moyenne altitude'
+        WHEN talweg_elevation_min >= -50 AND talweg_slope >= 0.05 THEN 'Pentes de basse altitude'
+        WHEN talweg_elevation_min >= -50 AND talweg_slope < 0.05 THEN 'Plaines de basse altitude'
+        ELSE 'unvalid'
+      END AS class_name",
+      class_name == "class_lu_dominante" ~
+        "CASE
+          WHEN forest_pc IS NULL OR grassland_pc IS NULL OR natural_open_pc IS NULL OR crops_pc IS NULL OR built_environment_pc IS NULL THEN 'unvalid'
+          WHEN forest_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Forêt'
+          WHEN grassland_pc + natural_open_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Prairies et sols nus'
+          WHEN crops_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Cultures'
+          WHEN built_environment_pc >= GREATEST(forest_pc, grassland_pc + natural_open_pc, crops_pc, built_environment_pc) THEN 'Espace construit'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_urban" ~
+        "CASE
+          WHEN built_environment_pc IS NULL THEN 'unvalid'
+          WHEN built_environment_pc >= 70 THEN 'Fortement urbanisé'
+          WHEN built_environment_pc >= 40 THEN 'Urbanisé'
+          WHEN built_environment_pc >= 10 THEN 'Modérément urbanisé'
+          WHEN built_environment_pc >= 0 THEN 'Presque pas/Pas urbanisé'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_agriculture" ~
+        "CASE
+          WHEN crops_pc IS NULL THEN 'unvalid'
+          WHEN crops_pc >= 70 THEN 'Très Forte'
+          WHEN crops_pc >= 40 THEN 'Forte'
+          WHEN crops_pc >= 10 THEN 'Modéré'
+          WHEN crops_pc >= 0 THEN 'Basse/Absente'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_nature" ~
+        "CASE
+          WHEN natural_open_pc IS NULL OR forest_pc IS NULL OR grassland_pc IS NULL THEN 'unvalid'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Modérée'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/Pas naturelle'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_gravel" ~
+        "CASE
+          WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'abundant'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'moyennement présente'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'absent'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_confinement" ~
+        "CASE
+          WHEN idx_confinement IS NULL THEN 'unvalid'
+          WHEN idx_confinement >= 0.7 THEN 'Peu confiné'
+          WHEN idx_confinement >= 0.4 THEN 'Modérement confiné'
+          WHEN idx_confinement >= 0.1 THEN 'Confiné'
+          WHEN idx_confinement >= 0 THEN 'Très confiné'
+          ELSE 'unvalid'
+        END AS class_name",
+      class_name == "class_habitat" ~
+        "CASE
+          WHEN riparian_corridor_pc IS NULL OR semi_natural_pc IS NULL THEN 'unvalid'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'Élevée'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'Bonne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'Moyenne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
+          ELSE 'unvalid'
+        END AS class_name",
+      .default = NULL
+    )
+
+    query <- paste0(
+      "SELECT\n",
+      "'France (total)' AS level_type,\n",
+      "'France' AS level_name,\n",
+      "0 AS strahler, \n",
+      "class_name, \n",
+      "COUNT(class_name) AS class_count\n",
+      "FROM (\n",
+      "SELECT\n",
+      "'France (total)' AS level_type,\n",
+      "'France' AS level_name,\n",
+      "0 AS strahler, \n",
+      classification_query, "\n",
+      "FROM network_metrics\n",
+      "WHERE network_metrics.gid_region IS NOT NULL\n",
+      ") AS subquery\n",
+      "GROUP BY class_name",
+
+      "\nUNION ALL\n",
+
+      "SELECT\n",
+      "'France' AS level_type,\n",
+      "'France' AS level_name,\n",
+      "strahler,\n",
+      "class_name, \n",
+      "COUNT(class_name) AS class_count\n",
+      "FROM (\n",
+      "SELECT\n",
+      "'France' AS level_type,\n",
+      "'France' AS level_name,\n",
+      "network_metrics.strahler AS strahler,\n",
+      classification_query, "\n",
+      "FROM network_metrics\n",
+      "WHERE network_metrics.gid_region IS NOT NULL\n",
+      ") AS subquery\n",
+      "GROUP BY strahler, class_name",
+
+      "\nUNION ALL\n",
+
+      # Basins
+      "SELECT\n",
+      "'Basin (total)' AS level_type,\n",
+      "level_name,\n",
+      "0 AS strahler,\n",
+      "class_name, \n",
+      "COUNT(class_name) AS class_count\n",
+      "FROM (\n",
+      "SELECT\n",
+      "'Basin (total)' AS level_type,\n",
+      "region_hydrographique.cdbh AS level_name,\n",
+      "0 AS strahler,\n",
+      classification_query, "\n",
+      "FROM network_metrics\n",
+      "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
+      "WHERE network_metrics.gid_region IS NOT NULL\n",
+      ") AS subquery\n",
+      "GROUP BY level_name, class_name\n",
+
+      "\nUNION ALL\n",
+
+      "SELECT\n",
+      "'Basin' AS level_type,\n",
+      "level_name,\n",
+      "strahler,\n",
+      "class_name, \n",
+      "COUNT(class_name) AS class_count\n",
+      "FROM (\n",
+      "SELECT\n",
+      "'Basin' AS level_type,\n",
+      "region_hydrographique.cdbh AS level_name,\n",
+      "network_metrics.strahler AS strahler,\n",
+      classification_query, "\n",
+      "FROM network_metrics\n",
+      "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
+      "WHERE network_metrics.gid_region IS NOT NULL\n",
+      ") AS subquery\n",
+      "GROUP BY level_name, strahler, class_name\n",
+
+      "\nUNION ALL\n",
+
+      # Regions
+      "SELECT\n",
+      "'Région (total)' AS level_type,\n",
+      "level_name,\n",
+      "0 AS strahler,\n",
+      "class_name, \n",
+      "COUNT(class_name) AS class_count\n",
+      "FROM (\n",
+      "SELECT\n",
+      "'Région (total)' AS level_type,\n",
+      "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
+      "0 AS strahler,\n",
+      classification_query, "\n",
+      "FROM network_metrics\n",
+      "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
+      "WHERE network_metrics.gid_region IS NOT NULL\n",
+      ") AS subquery\n",
+      "GROUP BY level_name, class_name\n",
+
+      "\nUNION ALL\n",
+
+      "SELECT\n",
+      "'Région' AS level_type,\n",
+      "level_name,\n",
+      "strahler,\n",
+      "class_name, \n",
+      "COUNT(class_name) AS class_count\n",
+      "FROM (\n",
+      "SELECT\n",
+      "'Région' AS level_type,\n",
+      "CAST(network_metrics.gid_region as varchar(10)) AS level_name,\n",
+      "network_metrics.strahler AS strahler,\n",
+      classification_query, "\n",
+      "FROM network_metrics\n",
+      "LEFT JOIN region_hydrographique ON region_hydrographique.gid = network_metrics.gid_region\n",
+      "WHERE network_metrics.gid_region IS NOT NULL\n",
+      ") AS subquery\n",
+      "GROUP BY level_name, strahler, class_name;\n"
+    )
+
+    data <- DBI::dbGetQuery(conn = con, statement = query) %>%
+      na.omit()
 
     return(data)
   } else {
@@ -623,59 +828,59 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
         -- Urban Land Use Classification
         CASE
           WHEN built_environment_pc IS NULL THEN 'unvalid'
-          WHEN built_environment_pc >= 70 THEN 'fortement urbanisé'
-          WHEN built_environment_pc >= 40 THEN 'urbanisé'
-          WHEN built_environment_pc >= 10 THEN 'modérément urbanisé'
-          WHEN built_environment_pc >= 0 THEN 'Presque pas/pas urbanisé'
+          WHEN built_environment_pc >= 70 THEN 'Fortement urbanisé'
+          WHEN built_environment_pc >= 40 THEN 'Urbanisé'
+          WHEN built_environment_pc >= 10 THEN 'Modérément urbanisé'
+          WHEN built_environment_pc >= 0 THEN 'Presque pas/Pas urbanisé'
           ELSE 'unvalid'
         END AS class_urban,
 
         -- Agricultural Land Use Classification
         CASE
           WHEN crops_pc IS NULL THEN 'unvalid'
-          WHEN crops_pc >= 70 THEN 'Forte impact agricole'
-          WHEN crops_pc >= 40 THEN 'Impact agricole élevé'
-          WHEN crops_pc >= 10 THEN 'Impact agricole modéré'
-          WHEN crops_pc >= 0 THEN 'Presque pas/pas d''impact agricole'
+          WHEN crops_pc >= 70 THEN 'Très Forte'
+          WHEN crops_pc >= 40 THEN 'Forte'
+          WHEN crops_pc >= 10 THEN 'Modéré'
+          WHEN crops_pc >= 0 THEN 'Basse/Absente'
           ELSE 'unvalid'
         END AS class_agriculture,
 
         -- Natural Land Use Classification
         CASE
           WHEN natural_open_pc IS NULL OR forest_pc IS NULL OR grassland_pc IS NULL THEN 'unvalid'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte utilisation naturelle'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Utilisation naturelle modérée'
-          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/pas naturelle'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 70 THEN 'Très forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 40 THEN 'Forte'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 10 THEN 'Modérée'
+          WHEN (natural_open_pc + forest_pc + grassland_pc) >= 0 THEN 'Presque pas/Pas naturelle'
           ELSE 'unvalid'
         END AS class_nature,
 
         -- Gravel Bars Classification
         CASE
           WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'abundant'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'moyennement présente'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'absent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
           ELSE 'unvalid'
         END AS class_gravel,
 
         -- Confinement Classification
         CASE
           WHEN idx_confinement IS NULL THEN 'unvalid'
-          WHEN idx_confinement >= 0.7 THEN 'espace abondant'
-          WHEN idx_confinement >= 0.4 THEN 'modérement espace'
-          WHEN idx_confinement >= 0.1 THEN 'confiné'
-          WHEN idx_confinement >= 0 THEN 'très confiné'
+          WHEN idx_confinement >= 0.7 THEN 'Peu confiné'
+          WHEN idx_confinement >= 0.4 THEN 'Modérément confiné'
+          WHEN idx_confinement >= 0.1 THEN 'Confiné'
+          WHEN idx_confinement >= 0 THEN 'Très confiné'
           ELSE 'unvalid'
         END AS class_confinement,
 
         -- Habitat Classification
         CASE
           WHEN riparian_corridor_pc IS NULL OR semi_natural_pc IS NULL THEN 'unvalid'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'très bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'bien connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'moyen connecté'
-          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'faible / absente'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 70 THEN 'Élevée'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 40 THEN 'Bonne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 10 THEN 'Moyenne'
+          WHEN (riparian_corridor_pc + semi_natural_pc) >= 0 THEN 'Faible/Absente'
           ELSE 'unvalid'
         END AS class_habitat
       FROM network_metrics

@@ -273,15 +273,15 @@ params_classes <- function() {
     ),
     description = c(
       # strahler
-      "Répresent la complexité du réseaux hydrographique. L'ordre de Strahler est de 1 pour tout cours d'eau entre sa source et sa première confluence et mont avec chaque confluence.",
+      "Représente la complexité du réseaux hydrographique. L'ordre de Strahler est de 1 pour tout cours d'eau entre sa source et sa première confluence et mont avec chaque confluence.",
       # topographie
       "Classification simple basée sur la pente et la hauteur du cours de la rivière :
-      - plaines de basse altitude (> 0 m & < 0.5 % pente)
-      - plaines de moyenne altitude (> 300 m & < 0.5 % pente)
-      - plaines de montagne (> 1000 m & < 0.5 % pente)
-      - pentes de basse altitude (> 0 m & > 0.5 % pente)
-      - pentes de moyenne altitude (> 300 m & > 0.5 % pente)
-      - pentes de montagne (> 1000 m & > 0.5 % pente)
+      - Plaines de basse altitude (> 0 m & < 0.5 % pente)
+      - Plaines de moyenne altitude (> 300 m & < 0.5 % pente)
+      - Plaines de montagne (> 1000 m & < 0.5 % pente)
+      - Pentes de basse altitude (> 0 m & > 0.5 % pente)
+      - Pentes de moyenne altitude (> 300 m & > 0.5 % pente)
+      - Pentes de montagne (> 1000 m & > 0.5 % pente)
       ",
       # dominant land use
       "Indique la classe d'utilisation des sols la plus dominante dans la zone du fond de vallée de chaque segment de cours d'eau :
@@ -292,33 +292,33 @@ params_classes <- function() {
       ",
       # urban areas
       "Indique le degré de couverture urbaine du fond de vallée du segment :
-      - fortement urbanisé (> 70 % zones construites)
-      - urbanisé  (> 40 % zones construites)
-      - modérément urbanisé (> 10 % zones construites)
-      - Presque pas/pas urbanisé (< 10 % zones construites)",
+      - Fortement urbanisé (> 70 % zones construites)
+      - Urbanisé  (> 40 % zones construites)
+      - Modérément urbanisé (> 10 % zones construites)
+      - Presque pas/Pas urbanisé (< 10 % zones construites)",
       # agriculture
       "indique la part de l'utilisation des terres agricoles dans la zone du fond de vallée de chaque segment de cours d'eau
-      - Forte impact agricole (> 70 % cultures)
-      - Impact agricole élevé (> 40 % cultures)
-      - Impact agricole modéré (> 10 % cultures)
-      - Presque pas/pas d'impact agricole (< 10 % cultures)",
+      - Très Forte (> 70 % cultures)
+      - Très élevé (> 40 % cultures)
+      - Modéré (> 10 % cultures)
+      - Basse/Absente (< 10 % cultures)",
       # natural
       "indique la part de l'occupation naturelle des sols dans la zone du fond de vallée de chaque tronçon fluvial :
       - Très forte utilisation naturelle (> 70 % espaces naturels)
       - Forte utilisation naturelle (> 40 % espaces naturels)
       - Utilisation naturelle modérée (> 10 % espaces naturels)
-      - Presque pas/pas naturelle (< 10 % espaces naturels)",
+      - Presque pas/Pas naturelle (< 10 % espaces naturels)",
       # gravel bars
       "la présence de bancs sédimentaires. Basé sur le ratio entre la surface des sédiments et la surface du chenal actif, qui se compose des surfaces de sédiments et d'eau :
       - Absent (pas des bancs sédimentaires)
-      - occasionnel (bancs sédimentaires < 50 % du chenal actif)
-      - fréquent (bancs sédimentaires >= 50 % du chenal actif)",
+      - Occasionnel (bancs sédimentaires < 50 % du chenal actif)
+      - Fréquent (bancs sédimentaires >= 50 % du chenal actif)",
       # confinement
       "Indique le dégrée du confinement du chenal actif. Basé sur le ratio entre la largeur du chenal actif et la largeur du fond de la vallée.
-      - espace abondant (chenal actif > 70 % du fond de la vallée)
-      - modérement espace (chenal actif > 40 % du fond de la vallée)
-      - confiné (chenal actif > 10 % du fond de la vallée)
-      - très confiné (chenal actif < 10 % du fond de la vallée)",
+      - Peu confiné (chenal actif > 70 % du fond de la vallée)
+      - Modérement confiné (chenal actif > 40 % du fond de la vallée)
+      - Confiné (chenal actif > 10 % du fond de la vallée)
+      - Très confiné (chenal actif < 10 % du fond de la vallée)",
       # habitat connectivity
       "Indique la présence d'un corridor riverain naturel. Basé sur ratio de la surface du corridor connecté (comprenant le chenal actif, le corridor naturel et les corridors semi-naturels) et le fond de la vallée :
       - très bien connecté (>= 70 %)
@@ -412,7 +412,7 @@ params_classes_colors <- function() {
     setNames(c(1,2,3,4,5,6))
 
   # TOPOGRAPHY
-  df$class_topographie <- c( "#bb3e03", "#e9d8a6", "#a3b18a",
+  df$class_topographie <- c( "#bb3e03", "#85ba55", "#2ca555",
                              "#780000","#ee9b00", "#3a5a40") %>%
     setNames(
       c("Plaines de montagne",
@@ -430,39 +430,39 @@ params_classes_colors <- function() {
   # URBAN
   df$class_urban <- c("#6a040f", "#dc2f02", "#ffdd00", "#74c69d") %>%
     setNames(
-      c("fortement urbanisé", "urbanisé", "modérément urbanisé", "Presque pas/pas urbanisé")
+      c("Fortement urbanisé", "Urbanisé", "Modérément urbanisé", "Presque pas/Pas urbanisé")
     )
 
-  # AGRICULTURE
+  # AGRICULTURE / impact agricole
   df$class_agriculture <- c("#6a040f", "#dc2f02", "#ffdd00", "#74c69d") %>%
     setNames(
-      c("Forte impact agricole", "Impact agricole élevé",
-        "Impact agricole modéré", "Presque pas/pas d'impact agricole")
+      c("Très Forte", "Forte",
+        "Modéré", "Basse/Absente")
     )
 
-  # NATURE
+  # NATURE / utilisation naturelle
   df$class_nature <- c("#081c15", "#2d6a4f", "#74c69d", "#d8f3dc") %>%
     setNames(
-      c("Très forte utilisation naturelle", "Forte utilisation naturelle",
-        "Utilisation naturelle modérée", "Presque pas/pas naturelle")
+      c("Très forte", "Forte",
+        "Modérée", "Presque pas/Pas naturelle")
     )
 
   # GRAVEL BARS
   df$class_gravel <- c("#603808", "#e7bc91", "#0077b6") %>%
     setNames(
-      c("abundant", "moyennement présente", "absent")
+      c("Fréquent", "Occasionnel", "Absent")
     )
 
   # CONFINEMENT
   df$class_confinement <- c("#2d6a4f", "#99d98c", "#ffdd00", "#ba181b") %>%
     setNames(
-      c("espace abondant", "modérement espace", "confiné", "très confiné")
+      c("Peu confiné", "Modérément confiné", "Confiné", "Très confiné")
     )
 
   # HABITAT CONNECTIVITY
   df$class_habitat <- c("#2d6a4f", "#99d98c", "#ffdd00", "#ba181b") %>%
     setNames(
-      c("très bien connecté", "bien connecté", "moyen connecté", "faible / absente")
+      c("Élevée", "Bonne", "Moyenne", "Faible/Absente")
     )
 
   # FLUVIAL STYLES

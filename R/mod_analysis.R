@@ -21,89 +21,90 @@ mod_analysis_ui <- function(id){
     tags$head(
       tags$style(
         HTML("
-          .form-group{margin-bottom: 10px}
+          .form-group{}
+          .nav-pills > li > a {line-height: 5%;}
           ")
       )
     ), # head
 
-    # tabsetPanel(
-    #   id = ns("tabset"),
-    #   tabPanel("Caractérisation de la sélection",
-    #            # show table with France, basin, region (+ same stats but just for the strahler order of selected axis),
-    #            # stats together with selected axis
-    #            # below show distribution plots of selection
-    #            fluidRow(
-    #              style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
-    #              textOutput(ns("selection_textUI")),
-    #              column(
-    #                width = 9,
-    #                hr(), # horizontal line
-    #                uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # overview table
-    #                hr(), # horizontal line
-    #                fluidRow(style = "margin-top: 20px;"),
-    #                plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
-    #              ),
-    #              column(
-    #                width = 3,
-    #                div(
-    #                  id = ns("selact_modifications"),
-    #                  multiInput(
-    #                    inputId = ns("selact_metric_select"),
-    #                    label = "Métriques",
-    #                    choiceNames = metric_info$metric_title,
-    #                    choiceValues = metric_info$metric_name,
-    #                    selected = metric_info$metric_name[1:5]
-    #                  ),
-    #                  selectInput(
-    #                    inputId = ns("selact_strahler_select"),
-    #                    label = "Ordre de Strahler",
-    #                    choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
-    #                    selected = 0,
-    #                    multiple = TRUE
-    #                  ),
-    #                  actionButton(inputId = ns("selact_apply_button"), "Actualiser")
-    #                )
-    #              ))),
-    #   tabPanel("Comparaison des Régions",
-    #            fluidRow(
-    #              style = "margin-top: 10px; margin-bottom: 10px; margin-left: 10px;",
-    #              column(
-    #                width = 9,
-    #                hr(), # horizontal line
-    #                reactableOutput(ns("regions_table"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."),
-    #                hr(),
-    #                fluidRow(style = "margin-top: 20px;"),
-    #                plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
-    #              ),
-    #              column(
-    #                width = 3,
-    #                div(
-    #                  id = ns("regions_modifications"),
-    #                  multiInput(
-    #                    inputId = ns("regions_metric_select"),
-    #                    label = "Métriques",
-    #                    choiceNames = metric_info$metric_title,
-    #                    choiceValues = metric_info$metric_name,
-    #                    selected = metric_info$metric_name[1:5]
-    #                  ),
-    #                  selectInput(
-    #                    inputId = ns("regions_strahler_select"),
-    #                    label = "Ordre de Strahler",
-    #                    choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
-    #                    selected = 0,
-    #                    multiple = TRUE
-    #                  ),
-    #                  actionButton(inputId = ns("regions_apply_button"), "Actualiser")
-    #                )
-    #              )
-    #            )
-    #   ),
-    #  tabPanel("Analyse Bimétrique",
+    tabsetPanel(
+      id = ns("tabset"),
+      tabPanel("Caractérisation de la sélection",
+               # show table with France, basin, region (+ same stats but just for the strahler order of selected axis),
+               # stats together with selected axis
+               # below show distribution plots of selection
+               fluidRow(style = "margin-top: 2px; margin-bottom: 2px",
+                 column(
+                   width = 9,
+                   hr(), # horizontal line
+                   fluidRow(style = "margin-top: 2px; margin-bottom: 0px",
+                   uiOutput(ns("selact_tableUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")), # overview table
+                   hr(), # horizontal line
+                   textOutput(ns("selection_textUI")),
+                   fluidRow(style = "margin-top:2px; margin-bottom: 0px;"),
+                            plotlyOutput(ns("selact_plotUI")) %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."), # distribution plot
+                 ),
+                 column(
+                   width = 3,
+                   div(style = "height: 20%;",
+                     id = ns("selact_modifications"),
+                     multiInput(
+                       inputId = ns("selact_metric_select"),
+                       label = "Métriques",
+                       choiceNames = params_metrics()$metric_title,
+                       choiceValues = params_metrics()$metric_name,
+                       selected = params_metrics()$metric_name[1:5]
+                     ),
+                     selectInput(
+                       inputId = ns("selact_strahler_select"),
+                       label = "Ordre de Strahler",
+                       choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
+                       selected = 0,
+                       multiple = TRUE
+                     ),
+                     actionButton(inputId = ns("selact_apply_button"), "Actualiser")
+                   )
+                 ))),
+      tabPanel("Comparaison des Régions",
+               fluidRow(
+                 style = "margin-top: 2px; margin-bottom: 2px; margin-left: 2px;",
+                 column(
+                   width = 9,
+                   hr(), # horizontal line
+                   fluidRow(style = "margin-top: 5px; margin-bottom: 10px;"),
+                   reactableOutput(ns("regions_table"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours..."),
+                   hr(),
+                   fluidRow(style = "margin-top: 12px; margin-bottom: 2px;"),
+                   #plotlyOutput(ns("regions_plotUI"), width = "100%") %>% shinycssloaders::withSpinner(type = 8, caption = "Calculs en cours...")
+                 ),
+                 column(
+                   width = 3,
+                   div(
+                     id = ns("regions_modifications"),
+                     multiInput(
+                       inputId = ns("regions_metric_select"),
+                       label = "Métriques",
+                       choiceNames = params_metrics()$metric_title,
+                       choiceValues = params_metrics()$metric_name,
+                       selected = params_metrics()$metric_name[1:5]
+                     ),
+                     selectInput(
+                       inputId = ns("regions_strahler_select"),
+                       label = "Ordre de Strahler",
+                       choices = setNames(c(6,5,4,3,2,1,0), c("6","5","4","3","2","1","tous ensemble")),
+                       selected = 0,
+                       multiple = TRUE
+                     ),
+                     actionButton(inputId = ns("regions_apply_button"), "Actualiser")
+                   )
+                 )
+               ),
+      ),
+      tabPanel("Analyse Bimétrique",
                mod_analysis_bimetric_ui("analysis_bimetric_1")
-    #  )
-    #,
-    #  type = "pills"
-    #) #tabsetpanel
+      ),
+      type = "pills"
+    ) #tabsetpanel
   )
 }
 
