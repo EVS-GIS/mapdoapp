@@ -148,20 +148,20 @@ mod_expl_classes_manual_server <- function(id, con, r_val, globals){
             actionButton(inputId = ns("apply_to_map_button"), "Ajouter à la carte")
           ))
 
-        # create classes-table to initialize classes UI
-        # r_val_local$initial_classes_table = create_df_input(
-        #   variable_name = globals$metric_choices[[1]],
-        #   q_0025 =
-        #     globals$metric_stats() %>%
-        #     dplyr::filter(level_type == "France (total)") %>%
-        #     dplyr::pull(paste0(globals$metric_choices[[1]], "_0025")),
-        #   q_0975 =
-        #     globals$metric_stats() %>%
-        #     dplyr::filter(level_type == "France (total)") %>%
-        #     dplyr::pull(paste0(globals$metric_choices[[1]], "_0975"))  ,
-        #   no_classes = 4,
-        #   quantile = 95
-        # )
+        #create classes-table to initialize classes UI
+        r_val_local$initial_classes_table = create_df_input(
+          variable_name = globals$metric_choices[[1]],
+          q_0025 =
+            globals$metric_stats() %>%
+            dplyr::filter(level_type == "France (total)") %>%
+            dplyr::pull(paste0(globals$metric_choices[[1]], "_0025")),
+          q_0975 =
+            globals$metric_stats() %>%
+            dplyr::filter(level_type == "France (total)") %>%
+            dplyr::pull(paste0(globals$metric_choices[[1]], "_0975"))  ,
+          no_classes = 4,
+          quantile = 95
+        )
       }
 
     })

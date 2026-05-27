@@ -179,18 +179,16 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
     observeEvent(r_val$axis_clicked, {
 
       if (!is.null(globals$axis_data()) & (r_val$axis_clicked == TRUE)) {
-        data(metric_info)
-        print(metric_info)
         # build first axis input selector
         r_val_local$profile_first_metric = selectInput(ns("profile_first_metric"),
                                                        label = "Métrique :",
-                                                       choices = metric_info$metric_name,
+                                                       choices = globals$metric_choices,
                                                        selected  = 1,
                                                        width="100%")
 
         # build second axis input selector
         r_val_local$profile_sec_metric = selectInput(ns("profile_sec_metric"), label = "2ème métrique :",
-                                                     choices = c("aucun", metric_info$metric_name),
+                                                     choices = c("aucun", globals$metric_choices),
                                                      selected  = 1,
                                                      width = "100%")
       }
@@ -370,7 +368,6 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
     observeEvent(c(input$background_profile, r_val$axis_data_classified),  {
 
       if (!is.null(input$background_profile) && !is.null(globals$axis_data())) {
-
         # add background classification shapes
         if (input$background_profile == TRUE && !is.null(r_val$axis_data_classified)) {
 
@@ -379,19 +376,19 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
             r_val_local$shapes_background = create_classes_background(r_val$axis_data_classified)
           }
 
-          # # build smoothing of classification option
-          # if (is.null(r_val_local$ui_background_smooth)) {
-          #   # checkbox
-          #   r_val_local$ui_background_smooth  = checkboxInput(ns("background_smooth"),
-          #                                                     label = "Homogénéisation des classifications",
-          #                                                     value = FALSE)
-          #
-          #   # selectinput
-          #   r_val_local$ui_background_smooth_sel = selectInput(ns("background_smooth_sel"),
-          #                                                      label = "supprimer les inégaux :",
-          #                                                      choices = c("singuliers", "en paires"),
-          #                                                      selected = "1")
-          # }
+          # build smoothing of classification option
+          if (is.null(r_val_local$ui_background_smooth)) {
+            # checkbox
+            r_val_local$ui_background_smooth  = checkboxInput(ns("background_smooth"),
+                                                              label = "Homogénéisation des classifications",
+                                                              value = FALSE)
+
+            # selectinput
+            r_val_local$ui_background_smooth_sel = selectInput(ns("background_smooth_sel"),
+                                                               label = "supprimer les inégaux :",
+                                                               choices = c("singuliers", "en paires"),
+                                                               selected = "1")
+          }
 
         }
         # remove background classification

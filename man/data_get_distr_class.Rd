@@ -4,7 +4,7 @@
 \alias{data_get_distr_class}
 \title{Get statistics on classes distributions for different levels (france, basin, region) and a specified class}
 \usage{
-data_get_distr_class(con, class_name_selected)
+data_get_distr_class(con, class_name)
 }
 \arguments{
 \item{con}{Connection to Postgresql database.}
