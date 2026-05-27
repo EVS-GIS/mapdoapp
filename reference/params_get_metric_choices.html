@@ -49,7 +49,74 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">params_get_metric_choices</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in params_get_metric_choices():</span> could not find function "params_get_metric_choices"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Elévation (m)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Elévation (m) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "talweg_elevation_min" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Largeurs (m)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Chenal actif (m)                   W étoilé </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "active_channel_width"                   "w_star" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Corridor naturel (m)      Corridor connecté (m) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "natural_corridor_width" "connected_corridor_width" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Fond de vallée (m) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      "valley_bottom_width" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Confinement</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Indice de confinement  Marge de confinement </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "idx_confinement"         "conf_margin" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Sinuosité</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Indice de sinuosité Angle de déflexion local </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              "sinuosite"            "angle_local" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Multi-chenal`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Présence d'îles végétalisées            Nombre de chenaux </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          "iles_vegetalisees"        "multi_channel_index" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Pentes (%)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Pente talweg (%) Pente fond de vallée (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "talweg_slope"       "floodplain_slope" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Occupation du sol (%)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              Surface en eau (%)           Banc sédimentaire (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              "water_channel_pc"                "gravel_bars_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Espace naturel ouvert (%)                       Forêt (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               "natural_open_pc"                     "forest_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Prairie permanente (%)                     Culture (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  "grassland_pc"                      "crops_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  Périurbain (%)                Urbain dense (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              "diffuse_urban_pc"                "dense_urban_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Infrastructure de transport (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            "infrastructures_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Occupation du sol (ha)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              Surface en eau (ha)           Banc sédimentaire (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  "water_channel"                    "gravel_bars" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Espace naturel ouvert (ha)                       Forêt (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   "natural_open"                         "forest" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Prairie permanente (ha)                     Culture (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      "grassland"                          "crops" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  Périurbain (ha)                Urbain dense (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  "diffuse_urban"                    "dense_urban" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Infrastructure de transport (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                "infrastructures" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Continuité latérale (%)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Bande active (%)        Corridor naturel (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "active_channel_pc"      "riparian_corridor_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Corridor semi-naturel (%) Espace de réversibilité (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "semi_natural_pc"             "reversible_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Espace déconnecté (%)    Espace artificialisé (%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "disconnected_pc"      "built_environment_pc" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Continuité latérale (ha)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Bande active (ha)        Corridor naturel (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "active_channel"          "riparian_corridor" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Corridor semi-naturel (ha) Espace de réversibilité (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               "semi_natural"                 "reversible" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Espace déconnecté (ha)    Espace artificialisé (ha) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               "disconnected"          "built_environment" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

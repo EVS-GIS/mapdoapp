@@ -6,7 +6,7 @@ basin, region) and a specified class
 ## Usage
 
 ``` r
-data_get_distr_class(con, class_name_selected)
+data_get_distr_class(con, class_name)
 ```
 
 ## Arguments
