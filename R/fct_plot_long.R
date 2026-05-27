@@ -245,9 +245,10 @@ lg_roe_vertical_line <- function(roe_distance_axis){
 #' @importFrom sf st_drop_geometry
 #'
 #' @examples
-#' classified_network <- network_dgo %>%
-#'     assign_classes(proposed_class = "class_strahler",
-#'     colors_df = globals$classes_proposed_colors)
+#'
+#' network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=TRUE) %>%
+#'     assign_classes_proposed(proposed_class = "class_style",
+#'                              colors_df = params_classes_colors())
 #'
 assign_classes_proposed <- function(data, proposed_class, colors_df) {
   # Extract the relevant color mapping for the main_class

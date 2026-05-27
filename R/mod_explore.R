@@ -422,7 +422,7 @@ mod_explore_server <- function(id, con, r_val, globals, waitress){
 
 
           # get start- and end-coordinates of axis
-          r_val$axis_start_end = data_get_axis_start_end(dgo_axis = globals$axis_data())
+          r_val$axis_start_end = data_get_axis_start_end(selected_axis_id=r_val$axis_id, con=con)
 
           # add axis to map
           r_val$map_proxy %>%

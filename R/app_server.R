@@ -82,17 +82,16 @@ app_server <- function(input, output, session) {
   ### GLOBALS ####
   # create empty list to store fixed global values which can be accessed by other modules
   globals <- list()
-
   # load regions sf data
   globals$regions = data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
   waitress$inc(step_progress)  # Increment progress 2
   Sys.sleep(.3)
-
+  print(2)
   # Create a unique key based on the regions_gids content
   globals$regions_gids_key = paste(collapse = "_", sort(globals$regions$gid))
   waitress$inc(step_progress)  # Increment progress 3
   Sys.sleep(.3)
-
+  print(3)
   # load basins sf data (cached)
   globals$basins <- reactive({
     data_get_basins(con, opacity = list(clickable = 0.01, not_clickable = 0.10))
@@ -100,7 +99,7 @@ app_server <- function(input, output, session) {
     bindCache(globals$regions_gids_key)
   waitress$inc(step_progress)  # Increment progress 4
   Sys.sleep(.3)
-
+  print(4)
   # load axes sf data (cached)
   globals$axes <- reactive({
     data_get_axes(con)
@@ -108,7 +107,7 @@ app_server <- function(input, output, session) {
     bindCache(globals$regions_gids_key)
   waitress$inc(step_progress)  # Increment progress 5
   Sys.sleep(.3)
-
+  print(5)
   # load roe sf data (cached)
   globals$roe_sites <- reactive({
     data_get_roe_sites(con)
@@ -116,7 +115,7 @@ app_server <- function(input, output, session) {
     bindCache(globals$regions_gids_key)
   waitress$inc(step_progress)  # Increment progress 6
   Sys.sleep(.3)
-
+  print(6)
   # load discharge stations sf data (cached)
   globals$hydro_sites <- reactive({
     data_get_hydro_sites(con)
@@ -124,7 +123,7 @@ app_server <- function(input, output, session) {
     bindCache(globals$regions_gids_key)
   waitress$inc(step_progress)  # Increment progress 7
   Sys.sleep(.3)
-
+  print(7)
   # load carhyce stations sf data (cached)
   globals$carhyce_stations <- reactive({
     f_make_popup=function(id, nom) {
@@ -150,13 +149,14 @@ app_server <- function(input, output, session) {
   })
   waitress$inc(step_progress)  # Increment progress 8
   Sys.sleep(.3)
+  print(8)
   #### Metric stats caching ####
-  globals$metric_stats <- reactive({
-    data_get_stats_metrics(con)
-  }) %>%
-    bindCache(globals$regions_gids_key)
-  waitress$inc(step_progress)  # Increment progress 9
-  Sys.sleep(.3)
+  # globals$metric_stats <- reactive({
+  #   data_get_stats_metrics(con)
+  # }) %>%
+  #   bindCache(globals$regions_gids_key)
+  # waitress$inc(step_progress)  # Increment progress 9
+  # Sys.sleep(.3)
 
   #### Axis data caching ####
   globals$axis_data <- reactive({
@@ -164,7 +164,7 @@ app_server <- function(input, output, session) {
     data_get_axis_dgos(selected_axis_id = r_val$axis_id, aggregated=aggregated, con)
   }) %>%
     bindCache(c(r_val$axis_id, globals$regions_gids_key, r_val$aggregated))
-
+  print(9)
   #### Classes stats caching ####
   globals$classes_stats <- reactive({
     if (!is.null(r_val$classes_proposed_selected)) {
@@ -174,7 +174,7 @@ app_server <- function(input, output, session) {
     }
   }) %>%
     bindCache(globals$regions_gids_key, r_val$classes_proposed_selected)
-
+  print(10)
   # navbarPage identifier
   observeEvent(input$navbarPage, {
     r_val$tab_page = input$navbarPage
@@ -195,11 +195,11 @@ app_server <- function(input, output, session) {
 
   mod_expl_plot_long_server("expl_plot_long_1", r_val, globals)
   mod_expl_plot_crosssection_server("expl_plot_crosssection_1", r_val)
-
+  print(11)
   mod_analysis_bimetric_server("analysis_bimetric_1", con, r_val, globals)
   waitress$inc(step_progress)  # Increment progress 10
   Sys.sleep(.3)
-
+  print(12)
 
   # All tasks are done, hide the loading screen
   waitress$close()

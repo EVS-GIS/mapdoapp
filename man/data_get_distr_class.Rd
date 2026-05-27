@@ -4,7 +4,7 @@
 \alias{data_get_distr_class}
 \title{Get statistics on classes distributions for different levels (france, basin, region) and a specified class}
 \usage{
-data_get_distr_class(con, class_name)
+data_get_distr_class(con, class_name_selected)
 }
 \arguments{
 \item{con}{Connection to Postgresql database.}
@@ -12,8 +12,12 @@ data_get_distr_class(con, class_name)
 \item{class_name}{Name of the proposed class for which stats should be generated}
 }
 \value{
-Dataframe which contains the statistics for the specified class for different entities: France, Basins, Regions available on the server
+a dataframe which contains the statistics for the specified class for different entities: France, Basins, Regions available on the serve
 }
 \description{
 Get statistics on classes distributions for different levels (france, basin, region) and a specified class
+}
+\examples{
+con=db_con()
+data_get_distr_class(con,"class_style")
 }

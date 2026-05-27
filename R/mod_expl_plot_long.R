@@ -372,19 +372,19 @@ mod_expl_plot_long_server <- function(id, r_val, globals){
             r_val_local$shapes_background = create_classes_background(r_val$axis_data_classified)
           }
 
-          # build smoothing of classification option
-          if (is.null(r_val_local$ui_background_smooth)) {
-            # checkbox
-            r_val_local$ui_background_smooth  = checkboxInput(ns("background_smooth"),
-                                                              label = "Homogénéisation des classifications",
-                                                              value = FALSE)
-
-            # selectinput
-            r_val_local$ui_background_smooth_sel = selectInput(ns("background_smooth_sel"),
-                                                               label = "supprimer les inégaux :",
-                                                               choices = c("singuliers", "en paires"),
-                                                               selected = "1")
-          }
+          # # build smoothing of classification option
+          # if (is.null(r_val_local$ui_background_smooth)) {
+          #   # checkbox
+          #   r_val_local$ui_background_smooth  = checkboxInput(ns("background_smooth"),
+          #                                                     label = "Homogénéisation des classifications",
+          #                                                     value = FALSE)
+          #
+          #   # selectinput
+          #   r_val_local$ui_background_smooth_sel = selectInput(ns("background_smooth_sel"),
+          #                                                      label = "supprimer les inégaux :",
+          #                                                      choices = c("singuliers", "en paires"),
+          #                                                      selected = "1")
+          # }
 
         }
         # remove background classification

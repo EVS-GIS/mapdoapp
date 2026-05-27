@@ -4,10 +4,21 @@
 \alias{data_get_metrics}
 \title{This function retrieves the aggregated metrics for the whole network.}
 \usage{
-data_get_metrics(con)
+data_get_metrics(
+  con,
+  filter_by_basin_id = NULL,
+  filter_by_region_id = NULL,
+  axis_id = NULL
+)
 }
 \arguments{
 \item{con}{Connection to Postgresql database.}
+
+\item{filter_by_basin_id}{if not NULL, filter the data by the specified basin id (cdbh)}
+
+\item{filter_by_region_id}{if not NULL, filter the data by the specified region id (gid)}
+
+\item{axis_id}{if not NULL, add a column "selected" to the data, with TRUE for the datapoints of the specified axis and FALSE for the others}
 }
 \value{
 sf data frame containing the datapoints of the homogenous segments' metrics
@@ -17,7 +28,7 @@ This function retrieves the aggregated metrics for the whole network.
 }
 \examples{
 con <- db_con()
-hydro_sites <- data_get_metrics(con = con)
+data_get_metrics(con, "01","12","2000810055")
 DBI::dbDisconnect(con)
 
 }

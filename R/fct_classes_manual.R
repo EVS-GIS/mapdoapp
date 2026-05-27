@@ -22,9 +22,6 @@
 #'       )
 #'
 create_df_input <- function(variable_name, q_0025, q_0975, quantile = 95, no_classes = 4){
-
-
-
   # 95%-Quantile Range
   q_tot <- q_0975 - q_0025
 

@@ -35,7 +35,7 @@ prepare_selact_stats_for_table <- function(data,
 
     # Select the numeric variables to compute stats
     numeric_vars <- axis_data %>%
-      select(where(is.numeric), -c(fid:strahler,gid_region, sum_area)) %>%
+      select(where(is.numeric), -c(fid:strahler,gid_region)) %>%
       sf::st_drop_geometry() %>%
       na.omit()
 
@@ -139,7 +139,7 @@ prepare_regions_stats_for_table <- function(data, region_names = NULL) {
 #' @return reactable table with variables and sparklines
 #'
 #' @examples
-#' create_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban"))
+#' create_analysis_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban"))
 create_analysis_table <- function(df, vars, scale_name = "") {
 
   # extract column names from metric variables
@@ -163,7 +163,7 @@ create_analysis_table <- function(df, vars, scale_name = "") {
     mutate(strahler = if_else(strahler == 0, "tous", as.character(strahler)))
 
   # get names of metrics
-  metric_names <- setNames(params_metrics()$metric_title, params_metrics()$metric_name)
+  metric_names <- setNames(metric_info$metric_title, metric_info$metric_name)
 
   # Add column definitions dynamically based on the selected metrics (vars)
   for (var in vars) {

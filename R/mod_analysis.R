@@ -228,33 +228,33 @@ mod_analysis_server <- function(id, con, r_val, globals){
 
               ##### Tables ####
               # REGIONS TAB - change table only when changes that apply to them are detected
-              if (changes_metrics_regions || changes_strahler_regions) {
-                # prepare stats for reactable
-                r_val_local$region_stats_prep = prepare_regions_stats_for_table(globals$metric_stats(),
-                                                                                region_names = globals$regions)
-
-                # create table
-                r_val_local$regions_table = create_analysis_table(r_val_local$region_stats_prep %>%
-                                                                    filter(strahler == input$regions_strahler_select),
-                                                                  input$regions_metric_select,
-                                                                  scale_name = "Région")
-              }
+              # if (changes_metrics_regions || changes_strahler_regions) {
+              #   # prepare stats for reactable
+              #   r_val_local$region_stats_prep = prepare_regions_stats_for_table(globals$metric_stats(),
+              #                                                                   region_names = globals$regions)
+              #
+              #   # create table
+              #   r_val_local$regions_table = create_analysis_table(r_val_local$region_stats_prep %>%
+              #                                                       filter(strahler == input$regions_strahler_select),
+              #                                                     input$regions_metric_select,
+              #                                                     scale_name = "Région")
+              # }
 
               # SELACT TAB - change table only when changes that apply to them are detected
-              if (changes_metrics_selact || changes_strahler_selact || changes_scales_selact) {
-                # get dataset of actual selection
-                r_val_local$selact_stats_prep = prepare_selact_stats_for_table(globals$metric_stats(),
-                                                                               basin_id = r_val$basin_id,
-                                                                               region_id = r_val$region_id,
-                                                                               axis_data = r_val$axis_data_classified)
-
-                # create table
-                r_val_local$selact_table = create_analysis_table(r_val_local$selact_stats_prep  %>%
-                                                                   filter(strahler %in% input$selact_strahler_select | name == "Axe"),
-                                                                 input$selact_metric_select,
-                                                                 scale_name = "Sélection"
-                )
-              }
+              # if (changes_metrics_selact || changes_strahler_selact || changes_scales_selact) {
+              #   # get dataset of actual selection
+              #   r_val_local$selact_stats_prep = prepare_selact_stats_for_table(globals$metric_stats(),
+              #                                                                  basin_id = r_val$basin_id,
+              #                                                                  region_id = r_val$region_id,
+              #                                                                  axis_data = r_val$axis_data_classified)
+              #
+              #   # create table
+              #   r_val_local$selact_table = create_analysis_table(r_val_local$selact_stats_prep  %>%
+              #                                                      filter(strahler %in% input$selact_strahler_select | name == "Axe"),
+              #                                                    input$selact_metric_select,
+              #                                                    scale_name = "Sélection"
+              #   )
+              # }
 
 
               ##### Plots #####

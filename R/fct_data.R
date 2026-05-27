@@ -229,20 +229,7 @@ data_get_metrics=function(con,
 #'
 #' @return Dataframe which contains the statistics for all metrics for different entities: France, Basins, Regions
 data_get_stats_metrics <- function(con) {
-  print("in data_get_stats_metrics")
-  variables <- c(
-    "talweg_elevation_min", "active_channel_width", "natural_corridor_width",
-    "connected_corridor_width", "valley_bottom_width", "talweg_slope", "floodplain_slope",
-    "water_channel", "gravel_bars", "natural_open", "forest",
-    "grassland", "crops", "diffuse_urban", "dense_urban",
-    "infrastructures", "active_channel", "riparian_corridor", "semi_natural",
-    "reversible", "disconnected", "built_environment", "water_channel_pc",
-    "gravel_bars_pc", "natural_open_pc", "forest_pc", "grassland_pc",
-    "crops_pc", "diffuse_urban_pc", "dense_urban_pc", "infrastructures_pc",
-    "active_channel_pc", "riparian_corridor_pc", "semi_natural_pc", "reversible_pc",
-    "disconnected_pc", "built_environment_pc", "idx_confinement"
-  )
-
+  variables <- metric_info$metric_name
   query_stats <-
     paste0(
       paste(
@@ -355,8 +342,10 @@ data_get_stats_metrics <- function(con) {
 #' @importFrom dplyr case_when
 #' @importFrom DBI dbGetQuery
 #'
-#' @return
-#' Dataframe which contains the statistics for the specified class for different entities: France, Basins, Regions available on the server
+#' @return a dataframe which contains the statistics for the specified class for different entities: France, Basins, Regions available on the serve
+#' @examples
+#' con=db_con()
+#' data_get_distr_class(con,"class_style")
 data_get_distr_class <- function(con, class_name) {
 
   if (!is.null(class_name)) {
@@ -423,9 +412,9 @@ data_get_distr_class <- function(con, class_name) {
       class_name == "class_gravel" ~
         "CASE
           WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'abundant'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'moyennement présente'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'absent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
           ELSE 'unvalid'
         END AS class_name",
       class_name == "class_confinement" ~
@@ -773,7 +762,7 @@ data_get_levels_names <- function(con) {
 
 
 # EVENT load --------------------------------------------------------------
-
+      "GROUP BY level_name, strahler, class_name;\n"
 
 
 #' Get Network Metrics Data for a Specific Network Axis
@@ -788,7 +777,8 @@ data_get_levels_names <- function(con) {
 #'
 #' @examples
 #' con <- db_con()
-#' network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con)
+#' network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=TRUE)
+#' network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=FALSE)
 #' DBI::dbDisconnect(con)
 #'
 #' @importFrom sf st_read
@@ -799,24 +789,9 @@ data_get_levels_names <- function(con) {
 data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
   if (!is.null(selected_axis_id)) {
     if(aggregated==FALSE){
-    sql <- "
-      SELECT
-        network_metrics.fid, axis, measure, toponyme, strahler, talweg_elevation_min,
-        active_channel_width, natural_corridor_width,
-        connected_corridor_width, valley_bottom_width, talweg_slope, floodplain_slope,
-        water_channel, gravel_bars, natural_open, forest, grassland, crops,
-        diffuse_urban, dense_urban, infrastructures, active_channel, riparian_corridor,
-        semi_natural, reversible, disconnected, built_environment,
-        water_channel_pc, gravel_bars_pc, natural_open_pc, forest_pc, grassland_pc, crops_pc,
-        diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
-        riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
-        built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
-        style AS class_style,
-        sinuosite,
-        angle_local,
-        ids,
-
-        -- Strahler Classification
+    sql <- paste0("SELECT network_metrics.fid, gid_region, axis, ids, measure, toponyme, strahler, geom,",
+                         paste(metric_info$metric_name,collapse=", "), ", style AS class_style, ",
+        "-- Strahler Classification
         CASE
           WHEN strahler IS NULL THEN 'unvalid'
           WHEN strahler = 1 THEN '1'
@@ -909,34 +884,30 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
           ELSE 'unvalid'
         END AS class_habitat
       FROM network_metrics
-      WHERE  axis = ?selected_axis_id"
+      WHERE  axis = ?selected_axis_id")
     }
     if(aggregated==TRUE){
-      sql <- "
-      SELECT
-        fid, axis, measure, toponyme, strahler, talweg_elevation_min,
-        active_channel_width, natural_corridor_width,
-        connected_corridor_width, valley_bottom_width, talweg_slope, floodplain_slope,
-        water_channel, gravel_bars, natural_open, forest, grassland, crops,
-        diffuse_urban, dense_urban, infrastructures, active_channel, riparian_corridor,
-        semi_natural, reversible, disconnected, built_environment,
-        water_channel_pc, gravel_bars_pc, natural_open_pc, forest_pc, grassland_pc, crops_pc,
-        diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
-        riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
-        built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
-        class_style,
-        sinuosite,
-        angle_local,
-        class_strahler, class_topographie, class_lu_dominante, class_urban,
-        class_agriculture, class_nature, class_gravel, class_confinement, class_habitat
-
-      FROM network_metrics_aggregated AS network_metrics
-      WHERE  axis = ?selected_axis_id"
+      sql <- paste0("SELECT fid, axis, ids, minmeasure, maxmeasure, toponyme, strahler, gid_region, geom,",
+                    paste(metric_info$metric_name,collapse=", "),
+                    ", class_strahler, class_topographie, class_lu_dominante, class_urban,
+                     class_agriculture, class_nature, class_gravel, class_confinement, class_habitat, class_style
+                    FROM network_metrics_aggregated AS network_metrics
+                    WHERE  axis = ?selected_axis_id")
     }
     query <- sqlInterpolate(con, sql, selected_axis_id = selected_axis_id)
 
-    data <- sf::st_read(dsn = con, query = query) %>%
-      dplyr::arrange(measure)
+    data <- sf::st_read(dsn = con, query = query)
+
+    if(aggregated==TRUE){
+      data= data %>%
+        mutate(maxmeasure=case_when(ids<max(ids)~lead(minmeasure,1),
+                                    TRUE~maxmeasure)) %>%
+        tidyr::pivot_longer(cols=minmeasure:maxmeasure, names_to="measure_type",values_to="measure") %>%
+        dplyr::arrange(ids)
+    }else{
+      data= data %>%
+        arrange(measure)
+    }
 
   } else { # if axis is null
     data <- NULL
@@ -968,28 +939,17 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
 
   if (!is.null(selected_region_id)) {
 
-    sql <- "
-    SELECT
-    fid, axis, measure, toponyme, strahler, talweg_elevation_min,
-    active_channel_width, natural_corridor_width,
-    connected_corridor_width, valley_bottom_width, talweg_slope, floodplain_slope,
-    water_channel, gravel_bars, natural_open, forest, grassland, crops,
-    diffuse_urban, dense_urban, infrastructures, active_channel, riparian_corridor,
-    semi_natural, reversible, disconnected, built_environment,
-    water_channel_pc, gravel_bars_pc, natural_open_pc, forest_pc, grassland_pc, crops_pc,
-    diffuse_urban_pc, dense_urban_pc, infrastructures_pc, active_channel_pc,
-    riparian_corridor_pc, semi_natural_pc, reversible_pc, disconnected_pc,
-    built_environment_pc, sum_area, idx_confinement, gid_region, network_metrics.geom,
-    class_style,
-    sinuosite,
-    class_strahler, class_topographie, class_lu_dominante, class_urban,
-    class_agriculture, class_nature, class_gravel, class_confinement, class_habitat
-    FROM network_metrics
-    WHERE  network_metrics.gid_region = ?selected_region_id"
+    sql <-paste0("
+      SELECT
+        fid, axis, ids, minmeasure, maxmeasure, toponyme, strahler, gid_region, geom,",
+        paste(metric_info$metric_name,collapse=", "),
+        ", class_strahler, class_topographie, class_lu_dominante, class_urban,
+        class_agriculture, class_nature, class_gravel, class_confinement, class_habitat, class_style
+      FROM network_metrics_aggregated AS network_metrics
+      WHERE  network_metrics.gid_region = ?selected_region_id")
     query <- sqlInterpolate(con, sql, selected_region_id = selected_region_id)
-
     data <- sf::st_read(dsn = con, query = query) %>%
-      dplyr::arrange(measure)
+      arrange(minmeasure)
   }
   else {
     data <- NULL
@@ -1001,7 +961,8 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
 #' This function takes a spatial object with a LINESTRING geometry and returns
 #' a data frame containing the start and end coordinates of the axis.
 #'
-#' @param dgo_axis A spatial sf object with a LINESTRING geometry representing an axis.
+#' @param selected_axis_id The ID of the selected axis for which to retrieve the start and end coordinates.
+#' @param con Connection to Postgresql database.
 #'
 #' @return A data frame with two rows, where the first row contains the start
 #'         coordinates (x and y) and the second row contains the end coordinates (x and y).
@@ -1010,24 +971,32 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
 #' @importFrom utils tail head
 #'
 #' @examples
-#' library(sf)
-#' line_coords <- matrix(c(0, 0, 1, 1), ncol = 2)
-#' # Create an sf object with the LINESTRING
-#' line_sf <- st_sf(geometry = st_sfc(st_linestring(line_coords)))
+#'
 #' df <- data_get_axis_start_end(line_sf)
 #'
 #' @export
-data_get_axis_start_end <- function(dgo_axis) {
+data_get_axis_start_end <- function(selected_axis_id, con) {
 
-  # Extract the first and last point coordinates of the LINESTRING
-  start_coords <- st_coordinates(st_geometry(dgo_axis)[[1]])[1, ]
-  end_coords <- st_coordinates(st_geometry(dgo_axis)[[length(st_geometry(dgo_axis))]])[nrow(st_coordinates(st_geometry(dgo_axis)[[length(st_geometry(dgo_axis))]])), ]
+  sql <- "SELECT axis, geom
+    FROM hydro_axis
+    WHERE  axis = ?selected_axis_id"
+  query <- sqlInterpolate(con, sql, selected_axis_id=as.character(selected_axis_id))
 
-  # Combine the start and end coordinates into a data frame
-  axis_start_end <- data.frame(rbind(start_coords, end_coords))
-
-  # Assign meaningful column names
-  names(axis_start_end) <- c("X", "Y")
+  coords <- sf::st_read(dsn = con, query = query) %>%
+    st_geometry() %>%
+    st_coordinates()
+  axis_start_end <- rbind(head(coords, 1),
+                          tail(coords, 1)) %>%
+    as.data.frame() %>%
+    select(X,Y)
+#
+#   # Extract the first and last point coordinates of the LINESTRING
+#   start_coords <- st_coordinates(st_geometry(data)[[1]])[1, ]
+#   end_coords <- st_coordinates(st_geometry(data)[[length(st_geometry(dgo_axis))]])[nrow(st_coordinates(st_geometry(dgo_axis)[[length(st_geometry(dgo_axis))]])), ]
+#
+#   # Combine the start and end coordinates into a data frame
+#
+#   # Assign meaningful column names
 
   return(axis_start_end)
 }

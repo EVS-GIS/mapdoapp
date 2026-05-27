@@ -18,8 +18,9 @@ classified dataframe/sf object with additional variables: class_name and color
 Assign classification with colors to network dgos
 }
 \examples{
-classified_network <- network_dgo \%>\%
-    assign_classes(proposed_class = "class_strahler",
-    colors_df = globals$classes_proposed_colors)
+
+network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=TRUE) \%>\%
+    assign_classes_proposed(proposed_class = "class_style",
+                             colors_df = params_classes_colors())
 
 }
