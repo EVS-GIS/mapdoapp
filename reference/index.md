@@ -112,8 +112,6 @@
   selectInput()-Elements
 - [`params_map_group()`](https://evs-gis.github.io/mapdoapp/reference/params_map_group.md)
   : Get Parameters for Map Layer Groups
-- [`params_metrics()`](https://evs-gis.github.io/mapdoapp/reference/params_metrics.md)
-  : Get Metric parameters
 - [`params_wms()`](https://evs-gis.github.io/mapdoapp/reference/params_wms.md)
   : Define Web Map Service (WMS) parameters for different map layers and
   basemaps.

@@ -27,8 +27,9 @@ color
 ## Examples
 
 ``` r
-classified_network <- network_dgo %>%
-    assign_classes(proposed_class = "class_strahler",
-    colors_df = globals$classes_proposed_colors)
-#> Error in assign_classes(., proposed_class = "class_strahler", colors_df = globals$classes_proposed_colors): could not find function "assign_classes"
+
+network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=TRUE) %>%
+    assign_classes_proposed(proposed_class = "class_style",
+                             colors_df = params_classes_colors())
+#> Error in assign_classes_proposed(., proposed_class = "class_style", colors_df = params_classes_colors()): could not find function "assign_classes_proposed"
 ```

@@ -38,7 +38,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_get_distr_class</span><span class="op">(</span><span class="va">con</span>, <span class="va">class_name</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_get_distr_class</span><span class="op">(</span><span class="va">con</span>, <span class="va">class_name_selected</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -55,9 +55,18 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Dataframe which contains the statistics for the specified class for different entities: France, Basins, Regions available on the server</p>
+    <p>a dataframe which contains the statistics for the specified class for different entities: France, Basins, Regions available on the serve</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">con</span><span class="op">=</span><span class="fu"><a href="db_con.html">db_con</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: No such file or directory</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> 	Is the server running locally and accepting connections on that socket?</span>
+<span class="r-in"><span><span class="fu">data_get_distr_class</span><span class="op">(</span><span class="va">con</span>,<span class="st">"class_style"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in data_get_distr_class(con, "class_style"):</span> could not find function "data_get_distr_class"</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

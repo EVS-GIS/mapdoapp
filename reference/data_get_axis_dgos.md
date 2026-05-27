@@ -35,7 +35,9 @@ specified network axis.
 con <- db_con()
 #> Error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: No such file or directory
 #>  Is the server running locally and accepting connections on that socket?
-network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con)
+network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=TRUE)
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'conn' in selecting a method for function 'sqlInterpolate': object 'con' not found
+network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=FALSE)
 #> Error in h(simpleError(msg, call)): error in evaluating the argument 'conn' in selecting a method for function 'sqlInterpolate': object 'con' not found
 DBI::dbDisconnect(con)
 #> Error in h(simpleError(msg, call)): error in evaluating the argument 'conn' in selecting a method for function 'dbDisconnect': object 'con' not found

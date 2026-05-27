@@ -7,14 +7,19 @@ axis.
 ## Usage
 
 ``` r
-data_get_axis_start_end(dgo_axis)
+data_get_axis_start_end(selected_axis_id, con)
 ```
 
 ## Arguments
 
-- dgo_axis:
+- selected_axis_id:
 
-  A spatial sf object with a LINESTRING geometry representing an axis.
+  The ID of the selected axis for which to retrieve the start and end
+  coordinates.
+
+- con:
+
+  Connection to Postgresql database.
 
 ## Value
 
@@ -25,10 +30,7 @@ and y).
 ## Examples
 
 ``` r
-library(sf)
-#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
-line_coords <- matrix(c(0, 0, 1, 1), ncol = 2)
-# Create an sf object with the LINESTRING
-line_sf <- st_sf(geometry = st_sfc(st_linestring(line_coords)))
+
 df <- data_get_axis_start_end(line_sf)
+#> Error in (function (cond) .Internal(C_tryCatchHelper(addr, 1L, cond)))(structure(list(message = "argument \"con\" is missing, with no default",     call = data_get_axis_start_end(line_sf)), class = c("getvarError", "missingArgError", "error", "condition"))): error in evaluating the argument 'conn' in selecting a method for function 'sqlInterpolate': argument "con" is missing, with no default
 ```

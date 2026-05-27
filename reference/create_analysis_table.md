@@ -30,6 +30,6 @@ reactable table with variables and sparklines
 ## Examples
 
 ``` r
-create_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban"))
-#> Error in create_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban")): could not find function "create_table"
+create_analysis_table(df, vars = c("crops_pc", "dense_urban_pc", "dense_urban"))
+#> Error in create_analysis_table(df, vars = c("crops_pc", "dense_urban_pc",     "dense_urban")): could not find function "create_analysis_table"
 ```

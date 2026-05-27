@@ -6,7 +6,7 @@ and converts them to sf
 ## Usage
 
 ``` r
-data_get_regions(con, opacity)
+data_get_regions(con, opacity = list(clickable = 0.01, not_clickable = 0.1))
 ```
 
 ## Arguments

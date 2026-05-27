@@ -5,7 +5,7 @@ This function retrieves hydrographic basins.
 ## Usage
 
 ``` r
-data_get_basins(con, opacity)
+data_get_basins(con, opacity = list(clickable = 0.01, not_clickable = 0.1))
 ```
 
 ## Arguments

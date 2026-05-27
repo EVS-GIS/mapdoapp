@@ -46,6 +46,7 @@ my_map <- leaflet() %>%
 # Create a data frame with start and end coordinates
 coordinates_df <- data_get_axis_start_end(network_axis %>%
                                             filter(fid == 5))
+#> Error in (function (cond) .Internal(C_tryCatchHelper(addr, 1L, cond)))(structure(list(message = "argument \"con\" is missing, with no default",     call = data_get_axis_start_end(network_axis %>% filter(fid ==         5))), class = c("getvarError", "missingArgError", "error", "condition"))): error in evaluating the argument 'conn' in selecting a method for function 'sqlInterpolate': argument "con" is missing, with no default
 
 # Add start and end markers to the map
 my_map <- map_add_axis_start_end(my_map, axis_start_end = coordinates_df)

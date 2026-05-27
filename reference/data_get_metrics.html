@@ -38,7 +38,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_get_metrics</span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_get_metrics</span><span class="op">(</span></span>
+<span>  <span class="va">con</span>,</span>
+<span>  filter_by_basin_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filter_by_region_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  axis_id <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -47,6 +52,18 @@
 
 <dl><dt id="arg-con">con<a class="anchor" aria-label="anchor" href="#arg-con"></a></dt>
 <dd><p>Connection to Postgresql database.</p></dd>
+
+
+<dt id="arg-filter-by-basin-id">filter_by_basin_id<a class="anchor" aria-label="anchor" href="#arg-filter-by-basin-id"></a></dt>
+<dd><p>if not NULL, filter the data by the specified basin id (cdbh)</p></dd>
+
+
+<dt id="arg-filter-by-region-id">filter_by_region_id<a class="anchor" aria-label="anchor" href="#arg-filter-by-region-id"></a></dt>
+<dd><p>if not NULL, filter the data by the specified region id (gid)</p></dd>
+
+
+<dt id="arg-axis-id">axis_id<a class="anchor" aria-label="anchor" href="#arg-axis-id"></a></dt>
+<dd><p>if not NULL, add a column "selected" to the data, with TRUE for the datapoints of the specified axis and FALSE for the others</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -59,7 +76,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="db_con.html">db_con</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: No such file or directory</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> 	Is the server running locally and accepting connections on that socket?</span>
-<span class="r-in"><span><span class="va">hydro_sites</span> <span class="op">&lt;-</span> <span class="fu">data_get_metrics</span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">data_get_metrics</span><span class="op">(</span><span class="va">con</span>, <span class="st">"01"</span>,<span class="st">"12"</span>,<span class="st">"2000810055"</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'conn' in selecting a method for function 'dbGetQuery': object 'con' not found</span>
 <span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'conn' in selecting a method for function 'dbDisconnect': object 'con' not found</span>
