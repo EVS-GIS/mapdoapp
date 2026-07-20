@@ -211,9 +211,9 @@ data_get_metrics=function(con,
       filter(gid_region==filter_by_region_id)
   }
   if(!is.null(axis_id)){
-      data=data %>%
-        mutate(selected=case_when(axis==axis_id~TRUE,
-                                  TRUE~ FALSE))
+    data=data %>%
+      mutate(selected=case_when(axis==axis_id~TRUE,
+                                TRUE~ FALSE))
   }
   return(data)
 }
@@ -763,7 +763,7 @@ data_get_levels_names <- function(con) {
 
 
 # EVENT load --------------------------------------------------------------
-      "GROUP BY level_name, strahler, class_name;\n"
+"GROUP BY level_name, strahler, class_name;\n"
 
 
 #' Get Network Metrics Data for a Specific Network Axis
@@ -791,9 +791,9 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
   data(metric_info)
   if (!is.null(selected_axis_id)) {
     if(aggregated==FALSE){
-    sql <- paste0("SELECT network_metrics.fid, gid_region, axis, ids, measure, toponyme, strahler, geom,",
-                         paste(metric_info$metric_name,collapse=", "), ", style AS class_style, ",
-        "-- Strahler Classification
+      sql <- paste0("SELECT network_metrics.fid, gid_region, axis, ids, measure, toponyme, strahler, geom,",
+                    paste(metric_info$metric_name,collapse=", "), ", style AS class_style, ",
+                    "-- Strahler Classification
         CASE
           WHEN strahler IS NULL THEN 'unvalid'
           WHEN strahler = 1 THEN '1'
@@ -842,7 +842,7 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
           WHEN crops_pc IS NULL THEN 'unvalid'
           WHEN crops_pc >= 70 THEN 'Très Forte'
           WHEN crops_pc >= 40 THEN 'Forte'
-          WHEN crops_pc >= 10 THEN 'Modéré'
+          WHEN crops_pc >= 10 THEN 'Modérée'
           WHEN crops_pc >= 0 THEN 'Basse/Absente'
           ELSE 'unvalid'
         END AS class_agriculture,
@@ -860,9 +860,9 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
         -- Gravel Bars Classification
         CASE
           WHEN gravel_bars IS NULL OR water_channel IS NULL THEN 'unvalid'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquent'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnel'
-          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absent'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) >= 0.5 THEN 'Fréquents'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) > 0 THEN 'Occasionnels'
+          WHEN (gravel_bars / NULLIF(water_channel + gravel_bars, 0)) = 0 THEN 'Absents'
           ELSE 'unvalid'
         END AS class_gravel,
 
@@ -906,7 +906,7 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
                                     TRUE~maxmeasure)) %>%
         tidyr::pivot_longer(cols=minmeasure:maxmeasure, names_to="measure_type",values_to="measure") %>%
         dplyr::arrange(ids,measure) %>%
-        mutate(class_agriculture=case_when(class_agriculture=="Impact agricole modéré" ~ "Modéré",
+        mutate(class_agriculture=case_when(class_agriculture=="Impact agricole modéré" ~ "Modérée",
                                            class_agriculture=="Impact agricole élevé" ~ "Forte",
                                            class_agriculture=="Forte impact agricole" ~ "Très Forte",
                                            class_agriculture=="Presque pas/pas d'impact agricole"~"Basse/Absente",
@@ -921,9 +921,9 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
                                       class_nature=="Forte utilisation naturelle"~"Forte",
                                       class_nature=="Très forte utilisation naturelle"~"Très forte",
                                       TRUE~class_nature),
-               class_gravel=case_when(class_gravel=="abundant"~"Fréquent",
-                                      class_gravel=="moyennement présente"~"Occasionnel",
-                                      class_gravel=="absent"~"Absent",
+               class_gravel=case_when(class_gravel=="abundant"~"Fréquents",
+                                      class_gravel=="moyennement présente"~"Occasionnels",
+                                      class_gravel=="absent"~"Absents",
                                       TRUE~class_gravel),
                class_confinement=case_when(class_confinement=="confiné"~"Confiné",
                                            class_confinement=="très confiné"~"Très confiné",
@@ -935,7 +935,7 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
                                        class_habitat=="moyen connecté"~"Moyenne",
                                        class_habitat=="faible / absente"~"Faible/Absente",
                                        TRUE~class_habitat)
-               )
+        )
 
     }else{
       data= data %>%
@@ -975,8 +975,8 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
     sql <-paste0("
       SELECT
         fid, axis, ids, minmeasure, maxmeasure, toponyme, strahler, gid_region, geom,",
-        paste(metric_info$metric_name,collapse=", "),
-        ", class_strahler, class_topographie, class_lu_dominante, class_urban,
+                 paste(metric_info$metric_name,collapse=", "),
+                 ", class_strahler, class_topographie, class_lu_dominante, class_urban,
         class_agriculture, class_nature, class_gravel, class_confinement, class_habitat, class_style
       FROM network_metrics_aggregated AS network_metrics
       WHERE  network_metrics.gid_region = ?selected_region_id")
@@ -1022,14 +1022,14 @@ data_get_axis_start_end <- function(selected_axis_id, con) {
                           tail(coords, 1)) %>%
     as.data.frame() %>%
     select(X,Y)
-#
-#   # Extract the first and last point coordinates of the LINESTRING
-#   start_coords <- st_coordinates(st_geometry(data)[[1]])[1, ]
-#   end_coords <- st_coordinates(st_geometry(data)[[length(st_geometry(dgo_axis))]])[nrow(st_coordinates(st_geometry(dgo_axis)[[length(st_geometry(dgo_axis))]])), ]
-#
-#   # Combine the start and end coordinates into a data frame
-#
-#   # Assign meaningful column names
+  #
+  #   # Extract the first and last point coordinates of the LINESTRING
+  #   start_coords <- st_coordinates(st_geometry(data)[[1]])[1, ]
+  #   end_coords <- st_coordinates(st_geometry(data)[[length(st_geometry(dgo_axis))]])[nrow(st_coordinates(st_geometry(dgo_axis)[[length(st_geometry(dgo_axis))]])), ]
+  #
+  #   # Combine the start and end coordinates into a data frame
+  #
+  #   # Assign meaningful column names
 
   return(axis_start_end)
 }

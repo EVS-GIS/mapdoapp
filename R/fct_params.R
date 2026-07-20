@@ -42,18 +42,18 @@ params_wms <- function(){
                            basemap = FALSE,
                            overlayer = FALSE),
               network = list(name = "Réseau hydrographique",
-                           url = Sys.getenv("GEOSERVER"),
-                           language = "",
-                           service = "WMS",
-                           version = "1.1.0",
-                           sld_version = "",
-                           layer = "mapdo:network_metrics",
-                           format = "image/png",
-                           sld = "",
-                           style = "", # no style, will be defined depending on selection
-                           attribution = "CNRS - EVS",
-                           basemap = FALSE,
-                           overlayer = FALSE),
+                             url = Sys.getenv("GEOSERVER"),
+                             language = "",
+                             service = "WMS",
+                             version = "1.1.0",
+                             sld_version = "",
+                             layer = "mapdo:network_metrics",
+                             format = "image/png",
+                             sld = "",
+                             style = "", # no style, will be defined depending on selection
+                             attribution = "CNRS - EVS",
+                             basemap = FALSE,
+                             overlayer = FALSE),
               background = list(name = "Background",
                                 url = Sys.getenv("GEOSERVER"),
                                 language = "",
@@ -263,8 +263,8 @@ params_classes <- function() {
       "Ordre de Strahler",
       "Topographie",
       "Utilisation dominante des sols",
-      "Pression urbaine",
-      "Pression agricole",
+      "Utilisation urbaine",
+      "Utilisation agricole",
       "Utilisation naturelle des sols",
       "Présence de bancs sédimentaires",
       "Confinement de la bande active",
@@ -284,7 +284,7 @@ params_classes <- function() {
       - Pentes de montagne (> 1000 m & > 0.5 % pente)
       ",
       # dominant land use
-      "Indique la classe d'utilisation des sols la plus dominante dans la zone du fond de vallée de chaque segment de cours d'eau :
+      "Indique la classe dominante d'utilisation des sols dans la zone du fond de vallée de chaque segment de cours d'eau :
       - Forêt
       - Prairies (et sols nus)
       - Cultures
@@ -310,15 +310,15 @@ params_classes <- function() {
       - Presque pas/Pas naturelle (< 10 % espaces naturels)",
       # gravel bars
       "la présence de bancs sédimentaires. Basé sur le ratio entre la surface des sédiments et la surface du chenal actif, qui se compose des surfaces de sédiments et d'eau :
-      - Absent (pas des bancs sédimentaires)
-      - Occasionnel (bancs sédimentaires < 50 % du chenal actif)
-      - Fréquent (bancs sédimentaires >= 50 % du chenal actif)",
+      - Fréquent (bancs sédimentaires >= 50 % du chenal actif),
+      - Occasionnel (bancs sédimentaires < 50 % du chenal actif),
+      - Absent (pas des bancs sédimentaires)",
       # confinement
       "Indique le dégrée du confinement du chenal actif. Basé sur le ratio entre la largeur du chenal actif et la largeur du fond de la vallée.
-      - Peu confiné (chenal actif > 70 % du fond de la vallée)
-      - Modérement confiné (chenal actif > 40 % du fond de la vallée)
-      - Confiné (chenal actif > 10 % du fond de la vallée)
-      - Très confiné (chenal actif < 10 % du fond de la vallée)",
+      - Très confiné (chenal actif < 10 % du fond de la vallée),
+      - Confiné (chenal actif > 10 % du fond de la vallée),
+      - Modérement confiné (chenal actif > 40 % du fond de la vallée),
+      - Peu confiné (chenal actif > 70 % du fond de la vallée)",
       # habitat connectivity
       "Indique la présence d'un corridor riverain naturel. Basé sur ratio de la surface du corridor connecté (comprenant le chenal actif, le corridor naturel et les corridors semi-naturels) et le fond de la vallée :
       - très bien connecté (>= 70 %)
@@ -408,71 +408,98 @@ params_get_metric_choices <- function(){
 params_classes_colors <- function() {
 
   df <- list()
+
   # STRAHLER
-  df$class_strahler <- c("#64b5f6", "#1e88e5", "#1976d2", "#1565c0", "#0d47a1", "#0a2472") %>%
-    setNames(c(1,2,3,4,5,6))
+  df$class_strahler <- c(
+    "1" = "#64b5f6",
+    "2" = "#1e88e5",
+    "3" = "#1976d2",
+    "4" = "#1565c0",
+    "5" = "#0d47a1",
+    "6" = "#0a2472"
+  )
 
   # TOPOGRAPHY
-  df$class_topographie <- c( "#bb3e03", "#85ba55", "#2ca555",
-                             "#780000","#ee9b00", "#3a5a40") %>%
-    setNames(
-      c("Plaines de montagne",
-        "Plaines de moyenne altitude",
-        "Plaines de basse altitude",
-        "Pentes de montagne",
-        "Pentes de moyenne altitude",
-        "Pentes de basse altitude")
-    )
+  df$class_topographie <- c(
+    "Plaines de montagne" = "#bb3e03",
+    "Plaines de moyenne altitude" = "#85ba55",
+    "Plaines de basse altitude" = "#2ca555",
+    "Pentes de montagne" = "#780000",
+    "Pentes de moyenne altitude" = "#ee9b00",
+    "Pentes de basse altitude" = "#3a5a40"
+  )
 
   # LU DOMINANT
-  df$class_lu_dominante <- c("#2d6a4f", "#99d98c", "#ffdd00", "#ba181b") %>%
-    setNames(c("Forêt", "Prairies et sols nus", "Cultures", "Espace construit"))
+  df$class_lu_dominante <- c(
+    "Forêt" = "#2d6a4f",
+    "Prairies et sols nus" = "#99d98c",
+    "Cultures" = "#ffdd00",
+    "Espace construit" = "#ba181b"
+  )
 
   # URBAN
-  df$class_urban <- c("#6a040f", "#dc2f02", "#ffdd00", "#74c69d") %>%
-    setNames(
-      c("Fortement urbanisé", "Urbanisé", "Modérément urbanisé", "Presque pas/Pas urbanisé")
-    )
+  df$class_urban <- c(
+    "Fortement urbanisé" = "#6a040f",
+    "Urbanisé" = "#dc2f02",
+    "Modérément urbanisé" = "#ffdd00",
+    "Presque pas/Pas urbanisé" = "#74c69d"
+  )
 
   # AGRICULTURE / impact agricole
-  df$class_agriculture <- c("#6a040f", "#dc2f02", "#ffdd00", "#74c69d") %>%
-    setNames(
-      c("Très Forte", "Forte",
-        "Modéré", "Basse/Absente")
-    )
+  df$class_agriculture <- c(
+    "Très Forte" = "#6a040f",
+    "Forte" = "#dc2f02",
+    "Modérée" = "#ffdd00",
+    "Basse/Absente" = "#74c69d"
+  )
 
   # NATURE / utilisation naturelle
-  df$class_nature <- c("#081c15", "#2d6a4f", "#74c69d", "#d8f3dc") %>%
-    setNames(
-      c("Très forte", "Forte",
-        "Modérée", "Presque pas/Pas naturelle")
-    )
+  df$class_nature <- c(
+    "Très forte" = "#081c15",
+    "Forte" = "#2d6a4f",
+    "Modérée" = "#74c69d",
+    "Presque pas/Pas naturelle" = "#d8f3dc"
+  )
 
   # GRAVEL BARS
-  df$class_gravel <- c("#603808", "#e7bc91", "#0077b6") %>%
-    setNames(
-      c("Fréquent", "Occasionnel", "Absent")
-    )
+  df$class_gravel <- c(
+    "Fréquent" = "#603808",
+    "Occasionnel" = "#e7bc91",
+    "Absent" = "#0077b6"
+  )
 
   # CONFINEMENT
-  df$class_confinement <- c("#2d6a4f", "#99d98c", "#ffdd00", "#ba181b") %>%
-    setNames(
-      c("Peu confiné", "Modérément confiné", "Confiné", "Très confiné")
-    )
+  df$class_confinement <- c(
+    "Très confiné" = "#ba181b",
+    "Confiné" = "#ffdd00",
+    "Modérément confiné" = "#99d98c",
+    "Peu confiné" = "#2d6a4f"
+  )
 
   # HABITAT CONNECTIVITY
-  df$class_habitat <- c("#2d6a4f", "#99d98c", "#ffdd00", "#ba181b") %>%
-    setNames(
-      c("Élevée", "Bonne", "Moyenne", "Faible/Absente")
-    )
+  df$class_habitat <- c(
+    "Élevée" = "#2d6a4f",
+    "Bonne" = "#99d98c",
+    "Moyenne" = "#ffdd00",
+    "Faible/Absente" = "#ba181b"
+  )
 
   # FLUVIAL STYLES
-  df$class_style <- c("#956d3e", "#93DA97","#E7D283", "#7a1073",  "#d96c0e",  "#3E7B27",
-                      "#121358", "#4BB8FA","#9E9E9E", "#2C5EAD", "#fcb429", "#DD0303") %>%
-    setNames(
-      c("Anabranche", "Anastomosé", "Bancs alternés", "Divagant","Méandre actif","Iles éparses",
-        "Méandre passif","Rectiligne","Réservoir","Sinueux","Sinueux à bancs","Tresse")
-    )
+  df$class_style <- c(
+    "Anabranche" = "#956d3e",
+    "Anastomosé" = "#93DA97",
+    "Bancs alternés" = "#E7D283",
+    "Divagant" = "#7a1073",
+    "Méandre actif" = "#d96c0e",
+    "Iles éparses" = "#3E7B27",
+    "Méandre passif" = "#121358",
+    "Rectiligne" = "#4BB8FA",
+    "Réservoir" = "#9E9E9E",
+    "Sinueux" = "#2C5EAD",
+    "Sinueux à bancs" = "#fcb429",
+    "Tresse" = "#DD0303"
+  )
+
   return(df)
 }
 
