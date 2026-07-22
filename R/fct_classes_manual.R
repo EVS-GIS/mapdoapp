@@ -1,15 +1,13 @@
 #' Create initial dataframe for 1-variable classification, to be displayed on the UI table
 #'
 #' @param variable_name name of variable for which the classification should be undertaken
-#' @param q_0025 2.5%-quantile value of selected metric
-#' @param q_0975 97.5%-quantile value of selected metric
+#' @param q_0025 2.5\%-quantile value of selected metric
+#' @param q_0975 97.5\%-quantile value of selected metric
 #' @param quantile size of quantile which provides value-range of classification
 #' @param no_classes number of classes to be generated
-#'
 #' @return dataframe with 4 columns: class (name of each class, here automatically set from A-Z),
 #'         variable (variable chosen for classification), greaterthan (values defining the threshold of each class),
 #'         and color (defining the coloring for the map)
-#'
 #' @importFrom RColorBrewer brewer.pal
 #'
 #' @examples

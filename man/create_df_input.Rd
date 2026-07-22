@@ -9,9 +9,9 @@ create_df_input(variable_name, q_0025, q_0975, quantile = 95, no_classes = 4)
 \arguments{
 \item{variable_name}{name of variable for which the classification should be undertaken}
 
-\item{q_0025}{2.5%-quantile value of selected metric}
+\item{q_0025}{2.5\%-quantile value of selected metric}
 
-\item{q_0975}{97.5%-quantile value of selected metric}
+\item{q_0975}{97.5\%-quantile value of selected metric}
 
 \item{quantile}{size of quantile which provides value-range of classification}
 
