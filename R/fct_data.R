@@ -902,8 +902,8 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
 
     if(aggregated==TRUE){
       data= data %>%
-        mutate(maxmeasure=case_when(ids<max(ids)~lead(minmeasure,1),
-                                    TRUE~maxmeasure)) %>%
+        # mutate(maxmeasure=case_when(ids<max(ids)~lead(minmeasure,1),
+        #                             TRUE~maxmeasure)) %>%
         tidyr::pivot_longer(cols=minmeasure:maxmeasure, names_to="measure_type",values_to="measure") %>%
         dplyr::arrange(ids,measure) %>%
         mutate(class_agriculture=case_when(class_agriculture=="Impact agricole modéré" ~ "Modérée",
