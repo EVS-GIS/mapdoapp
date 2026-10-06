@@ -25,7 +25,9 @@ map_initialize <- function(params_wms, params_map_group,
     addScaleBar(position = "bottomleft",
                 scaleBarOptions(metric = TRUE, imperial = FALSE)) %>%
     # background map
-    addProviderTiles(providers$CartoDB.Voyager) %>%
+    leaflet::addTiles(paste0("https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=",
+    Sys.getenv("CartoDB_API_key")),
+attribution = '© <a href="https://carto.com/attributions">CartoDB</a>') |>
     # search button
     addSearchOSM(options = leaflet.extras::searchOptions(hideMarkerOnCollapse = TRUE)) %>%
     # GPS location button
