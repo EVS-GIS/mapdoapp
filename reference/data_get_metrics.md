@@ -7,6 +7,7 @@ This function retrieves the aggregated metrics for the whole network.
 ``` r
 data_get_metrics(
   con,
+  data_pool = "bassin",
   filter_by_basin_id = NULL,
   filter_by_region_id = NULL,
   axis_id = NULL
@@ -18,6 +19,10 @@ data_get_metrics(
 - con:
 
   Connection to Postgresql database.
+
+- data_pool:
+
+  which pool (scale) of data to consider: "bassin", "région" or "axe"
 
 - filter_by_basin_id:
 

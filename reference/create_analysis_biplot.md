@@ -14,7 +14,9 @@ create_analysis_biplot(
   metric_y,
   classes = FALSE,
   lm = FALSE,
-  axis_name
+  title,
+  logx = FALSE,
+  logy = FALSE
 )
 ```
 
@@ -43,6 +45,18 @@ create_analysis_biplot(
 
   A boolean indicating whether to add a linear regression line.
 
+- title:
+
+  The title of the graphic
+
+- logx:
+
+  whether to apply a log scale to X (defaults to FALSE)
+
+- logy:
+
+  whether to apply a log scale to Y (defaults to FALSE)
+
 ## Value
 
 A \`plotly\` plot object showing the biplot, regression line, and
@@ -52,5 +66,5 @@ statistical annotations.
 
 ``` r
 create_analysis_biplot(df = mtcars, metric_x = "mpg", metric_y = "wt", classes = FALSE, lm = TRUE)
-#> Error: argument "axis_name" is missing, with no default
+#> Error: argument "title" is missing, with no default
 ```

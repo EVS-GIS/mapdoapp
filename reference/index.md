@@ -26,6 +26,8 @@
   : Get Network Axes Data
 - [`data_get_axis_dgos()`](https://evs-gis.github.io/mapdoapp/reference/data_get_axis_dgos.md)
   : Get Network Metrics Data for a Specific Network Axis
+- [`data_get_axis_dgos_from_basin()`](https://evs-gis.github.io/mapdoapp/reference/data_get_axis_dgos_from_basin.md)
+  : Get Network Metrics Data for a Specific Basin
 - [`data_get_axis_dgos_from_region()`](https://evs-gis.github.io/mapdoapp/reference/data_get_axis_dgos_from_region.md)
   : Get Network Metrics Data for a Specific Region
 - [`data_get_axis_start_end()`](https://evs-gis.github.io/mapdoapp/reference/data_get_axis_start_end.md)

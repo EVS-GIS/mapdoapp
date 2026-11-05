@@ -11,13 +11,13 @@ data_get_axis_dgos_from_region(selected_region_id, con)
 
 ## Arguments
 
+- selected_region_id:
+
+  The ID of the selected region.
+
 - con:
 
   Connection to Postgresql database.
-
-- selected_axis_id:
-
-  The ID of the selected region.
 
 ## Value
 
