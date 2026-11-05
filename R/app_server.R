@@ -220,7 +220,7 @@ app_server <- function(input, output, session) {
     data_get_axis_dgos_from_region(selected_region_id = r_val$region_id_data, con)
   }) %>%
     bindCache(c(r_val$region_id_data, globals$regions_gids_key))
-
+  print(13)
 
   ### DB disconnect when closing session ####
   onStop(function() {

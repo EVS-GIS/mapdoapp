@@ -80,9 +80,14 @@ data_get_regions <- function(con, opacity=list(clickable = 0.01, not_clickable =
 #'
 #' @export
 data_get_axes <- function(con) {
-  query <- "SELECT network_axis.fid, axis, toponyme, gid_region, network_axis.geom FROM network_axis"
-
-  data <- sf::st_read(dsn = con, query = query)
+  query_axis <- "SELECT network_axis.fid, axis, toponyme, gid_region, network_axis.geom FROM network_axis"
+  data <- sf::st_read(dsn = con, query = query_axis)
+  query_region <- "SELECT * FROM region_hydrographique"
+  region_hydrographique <- sf::st_read(dsn = db_con(), query = query_region) |>
+    mutate(id_bassin=cdbh,
+           id_region=gid) |>
+    sf::st_drop_geometry()
+  data=data |> left_join(region_hydrographique, by=c("gid_region"="id_region"))
   return(data)
 }
 
@@ -175,6 +180,7 @@ data_get_hydro_sites <- function(con){
 #' This function retrieves the aggregated metrics for the whole network.
 #'
 #' @param con Connection to Postgresql database.
+#' @param data_pool which pool (scale) of data to consider: "bassin", "région" or "axe"
 #' @param filter_by_basin_id if not NULL, filter the data by the specified basin id (cdbh)
 #' @param filter_by_region_id if not NULL, filter the data by the specified region id (gid)
 #' @param axis_id if not NULL, add a column "selected" to the data, with TRUE for the datapoints of the specified axis and FALSE for the others
@@ -189,6 +195,7 @@ data_get_hydro_sites <- function(con){
 #'
 #' @export
 data_get_metrics=function(con,
+                          data_pool="région",
                           filter_by_basin_id=NULL,
                           filter_by_region_id=NULL,
                           axis_id=NULL){
@@ -198,23 +205,28 @@ data_get_metrics=function(con,
   data_axes_metrics= DBI::dbGetQuery(conn = con, statement = query) %>%
     sf::st_drop_geometry() %>%
     select(-geom)
-  query = "SELECT gid, cdbh FROM region_hydrographique"
-  data_regions=DBI::dbGetQuery(conn = con, statement=query)
-  data=data_axes_metrics %>%
-    left_join(data_regions, by=c("gid_region"="gid"))
-  if(!is.null(filter_by_basin_id)){
-    data=data %>%
-      filter(cdbh==filter_by_basin_id)
-  }
-  if(!is.null(filter_by_region_id)){
-    data=data %>%
-      filter(gid_region==filter_by_region_id)
-  }
+  data=data_axes_metrics
+  # query = "SELECT gid, cdbh FROM region_hydrographique"
+  # data_regions=DBI::dbGetQuery(conn = con, statement=query)
+  # data=data_axes_metrics %>%
+  #   left_join(data_regions, by=c("gid_region"="gid"))
+  # if(data_pool=="bassin"){
+  #   data=data %>%
+  #     filter(cdbh==filter_by_basin_id)
+  # }
+  # if(data_pool=="région"){
+  # data=data %>%
+  #   filter(gid_region==filter_by_region_id)
+  #}
   if(!is.null(axis_id)){
     data=data %>%
       mutate(selected=case_when(axis==axis_id~TRUE,
                                 TRUE~ FALSE))
   }
+  # if(data_pool=="axe"){
+  #   data=data |>
+  #     filter(selected==TRUE)
+  # }
   return(data)
 }
 
@@ -787,6 +799,9 @@ data_get_levels_names <- function(con) {
 #' @importFrom DBI sqlInterpolate
 #'
 #' @export
+#' @examples
+#' con=db_con()
+#' data_get_axis_dgos(2000788975, aggregated=TRUE, con)
 data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
   data(metric_info)
   if (!is.null(selected_axis_id)) {
@@ -941,10 +956,17 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
       data= data %>%
         arrange(measure)
     }
+    query_region <- "SELECT * FROM region_hydrographique"
+    region_hydrographique <- sf::st_read(dsn = db_con(), query = query_region) |>
+      mutate(id_bassin=cdbh,
+             id_region=gid) |>
+      sf::st_drop_geometry()
 
+    data=data |> left_join(region_hydrographique, by=c("gid_region"="id_region"))
   } else { # if axis is null
     data <- NULL
   }
+
   return(data)
 }
 
@@ -952,26 +974,19 @@ data_get_axis_dgos <- function(selected_axis_id, aggregated=FALSE, con) {
 #' Get Network Metrics Data for a Specific Region
 #'
 #' This function retrieves data about network metrics for a specific region based on its ID.
-#'
-#' @param selected_axis_id The ID of the selected region.
+#' @param selected_region_id The ID of the selected region.
 #' @param con Connection to Postgresql database.
-#'
 #' @return A sf data frame containing information about network metrics for the specified region.
-#'
 #' @examples
 #' con <- db_con()
 #' network_metrics_data <- data_get_axis_dgos_from_region(selected_region_id = 33, con = con)
 #' DBI::dbDisconnect(con)
-#'
 #' @importFrom sf st_read
 #' @importFrom dplyr arrange
 #' @importFrom DBI sqlInterpolate
-#'
 #' @export
 data_get_axis_dgos_from_region <- function(selected_region_id, con) {
-
   if (!is.null(selected_region_id)) {
-
     sql <-paste0("
       SELECT
         fid, axis, ids, minmeasure, maxmeasure, toponyme, strahler, gid_region, geom,",
@@ -982,11 +997,47 @@ data_get_axis_dgos_from_region <- function(selected_region_id, con) {
       WHERE  network_metrics.gid_region = ?selected_region_id")
     query <- sqlInterpolate(con, sql, selected_region_id = selected_region_id)
     data <- sf::st_read(dsn = con, query = query) %>%
-      arrange(minmeasure)
+      arrange(minmeasure) |>
+      mutate(measure=minmeasure + (maxmeasure-minmeasure)/2)
+    query_region <- "SELECT * FROM region_hydrographique"
+    region_hydrographique <- sf::st_read(dsn = db_con(), query = query_region) |>
+      mutate(id_bassin=cdbh,
+             id_region=gid) |>
+      sf::st_drop_geometry()
+
+    data=data |> left_join(region_hydrographique, by=c("gid_region"="id_region"))
   }
   else {
     data <- NULL
   }
+  return(data)
+}
+
+#' Get Network Metrics Data for a Specific Basin
+#'
+#' This function retrieves data about network metrics for a specific basin based on its ID.
+#' @param selected_basin_id The ID of the selected basin.
+#' @param con Connection to Postgresql database.
+#' @return A sf data frame containing information about network metrics for the specified basin.
+#' @examples
+#' con <- db_con()
+#' network_metrics_data <- data_get_axis_dgos_from_basin(selected_basin_id = 33, con = con)
+#' DBI::dbDisconnect(con)
+#' @importFrom sf st_read
+#' @importFrom dplyr arrange
+#' @importFrom DBI sqlInterpolate
+#' @export
+data_get_axis_dgos_from_basin <- function(selected_basin_id, con) {
+  query_region <- "SELECT * FROM region_hydrographique"
+  region_hydrographique <- sf::st_read(dsn = con, query = query_region) |>
+    mutate(id_bassin=cdbh,
+           id_region=gid) |>
+    sf::st_drop_geometry()
+  regions=region_hydrographique |>
+    dplyr::filter(id_bassin==selected_basin_id) |>
+    pull(id_region)
+  data=regions |>
+    purrr::map_df(.f=data_get_axis_dgos_from_region, con=con)
   return(data)
 }
 #' Get the start and end coordinates of a spatial object's axis

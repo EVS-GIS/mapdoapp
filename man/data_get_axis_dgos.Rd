@@ -25,4 +25,6 @@ network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = 
 network_metrics_data <- data_get_axis_dgos(selected_axis_id = 2000796122, con = con, aggregated=FALSE)
 DBI::dbDisconnect(con)
 
+con=db_con()
+data_get_axis_dgos(2000788975, aggregated=TRUE, con)
 }

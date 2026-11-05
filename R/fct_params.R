@@ -273,7 +273,7 @@ params_classes <- function() {
     ),
     description = c(
       # strahler
-      "Représente la complexité du réseaux hydrographique. L'ordre de Strahler est de 1 pour tout cours d'eau entre sa source et sa première confluence et mont avec chaque confluence.",
+      "Ordre de Strahler - Représente la complexité du réseau hydrographique considéré dans Mapd'O. La confluence d’un tronçon de cours d’eau de rang n et d’un tronçon de rang inférieur donne naissance à un tronçon de rang n. La confluence de deux tronçons de cours d’eau de rang n donne naissance à un tronçon de cours de rang n+1.",
       # topographie
       "Classification simple basée sur la pente et la hauteur du cours de la rivière :
       - Plaines de basse altitude (> 0 m & < 0.5 % pente)

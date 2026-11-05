@@ -73,7 +73,7 @@ app_ui <- function(request){
       tabPanel("Analyse", icon = icon("magnifying-glass-chart"),
                mod_analysis_ui("analysis_1")
       ),
-      tabPanel("Télechargement", icon = icon("download"),
+      tabPanel("Téléchargement", icon = icon("download"),
                mod_download_ui("download_1")
       ),
       tabPanel("Informations",
