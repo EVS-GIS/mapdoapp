@@ -129,7 +129,7 @@ mod_download_server <- function(id, con, r_val, globals){
     observeEvent(c(r_val$tab_page, r_val$basin_id, r_val$region_id, r_val$axis_id, input$select_type), {
 
       # check if tab open
-      if (r_val$tab_page == "Télechargement" ) {
+      if (r_val$tab_page == "Téléchargement" ) {
 
 
         ### basin selected ####
@@ -205,7 +205,7 @@ mod_download_server <- function(id, con, r_val, globals){
     observeEvent(input$prepare_download_button, {
 
       # check if tab open
-      if (r_val$tab_page == "Télechargement" && input$select_scale %in% c("Bassin", "Région", "Axe") ) { #&& !is.null(r_val$dataset_input)
+      if (r_val$tab_page == "Téléchargement" && input$select_scale %in% c("Bassin", "Région", "Axe") ) { #&& !is.null(r_val$dataset_input)
 
         ### network ####
         if (input$select_type == "Réseau hydrographique") {

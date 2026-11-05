@@ -320,6 +320,9 @@ get_color_by_class <- function(class_name, colors_list) {
 #' @param metric_y A string specifying the name of the y-axis metric (column in the dataframe).
 #' @param classes A boolean indicating whether to group the data by a categorical variable.
 #' @param lm A boolean indicating whether to add a linear regression line.
+#' @param title The title of the graphic
+#' @param logx whether to apply a log scale to X (defaults to FALSE)
+#' @param logy whether to apply a log scale to Y (defaults to FALSE)
 #'
 #' @importFrom plotly plot_ly layout add_trace config
 #'
@@ -327,99 +330,243 @@ get_color_by_class <- function(class_name, colors_list) {
 #' @examples
 #' create_analysis_biplot(df = mtcars, metric_x = "mpg", metric_y = "wt", classes = FALSE, lm = TRUE)
 #' @export
-create_analysis_biplot <- function(df, metric_x, metric_y, classes = FALSE, lm = FALSE, axis_name) {
+create_analysis_biplot <- function(df,
+                                   metric_x,
+                                   metric_y,
+                                   classes = FALSE,
+                                   lm = FALSE,
+                                   title,
+                                   logx = FALSE,
+                                   logy = FALSE) {
 
-  # Remove any rows with missing values (NA)
+  # Remove rows with missing values
   data <- na.omit(df)
 
   # Get metric titles
   data(metric_info)
-  metric_x_title <- metric_info |> filter(metric_name == metric_x) |> pull(metric_title)
-  metric_y_title <- metric_info |> filter(metric_name == metric_y) |> pull(metric_title)
 
-  # Prepare linear regression data if lm is TRUE
-  if (lm && metric_x != metric_y) {
-    # Compute linear regression
-    lm_model <- lm(as.formula(paste(metric_y, "~", metric_x)), data = data)
-    data$lm <- predict(lm_model)
+  metric_x_title <- metric_info |>
+    filter(metric_name == metric_x) |>
+    pull(metric_title)
 
-    # Compute correlation, R², and p-value
-    correlation <- cor.test(data[[metric_x]], data[[metric_y]])
-    r_value <- round(correlation$estimate, 2)
-    p_value <- round(correlation$p.value, 4)
-    r_squared <- round(r_value^2, 2)
+  metric_y_title <- metric_info |>
+    filter(metric_name == metric_y) |>
+    pull(metric_title)
 
-    # Extract coefficients and create the equation
-    coefficients <- coef(lm_model)
-    intercept <- round(coefficients[1], 2)  # Intercept (b)
-    slope <- round(coefficients[2], 2)      # Slope (m)
+  # Apply log constraints
+  if (logx) {
+    data <- data[data[[metric_x]] > 0, ]
+  }
 
-    # Format the formula text
-    formula_text <- sprintf("y = %sx + %s", slope, intercept)
-
-    # Create the statistical summary text
-    linear_dependency_text <- sprintf("%s, <br>R = %s, R² = %s, p = %s",
-                                      formula_text, r_value, r_squared, p_value)
+  if (logy) {
+    data <- data[data[[metric_y]] > 0, ]
   }
 
 
-  if (classes) {
-    # Create a named vector to map class_name to color
-    color_mapping <- setNames(unique(data$color), unique(data$class_name))
+  # Prepare linear regression data if lm is TRUE
+  if (lm && metric_x != metric_y) {
 
-    # Create the base plot
-    plot <- plot_ly(data, x = ~get(metric_x), y = ~get(metric_y),
-                    type = 'scatter', mode = 'markers', color = ~class_name,
-                    colors = color_mapping,
-                    marker = list(size = 6, opacity = 0.8),
-                    text = ~sprintf("<b>%s:</b> %.2f<br><b>%s:</b> %.2f<br><b>Position :</b> %.2f km<br><b>Classe :</b> %s",
-                                    metric_x_title, get(metric_x),
-                                    metric_y_title, get(metric_y),
-                                    measure / 1000, # Convert measure to kilometers
-                                    class_name),
-                    hoverinfo = 'text')
+    # Transform variables according to axis scales
+    data$.x_model <- if (logx) {
+      log(data[[metric_x]])
+    } else {
+      data[[metric_x]]
+    }
+
+    data$.y_model <- if (logy) {
+      log(data[[metric_y]])
+    } else {
+      data[[metric_y]]
+    }
+
+    # Compute linear regression
+    lm_model <- stats::lm(.y_model ~ .x_model, data = data)
+
+    # Predictions
+    data$lm_prediction <- predict(lm_model)
+
+    # Back-transform predictions if necessary
+    if (logy) {
+      data$lm_prediction <- exp(data$lm_prediction)
+    }
+
+    # Compute correlation, R² and p-value
+    correlation <- cor.test(data$.x_model, data$.y_model)
+
+    r_value <- round(correlation$estimate, 2)
+    p_value <- signif(correlation$p.value, 3)
+    r_squared <- round(summary(lm_model)$r.squared, 2)
+
+    # Extract coefficients
+    coefficients <- coef(lm_model)
+
+    intercept <- round(coefficients[1], 2)
+    slope <- round(coefficients[2], 2)
+
+    # Build equation according to transformations
+    x_label <- if (logx) paste0("log(", metric_x, ")") else metric_x
+    y_label <- if (logy) paste0("log(", metric_y, ")") else metric_y
+
+    formula_text <- sprintf(
+      "%s = %s + %s × %s",
+      y_label, intercept, slope, x_label
+    )
+
+    # Statistical summary
+    linear_dependency_text <- sprintf(
+      "%s, <br>R = %s, R² = %s, p = %s",
+      formula_text, r_value, r_squared, p_value
+    )
+
+    # Sort data by x to ensure a properly drawn regression line
+    lm_data <- data[order(data[[metric_x]]), ]
+
+  }
+
+
+  # Create base plot
+  if (classes) {
+
+    color_mapping <- setNames(
+      unique(data$color),
+      unique(data$class_name)
+    )
+
+    plot <- plot_ly(
+      data,
+      x = ~get(metric_x),
+      y = ~get(metric_y),
+      type = "scatter",
+      mode = "markers",
+      color = ~class_name,
+      colors = color_mapping,
+      marker = list(size = 6, opacity = 0.8),
+      text = ~sprintf(
+        "<b>%s:</b> %.2f<br><b>%s:</b> %.2f<br><b>Position :</b> %.2f km<br><b>Classe :</b> %s",
+        metric_x_title,
+        get(metric_x),
+        metric_y_title,
+        get(metric_y),
+        measure / 1000,
+        class_name
+      ),
+      hoverinfo = "text"
+    )
+
   } else {
-    # Create the base plot
-    plot <- plot_ly(data, x = ~get(metric_x), y = ~get(metric_y),
-                    type = 'scatter', mode = 'markers',
-                    name = "Tronçons",
-                    marker = list(size = 6, color = "#1b263b", opacity = 0.8),
-                    text = ~sprintf("<b>%s:</b> %.2f<br><b>%s:</b> %.2f<br><b>Position :</b> %.2f km",
-                                    metric_x_title, get(metric_x),
-                                    metric_y_title, get(metric_y),
-                                    measure / 1000), # Convert measure to kilometers
-                    hoverinfo = 'text')%>%
-      plotly::config(displaylogo = FALSE) # Remove plotly logo
+
+    plot <- plot_ly(
+      data,
+      x = ~get(metric_x),
+      y = ~get(metric_y),
+      type = "scatter",
+      mode = "markers",
+      name = "Tronçons",
+      marker = list(
+        size = 6,
+        color = "#1b263b",
+        opacity = 0.8
+      ),
+      text = ~sprintf(
+        "<b>%s:</b> %.2f<br><b>%s:</b> %.2f<br><b>Position :</b> %.2f km",
+        metric_x_title,
+        get(metric_x),
+        metric_y_title,
+        get(metric_y),
+        measure / 1000
+      ),
+      hoverinfo = "text"
+    )
+
   }
 
 
   # Set axis labels and title
   plot <- plot %>%
-    layout(title = paste0("Axe : ", axis_name),
-           xaxis = list(title = metric_x_title),
-           yaxis = list(title = metric_y_title),
-           modebar = list(remove = c("select2d", "lasso2d", "autoscale", "zoomIn2d", "zoomOut2d"))) %>% # Remove select and lasso tools
-    plotly::config(displaylogo = FALSE) # Remove plotly logo
+    layout(
+      title = title,
+      xaxis = list(
+        title = metric_x_title,
+        type = ifelse(logx, "log", "linear")
+      ),
+      yaxis = list(
+        title = metric_y_title,
+        type = ifelse(logy, "log", "linear")
+      ),
+      modebar = list(
+        remove = c(
+          "select2d",
+          "lasso2d",
+          "autoscale",
+          "zoomIn2d",
+          "zoomOut2d"
+        )
+      )
+    ) %>%
+    plotly::config(displaylogo = FALSE)
+
 
   # Add linear regression line if specified
   if (lm && metric_x != metric_y) {
+
     plot <- plot %>%
-      add_trace(x = ~get(metric_x), y = ~lm,
-                type = 'scatter', mode = 'lines', inherit = FALSE,
-                line = list(color = 'red', width = 2), # Style of the line
-                name = 'Modèle linéaire', # Name for the legend
-                text = linear_dependency_text, hoverinfo = 'text') %>%
-      layout(annotations = list(
+      add_trace(
+        data = lm_data,
+        x = ~get(metric_x),
+        y = ~lm_prediction,
+        type = "scatter",
+        mode = "lines",
+        inherit = FALSE,
+        line = list(
+          color = "red",
+          width = 2
+        ),
+        name = "Modèle linéaire",
         text = linear_dependency_text,
-        x = 1, y = 1, showarrow = FALSE,
-        xref = 'paper', yref = 'paper', # Use 'paper' units (relative to the plot)
-        bgcolor = "#ffccd5", bordercolor = "#000", borderwidth = 1,
-        font = list(size = 11)
-      ))%>%
-      plotly::config(displaylogo = FALSE) # Remove plotly logo
+        hoverinfo = "text"
+      ) %>%
+      layout(
+        annotations = list(
+          text = linear_dependency_text,
+          x = 1,
+          y = 1,
+          showarrow = FALSE,
+          xref = "paper",
+          yref = "paper",
+          bgcolor = "#ffccd5",
+          bordercolor = "#000",
+          borderwidth = 1,
+          font = list(size = 11)
+        )
+      ) %>%
+      plotly::config(displaylogo = FALSE)
+
   }
+  # Highlight selected points
+  if ("selected" %in% names(data) && any(data$selected %in% TRUE)) {
 
+    selected_data <- data[data$selected %in% TRUE, ]
 
+    plot <- plot %>%
+      add_trace(
+        data = selected_data,
+        x = ~get(metric_x),
+        y = ~get(metric_y),
+        type = "scatter",
+        mode = "markers",
+        inherit = FALSE,
+        marker = list(
+          size = 13,
+          color = "rgba(0,0,0,0)",
+          line = list(
+            color = "red",
+            width = 2
+          )
+        ),
+        name = "Sélectionnés",
+        hoverinfo = "skip",
+        showlegend = TRUE
+      )
+  }
   return(plot)
 }
-

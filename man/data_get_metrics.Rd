@@ -6,6 +6,7 @@
 \usage{
 data_get_metrics(
   con,
+  data_pool = "bassin",
   filter_by_basin_id = NULL,
   filter_by_region_id = NULL,
   axis_id = NULL
@@ -13,6 +14,8 @@ data_get_metrics(
 }
 \arguments{
 \item{con}{Connection to Postgresql database.}
+
+\item{data_pool}{which pool (scale) of data to consider: "bassin", "région" or "axe"}
 
 \item{filter_by_basin_id}{if not NULL, filter the data by the specified basin id (cdbh)}
 

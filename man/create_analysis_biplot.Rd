@@ -10,7 +10,9 @@ create_analysis_biplot(
   metric_y,
   classes = FALSE,
   lm = FALSE,
-  axis_name
+  title,
+  logx = FALSE,
+  logy = FALSE
 )
 }
 \arguments{
@@ -23,6 +25,12 @@ create_analysis_biplot(
 \item{classes}{A boolean indicating whether to group the data by a categorical variable.}
 
 \item{lm}{A boolean indicating whether to add a linear regression line.}
+
+\item{title}{The title of the graphic}
+
+\item{logx}{whether to apply a log scale to X (defaults to FALSE)}
+
+\item{logy}{whether to apply a log scale to Y (defaults to FALSE)}
 }
 \value{
 A `plotly` plot object showing the biplot, regression line, and statistical annotations.

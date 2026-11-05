@@ -28,11 +28,15 @@ mod_analysis_bimetric_ui <- function(id) {
         width = 3,
         div(
           id = ns("analysis_settings"),
+          # selectInput(inputId=ns("data_pool"),
+          #             label="Quelles données considérer?",
+          #             choices=c("bassin","région","axe"),
+          #             selected="bassin"),
           div(
             style = "display: flex; align-items: center",
             selectInput(ns("x_metric"), label = "Métrique X:",
                         choices =  mapdoapp::params_get_metric_choices(),
-                        selected  =  mapdoapp::params_get_metric_choices()[1]),
+                        selected  =  mapdoapp::params_get_metric_choices()[[1]]),
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
@@ -47,7 +51,7 @@ mod_analysis_bimetric_ui <- function(id) {
             style = "display: flex; align-items: center",
             selectInput(ns("y_metric"), label = "Métrique Y:",
                         choices = mapdoapp::params_get_metric_choices(),
-                        selected  = mapdoapp::params_get_metric_choices()[2]),
+                        selected  = mapdoapp::params_get_metric_choices()[[2]][1]),
             span(
               style = "display: flex; margin-left: 10px; margin-top: 20px",
               popover(
@@ -73,7 +77,9 @@ mod_analysis_bimetric_ui <- function(id) {
               )
             )
           ),
-          actionButton(ns("create_plot"), "Créer graphe !", icon = icon("chart-line"))
+          checkboxInput(ns("logx"), "X: Appliquer une échelle log", value=FALSE),
+          checkboxInput(ns("logy"), "Y: Appliquer une échelle log", value=FALSE),
+          actionButton(ns("create_plot"), "Créer", icon = icon("chart-line"))
         )
       )
     )
@@ -148,7 +154,7 @@ mod_analysis_bimetric_server <- function(id, con, r_val, globals){
       if (r_val$tab_analysis == "Analyse Bimétrique") {
 
         if (is.null(input$plot)) {
-          r_val_local$warning = "Selectionnez une axe hydrographique et clickez sur 'Créer graphe !' pour afficher le graphe."
+          r_val_local$warning = "Cliquez sur 'Créer' pour afficher le graphique qui montre les caractéristiques régionales. Si vous avez sélectionné un axe, il sera affiché en surbrillance."
 
         }
         # Axis selected
@@ -160,10 +166,31 @@ mod_analysis_bimetric_server <- function(id, con, r_val, globals){
     # create plot
     observeEvent(input$create_plot, {
         print("in observeEvent")
-        data=data_get_metrics(con,
-                              filter_by_basin_id=r_val$basin_id,
-                              filter_by_region_id=r_val$region_id,
-                              axis_id=r_val$axis_id)
+        # data=data_get_metrics(con,
+        #                       data_pool=input$data_pool,
+        #                       filter_by_basin_id=r_val$basin_id,
+        #                       filter_by_region_id=r_val$region_id,
+        #                       axis_id=r_val$axis_id)
+        data=data_get_axis_dgos_from_region(r_val$region_id, con)
+        ## add region id (region_gid) and bassin id (cdbh)
+        # query = "SELECT gid, cdbh FROM region_hydrographique"
+        # data_regions=DBI::dbGetQuery(conn = con, statement=query)
+        # data=data %>%
+        #   left_join(data_regions, by=c("gid_region"="gid"))
+
+        if(!is.null(r_val$axis_id)){
+          data=data %>%
+            mutate(selected=case_when(axis==r_val$axis_id~TRUE,
+                                      TRUE~ FALSE))
+        }
+        ## filter for region and basin
+        # if(input$data_pool=="bassin"){
+        #   data=data |> filter(cdbh==r_val$basin_id)
+        # }
+        # if(input$data_pool=="axe"){
+        #   data=data |> filter(axis==r_val$axis_id)
+        # }
+
         data=data %>%
           assign_classes_proposed(proposed_class = globals$classes_proposed[r_val$classes_proposed_selected,]$class_name,
                                   colors_df = globals$classes_proposed_colors)
@@ -172,7 +199,11 @@ mod_analysis_bimetric_server <- function(id, con, r_val, globals){
                                                    metric_y = input$y_metric,
                                                    classes = input$apply_classes,
                                                    lm = input$apply_lm,
-                                                   axis_name = r_val$axis_name)
+                                                   title=paste0(#"Bassin : ", r_val$basin_name, "| ",
+                                                                "Région : ", r_val$region_name,
+                                                                "  |  Axe : ", r_val$axis_name),
+                                                   logx=input$logx,
+                                                   logy=input$logy)
     })
 
   })

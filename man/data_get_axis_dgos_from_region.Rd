@@ -7,9 +7,9 @@
 data_get_axis_dgos_from_region(selected_region_id, con)
 }
 \arguments{
-\item{con}{Connection to Postgresql database.}
+\item{selected_region_id}{The ID of the selected region.}
 
-\item{selected_axis_id}{The ID of the selected region.}
+\item{con}{Connection to Postgresql database.}
 }
 \value{
 A sf data frame containing information about network metrics for the specified region.
@@ -21,5 +21,4 @@ This function retrieves data about network metrics for a specific region based o
 con <- db_con()
 network_metrics_data <- data_get_axis_dgos_from_region(selected_region_id = 33, con = con)
 DBI::dbDisconnect(con)
-
 }

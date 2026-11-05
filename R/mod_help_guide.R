@@ -164,7 +164,7 @@ mod_help_guide_server <- function(id, r_val){
       }
 
       ### Télechargement-Tab tour ####
-      if (r_val$tab_page == "Télechargement") {
+      if (r_val$tab_page == "Téléchargement") {
         tour$step("download_1-download_selection", "Sélection des données à télécharger",
                   description = "Cette section vous permet de sélectionner le type de jeu de données à télécharger et l'échelle, notamment pour le bassin, la région ou l'axe sélectionné. ",
                   position = "right")
